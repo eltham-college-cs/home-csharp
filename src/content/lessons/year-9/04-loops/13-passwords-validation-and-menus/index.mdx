@@ -1,0 +1,122 @@
+---
+year: 9
+unit: Loops
+unitSlug: loops
+lesson: 13
+title: Passwords, validation and menus
+summary: The while loop shapes you will use again and again. Retry, limit, validate and quit.
+minutes: 20
+keywords: [while loop, validation, sentinel value, "&& / ||", condition]
+mascotSays: "Wrong password? I'll keep my spines up until you get it right."
+---
+
+<ParentTip>
+You don't need to know C#. Play the user. When your child presses Run, type wrong answers on purpose and see if their program copes.
+</ParentTip>
+
+## The big idea
+
+Almost every while loop is one of five shapes. Notice that every condition names a variable the body is going to change.
+
+| Shape | Condition looks like | Used for |
+|---|---|---|
+| Counter | `while (count > 0)` | countdowns |
+| Retry | `while (attempt != password)` | logins |
+| Retry with a limit | `while (attempt != password && tries < 3)` | three lives |
+| Validation | `while (age < 11 \|\| age > 18)` | keeping bad input out |
+| Sentinel | `while (choice != "q")` | menus, quitting |
+
+`&&` means **and** (both must be true). `||` means **or** (at least one must be true). `!=` means **is not equal to**.
+
+<Note title="Prime the loop">
+The password loop reads input **twice**: once before the loop, so the condition has something to test, and once inside, as the update. Delete the one inside and the loop never ends.
+</Note>
+
+<Note title="Auto-marked tasks">
+Like CodeBash, these tasks read with `Console.ReadLine()` and don't print a question first, because everything your program prints is checked.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="password" predict="Press Run and type silver, then bronze, then gold. What will you see?" />
+
+<LessonVideo clip="predictRun" />
+
+## Three attempts, then locked out
+
+`tries < 3` allows three attempts. `tries <= 3` would allow four. Trace it to be sure.
+
+<TraceTable
+  code={`string password = "gold";
+int tries = 0;
+string attempt = "";
+while (attempt != password && tries < 3)
+{
+    attempt = Console.ReadLine();
+    tries = tries + 1;
+}`}
+  columns={["tries", "attempt", "Keep going?"]}
+  rows={[
+    { line: 4, cells: ["0", "\"\"", "true && true: true"] },
+    { line: 4, cells: ["1", "\"silver\"", "true && true: true"] },
+    { line: 4, cells: ["2", "\"bronze\"", "true && true: true"] },
+    { line: 4, cells: ["3", "\"copper\"", "true && false: false"] }
+  ]}
+/>
+
+<CsChecker task="lockout" brief="Add a limit so the user gets three attempts. Change only the while line." />
+
+<LessonVideo clip="fixBug" />
+
+## Validation
+
+<CsChecker task="age-check" brief="Keep asking until the age is between 11 and 18. Each time it is wrong, print <strong>Enter an age between 11 and 18.</strong> When it is right, print <strong>Thanks!</strong>" />
+
+<Note title="What if they type a word?">
+`int.Parse("twelve")` crashes with a FormatException. You don't need to handle that today, but here is how it's done, for later. `int.TryParse` *tries* to turn the text into a number. It gives back `true` if it worked (and puts the number in `age`), or `false` if it didn't, so it can go in a loop condition:
+
+```csharp
+int age;
+while (!int.TryParse(Console.ReadLine(), out age))
+{
+    Console.WriteLine("Please type a number.");
+}
+```
+
+`!` means **not**, so the loop keeps going while the text is *not* a number.
+</Note>
+
+## Extra challenge
+
+<CsChecker task="menu" brief="Build a menu that loops until the user types <strong>q</strong>. <strong>p</strong> prints <strong>Starting game...</strong>, <strong>s</strong> prints <strong>High score: 42</strong>. After the loop, print <strong>Bye!</strong>" />
+
+<Note title="Another way to stop">
+`while (true)` loops forever on purpose, and `break;` jumps straight out of it. Some programmers write menus like this:
+
+```csharp
+while (true)
+{
+    string choice = Console.ReadLine();
+    if (choice == "q")
+    {
+        break;
+    }
+    Console.WriteLine("You chose " + choice);
+}
+```
+
+Both ways are fine. Make sure there is always a way out!
+</Note>
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "Why does `Console.ReadLine()` appear twice in the password loop?", a: "The first gives the condition something to test. The second, inside the loop, is the update." },
+  { q: "How many attempts does `tries < 3` allow? And `tries <= 3`?", a: "Three, and four." },
+  { q: "What do `&&` and `||` mean?", a: "`&&` is and: both conditions must be true. `||` is or: at least one must be true." },
+  { q: "What is a sentinel value?", a: "A special value that means \"I'm done\", like q to quit. Choose one the real data could never be." }
+]} />
+
+<SelfRating question="Could you write a password loop with three attempts?" />

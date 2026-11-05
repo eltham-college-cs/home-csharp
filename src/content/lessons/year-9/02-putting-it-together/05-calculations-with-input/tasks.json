@@ -1,0 +1,70 @@
+{
+  "tasks": [
+    {
+      "id": "future-age",
+      "title": "Future you",
+      "starter": "int age = int.Parse(Console.ReadLine());\nint futureAge = age + 5;\nConsole.WriteLine(\"In five years: \" + futureAge);",
+      "tests": [
+        { "input": "12", "output": "In five years: 17" },
+        { "input": "11", "output": "In five years: 16" }
+      ],
+      "hints": {
+        "spaces": "\"In five years: \" already ends with a space before the closing speech mark. + doesn't add any spaces of its own."
+      }
+    },
+    {
+      "id": "share-sweets",
+      "title": "Share the sweets",
+      "starter": "int sweets = int.Parse(Console.ReadLine());\nConsole.WriteLine(sweets / 2);\nConsole.WriteLine(sweets / 2.0);",
+      "tests": [
+        { "input": "7", "output": "3\n3.5" },
+        { "input": "10", "output": "5\n5" }
+      ],
+      "hints": {
+        "other": "sweets / 2 uses two ints, so the remainder is dropped. sweets / 2.0 keeps the decimal part."
+      }
+    },
+    {
+      "id": "double-trouble",
+      "title": "Double trouble",
+      "starter": "int number = ___(Console.ReadLine());\nint doubled = number ___ 2;\nint answer = doubled ___ 10;\nConsole.WriteLine(\"Double it and add 10 gives \" + ___);",
+      "tests": [
+        { "input": "5", "output": "Double it and add 10 gives 20" },
+        { "input": "0", "output": "Double it and add 10 gives 10" },
+        { "input": "12", "output": "Double it and add 10 gives 34" }
+      ],
+      "hints": {
+        "compile": "Replace every ___ first. Line 1 needs int.Parse, * means times, + means add, and you print the variable answer.",
+        "other": "Check each step: int.Parse first, then * 2, then + 10, then print answer."
+      }
+    },
+    {
+      "id": "tuck-shop",
+      "title": "Tuck shop",
+      "starter": "int money = int.Parse(Console.ReadLine());\nint price = int.Parse(Console.ReadLine());\nConsole.WriteLine(\"Your change is \" + change + \" pounds\");",
+      "tests": [
+        { "input": "5\n2", "output": "Your change is 3 pounds" },
+        { "input": "10\n4", "output": "Your change is 6 pounds" }
+      ],
+      "hints": {
+        "compile": "C# doesn't know change yet. Before the Console.WriteLine line, make the box: int change = money - price;",
+        "spaces": "Keep the space before the closing speech mark in \"Your change is \" and after the opening one in \" pounds\"."
+      }
+    },
+    {
+      "id": "cinema-trip",
+      "title": "Cinema trip",
+      "starter": "",
+      "tests": [
+        { "input": "2\n3", "output": "The total cost is 31 pounds" },
+        { "input": "1\n0", "output": "The total cost is 8 pounds" },
+        { "input": "0\n4", "output": "The total cost is 20 pounds" }
+      ],
+      "hints": {
+        "compile": "Did you use int.Parse(Console.ReadLine()) for both numbers? Does every line end with a semicolon?",
+        "spaces": "+ doesn't add spaces. Put a space inside the speech marks: \"The total cost is \" and \" pounds\".",
+        "other": "Adults cost 8 each and children 5 each: adults * 8 + children * 5."
+      }
+    }
+  ]
+}

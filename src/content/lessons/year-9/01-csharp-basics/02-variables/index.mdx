@@ -1,0 +1,118 @@
+---
+year: 9
+unit: C# basics
+unitSlug: csharp-basics
+lesson: 2
+title: Variables
+summary: Teach the computer to remember things, using labelled boxes.
+minutes: 15
+keywords: [variable, declaration, data type, identifier, value, assignment, string, int, double, bool, compile error]
+mascotSays: "Hi, I'm Hash! Let's help the computer remember."
+---
+
+<ParentTip>
+You don't need to know C#. Ask your child to draw three boxes on paper, each with a label and a type written on the side. Read each line of code aloud as "name is set to Sam".
+</ParentTip>
+
+## The big idea
+
+A **variable** is like a labelled box in the computer's memory.
+
+- The **label** is the variable's name.
+- The box holds **one value** at a time.
+- Put a new value in and the old one is thrown away.
+
+In C#, every box also has a **type** written on the side. The type says what kind of value the box can hold:
+
+- `string` for text, like `"Sam"`
+- `int` for whole numbers, like `12`
+- `double` for numbers with a decimal point, like `1.5`
+- `bool` for `true` or `false`
+
+<MemoryBoxes boxes={[
+  { name: "string name", value: "\"Sam\"" },
+  { name: "int age", value: "12" },
+  { name: "double height", value: "1.5" },
+  { name: "bool happy", value: "true" }
+]} caption="Each box has a type, a name and one value." />
+
+```csharp
+string name = "Sam";     // a string box called name
+int age = 12;            // an int box called age
+double height = 1.5;     // a double box called height
+bool happy = true;       // a bool box called happy
+```
+
+The type and the name go on the **left** of `=`, and the value goes on the **right**. Read `=` as "is set to".
+
+<Note title="Make the box once, then change what's in it">
+The first time, you write the type: `int score = 10;`. This **declares** the box (makes it).
+After that, leave the type off: `score = 20;` just puts a new value in the same box.
+If you write `int score` a second time, C# complains that the box already exists.
+</Note>
+
+<Note title="A box only holds its own type">
+An `int` box can only hold whole numbers. `int age = "12";` will not build, because `"12"` (with speech marks) is text.
+C# checks this before your program runs, so you find out straight away.
+</Note>
+
+<Note title="Naming rules">
+Use letters and numbers. No spaces: write `favouriteColour`, not `favourite colour`. Don't start with a number. Capitals matter: `Age` and `age` are different boxes. C# programmers start each new word with a capital, except the first.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="three-boxes" predict="What will the last line print?" />
+
+The `+` on the last line glues two pieces of text together. You'll learn more about it in lesson 4.
+
+<LessonVideo clip="predictRun" />
+
+## Box or word?
+
+Speech marks mean "say exactly this". No speech marks means "look inside the box".
+
+<TraceTable
+  code={`int age = 12;
+Console.WriteLine("age");
+Console.WriteLine(age);`}
+  columns={["Line", "age", "Output"]}
+  rows={[
+    { line: 1, cells: ["1", "12", "—"] },
+    { line: 2, cells: ["2", "12", "age"] },
+    { line: 3, cells: ["3", "12", "12"] }
+  ]}
+/>
+
+<Parsons
+  prompt="Put the lines in order so the program prints blue, then green. Remember: make the box first, then change it."
+  lines={["string colour = \"blue\";", "Console.WriteLine(colour);", "colour = \"green\";", "Console.WriteLine(colour);"]}
+/>
+
+## Fix the bug
+
+One of these won't build and one prints the wrong thing. Run each one, then fix it.
+
+<CsChecker task="fix-capital" />
+
+<CsChecker task="fix-quotes" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="all-about-ava" brief="Use the two variables to print: <strong>Hi, I'm Ava and I like red</strong>. Glue the pieces together with <code>+</code>, and put the spaces inside the speech marks yourself." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What is a variable? Use the box idea.", a: "A labelled box in memory. The label is its name, the type on the side says what it can hold, and it holds one value at a time." },
+  { q: "What is the difference between `Console.WriteLine(\"age\");` and `Console.WriteLine(age);`?", a: "The first prints the word age. The second prints what is inside the box, like 12." },
+  { q: "Why won't `int age = \"12\";` build?", a: "An int box only holds whole numbers, and `\"12\"` is text because of the speech marks. Write `int age = 12;`." },
+  { q: "You made `int score = 10;`. How do you change score to 20?", a: "`score = 20;` with no `int` in front. You only write the type once, when you make the box." },
+  { q: "Is `my age` an allowed variable name?", a: "No, it has a space. Use `myAge` instead." }
+]} />
+
+<SelfRating question="Could you explain what a variable is, using the box idea?" />

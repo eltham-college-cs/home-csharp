@@ -1,0 +1,96 @@
+---
+year: 9
+unit: Loops
+unitSlug: loops
+lesson: 12
+title: Loops that never end
+summary: One bug, a handful of causes, and how to rescue a program that runs forever.
+minutes: 15
+keywords: [infinite loop, while loop, condition, curly braces, indentation]
+mascotSays: "Round and round and round… Help! Let's find the way out of the loop."
+---
+
+<ParentTip>
+You don't need to know C#. Infinite loops are safe here: the page stops any program after 3 seconds. Encourage your child to break things on purpose and watch what happens.
+</ParentTip>
+
+## The big idea
+
+An **infinite loop** is a loop whose condition never becomes false. The four usual causes:
+
+1. **No update.** The variable never changes.
+2. **Wrong direction.** It changes, but away from the exit (`+ 1` instead of `- 1`).
+3. **The condition can't be false**, like `while (5 > 3)`.
+4. **The sneaky one.** You update a *different* variable from the one in the condition.
+
+C# adds one more: the update is written, but it is **not inside the curly braces**, so it never repeats. More on that below.
+
+<Note title="Rescue kit">
+In Visual Studio press the red stop button. In a terminal press Ctrl + C. On this site, the program is stopped for you after 3 seconds and you'll see "Your program didn't finish".
+Then check: does the body change the variable in the condition? In the right direction? Is the update inside the `{ }` of the loop? Can the condition ever be false?
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Watch it get stuck
+
+The update line is missing. Watch the `count` column: it never moves.
+
+<TraceTable
+  code={`int count = 5;
+while (count > 0)
+{
+    Console.WriteLine(count);
+}
+Console.WriteLine("Lift off!");`}
+  columns={["Line", "count", "What happened"]}
+  rows={[
+    { line: 1, cells: ["1", "5", "start value set"] },
+    { line: 2, cells: ["2", "5", "5 > 0 is true"] },
+    { line: 4, cells: ["4", "5", "prints 5"] },
+    { line: 2, cells: ["2", "5", "still true"] },
+    { line: 4, cells: ["4", "5", "prints 5"] },
+    { line: 2, cells: ["2", "5", "nothing can ever change this"] }
+  ]}
+/>
+
+<CsChecker task="no-update" />
+
+## Predict, then run
+
+The condition is only checked at the **top** of the loop. Will this print `count is now 0`?
+
+<CsChecker task="mid-loop" predict="Will it print count is now 0? Why?" />
+
+<LessonVideo clip="predictRun" />
+
+## Fix the bug
+
+<CsChecker task="wrong-direction" />
+
+<CsChecker task="sneaky" />
+
+<LessonVideo clip="fixBug" />
+
+## Two C# traps
+
+In C#, **only the curly braces** decide which lines are inside the loop. The spaces at the start of a line make code easier to read, but C# ignores them.
+
+Without braces, a `while` repeats just **one** line: the next one. The update below *looks* as if it is inside the loop, but it isn't.
+
+<CsChecker task="no-braces" />
+
+A **semicolon** straight after `while (…)` is even sneakier. The `;` is an empty instruction, and that empty instruction is the whole loop. The lines in the `{ }` never get a turn, so nothing is printed and the program never finishes.
+
+<CsChecker task="stray-semicolon" />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "Name two ways to make a loop that never ends.", a: "Any two of: no update, updating in the wrong direction, a condition that can never be false, updating a different variable, or putting the update outside the { }." },
+  { q: "If the condition becomes false halfway through the body, does the loop stop straight away?", a: "No. The rest of the body still runs. The condition is only checked again at the top." },
+  { q: "What is a good way to find the bug in an infinite loop?", a: "Print the variable in the condition inside the loop. If it never changes, you've found it." },
+  { q: "What is wrong with `while (count > 0);`?", a: "The semicolon. It becomes an empty loop body, so the real lines in the `{ }` never run and the loop goes round forever." }
+]} />
+
+<SelfRating question="Could you explain why a loop never ends, and fix it?" />

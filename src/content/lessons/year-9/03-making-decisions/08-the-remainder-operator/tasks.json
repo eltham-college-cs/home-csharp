@@ -1,0 +1,43 @@
+{
+  "tasks": [
+    {
+      "id": "remainders",
+      "title": "Left over",
+      "starter": "Console.WriteLine(7 % 2);\nConsole.WriteLine(10 % 3);\nConsole.WriteLine(12 % 4);\nConsole.WriteLine(17 / 5);",
+      "tests": [{ "input": "", "output": "1\n1\n0\n3" }],
+      "hints": {
+        "other": "% gives what is left over. / with two ints gives how many whole times it fits."
+      }
+    },
+    {
+      "id": "odd-or-even",
+      "title": "Odd or even",
+      "starter": "int n = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "7", "output": "7 is odd" },
+        { "input": "10", "output": "10 is even" },
+        { "input": "0", "output": "0 is even" }
+      ],
+      "hints": {
+        "spaces": "+ doesn't add spaces for you. Put a space inside the speech marks: \" is odd\".",
+        "lines": "Print exactly one line: use if and else so only one of them runs.",
+        "compile": "Check the brackets round the condition, the { } round each branch, and the ; at the end of each line.",
+        "other": "If n % 2 == 0 the number is even. Otherwise (else) it is odd."
+      }
+    },
+    {
+      "id": "divisible-by-5",
+      "title": "Divides by 5?",
+      "starter": "int n = int.Parse(Console.ReadLine());\nif (n / 5 == 0)\n{\n    Console.WriteLine(\"Yes\");\n}\nelse\n{\n    Console.WriteLine(\"No\");\n}",
+      "tests": [
+        { "input": "25", "output": "Yes" },
+        { "input": "12", "output": "No" },
+        { "input": "0", "output": "Yes" }
+      ],
+      "hints": {
+        "compile": "Only change one symbol on line 2. Keep the brackets, the { } and the semicolons as they were.",
+        "other": "25 / 5 is 5, not 0. You don't want how many times 5 fits, you want what is left over. Which operator gives the remainder?"
+      }
+    }
+  ]
+}

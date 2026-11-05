@@ -1,0 +1,124 @@
+---
+year: 9
+unit: Lists
+unitSlug: lists
+lesson: 15
+title: Changing lists
+summary: Add, insert, remove and overwrite items, check what a list contains, and swap two items safely.
+minutes: 20
+keywords: [list, Add, index, Count, temporary variable, ArgumentOutOfRangeException]
+mascotSays: "Lists can grow and shrink. Like my snack pile, which mostly shrinks."
+---
+
+<ParentTip>
+You don't need to know C#. Use paper slips for the list. Add means "put a slip on the end". Insert means "squeeze a slip in". Remove means "take a slip away and close the gap". Overwrite means "rub one out and write a new word".
+</ParentTip>
+
+## The big idea
+
+A list is not fixed once you have made it. You can tell it to change:
+
+```csharp
+List<int> scores = new List<int> { 12, 19, 7 };
+scores.Add(25);         // add 25 to the end:     12, 19, 7, 25
+scores[0] = 20;         // overwrite item 0:      20, 19, 7, 25
+scores.Insert(1, 5);    // put 5 in at index 1:   20, 5, 19, 7, 25
+scores.Remove(7);       // remove the value 7:    20, 5, 19, 25
+scores.RemoveAt(0);     // remove item 0:         5, 19, 25
+Console.WriteLine(scores.Contains(19));   // True
+Console.WriteLine(scores.Count);          // 3
+```
+
+Read `scores.Add(25);` aloud as "scores, add 25": the list is being told to do something.
+When you insert or remove, the items after it shuffle along, so their indexes change.
+
+`.Contains(…)` asks a true or false question: "is this value in the list?" C# prints the answer as `True` or `False`, with a capital letter.
+
+Last lesson you met `string.Join`. It's the quickest way to see the whole list: `Console.WriteLine(string.Join(", ", scores));` prints `5, 19, 25`.
+
+<Note title="Remove or RemoveAt?">
+`Remove` is told a **value**: `scores.Remove(7)` finds the first 7 and takes it out. `RemoveAt` is told an **index**: `scores.RemoveAt(0)` takes out item 0, whatever it is. In a `List<int>` both take a number, so C# can't tell you if you picked the wrong one.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="build-list" predict="What will the three lines be? The last one is a true or false answer." />
+
+<TraceTable
+  code={`List<int> scores = new List<int>();
+scores.Add(7);
+scores.Add(9);
+scores.Add(4);
+scores.Insert(0, 2);
+scores.RemoveAt(2);
+Console.WriteLine(scores[0]);
+Console.WriteLine(scores.Count);
+Console.WriteLine(scores.Contains(9));`}
+  columns={["Line", "scores", "What happened"]}
+  rows={[
+    { line: 1, cells: ["1", "(empty)", "an empty list of ints is made"] },
+    { line: 2, cells: ["2", "7", "7 joins the end"] },
+    { line: 3, cells: ["3", "7, 9", "9 joins the end"] },
+    { line: 4, cells: ["4", "7, 9, 4", "4 joins the end"] },
+    { line: 5, cells: ["5", "2, 7, 9, 4", "2 squeezes in at index 0; the rest shuffle along"] },
+    { line: 6, cells: ["6", "2, 7, 4", "item 2 is now 9, so 9 is removed"] },
+    { line: 7, cells: ["7", "2, 7, 4", "prints 2, the first item"] },
+    { line: 8, cells: ["8", "2, 7, 4", "prints 3, how many items"] },
+    { line: 9, cells: ["9", "2, 7, 4", "prints False: 9 has gone"] }
+  ]}
+/>
+
+<LessonVideo clip="predictRun" />
+
+## Make it
+
+<CsChecker task="team-sheet" brief="Read three names and add each one to the list. Then print the list and how many are on it." />
+
+<CsChecker task="on-the-list" brief="Read a name. If <strong>guests</strong> contains it, print <strong>Come in, Ben!</strong> (with their name). If not, print <strong>Sorry, Dev is not on the list.</strong>" />
+
+## Fix the bug
+
+The first score was only a practice go, so this program should take it out and print `8, 0, 9`. It runs without any error, but the wrong score disappears. Why?
+
+<CsChecker task="wrong-score" />
+
+<LessonVideo clip="fixBug" />
+
+## Swap the ends
+
+To swap two items, park one in `temp` first. Otherwise it is overwritten and lost.
+
+<TraceTable
+  code={`List<string> names = new List<string> { "Ava", "Ben", "Chloe" };
+string temp = names[0];
+names[0] = names[2];
+names[2] = temp;
+Console.WriteLine(string.Join(", ", names));`}
+  columns={["Line", "names", "temp"]}
+  rows={[
+    { line: 1, cells: ["1", "Ava, Ben, Chloe", "—"] },
+    { line: 2, cells: ["2", "Ava, Ben, Chloe", "\"Ava\""] },
+    { line: 3, cells: ["3", "Chloe, Ben, Chloe", "\"Ava\""] },
+    { line: 4, cells: ["4", "Chloe, Ben, Ava", "\"Ava\""] }
+  ]}
+/>
+
+<CsChecker task="swap-ends" brief="Swap the first and last names, then print the list. Ava, Ben, Chloe should print <strong>Chloe, Ben, Ava</strong>." />
+
+## Extra challenge
+
+<CsChecker task="five-scores" brief="Use a <strong>for</strong> loop to read five whole numbers and add each one to <strong>scores</strong>. Then print the list with <strong>string.Join</strong>, as in the starter." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "Where does `.Add` put the new item?", a: "At the end of the list." },
+  { q: "What does `scores[0] = 20;` do?", a: "Overwrites item 0 with 20. Nothing moves along; the old value is gone." },
+  { q: "What is the difference between `scores.Remove(3)` and `scores.RemoveAt(3)`?", a: "`Remove(3)` takes out the first item whose value is 3. `RemoveAt(3)` takes out the item at index 3." },
+  { q: "`pets` holds dog and cat. What does `Console.WriteLine(pets.Contains(\"Dog\"));` print?", a: "False. Capitals matter: \"Dog\" is not the same as \"dog\"." },
+  { q: "`colours` holds red and blue. Then `string temp = colours[0];` and `colours[0] = colours[1];`. What does the list hold now?", a: "blue, blue. Red is only in temp now, which is why you need it." }
+]} />
+
+<SelfRating question="Could you add to a list, remove from it and swap two items?" />

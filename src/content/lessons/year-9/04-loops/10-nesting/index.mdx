@@ -1,0 +1,97 @@
+---
+year: 9
+unit: Loops
+unitSlug: loops
+lesson: 10
+title: Nesting
+summary: Put an if inside a loop, or a loop inside a loop. Curly braces show what belongs where.
+minutes: 15
+keywords: [nesting, curly braces, indentation, for loop, remainder, selection]
+mascotSays: "I curl up inside my spines, and my spines curl up inside the garden. That's nesting!"
+---
+
+<ParentTip>
+You don't need to know C#. Point at a line and ask "is this inside the loop, inside the if, or outside both?" Follow the curly braces with a finger to find out.
+</ParentTip>
+
+## The big idea
+
+**Curly braces show what is inside what.** Every `{` opens a box, and its matching `}` closes it. A box can sit inside another box, like a set of Russian dolls. That's **nesting**.
+
+```csharp
+for (int x = 1; x <= 6; x++)
+{
+    if (x % 2 == 0)
+    {
+        Console.WriteLine(x + " even");
+    }
+}
+```
+
+The `Console.WriteLine` is inside the if's braces, which are inside the loop's braces.
+
+- An **if inside a for** makes a fresh decision every time round.
+- A **for inside a for** works like a car's mileage counter: the inner loop spins all the way round for every single click of the outer loop.
+
+<Note title="Indentation is for humans">
+The spaces at the start of each line don't change what C# does: only the braces do. We indent 4 spaces for each box so that **people** can see the boxes at a glance. If the indentation and the braces disagree, C# believes the braces.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="odd-even-loop" predict="What will the first three lines be?" />
+
+<TraceTable
+  code={`for (int x = 1; x <= 6; x++)
+{
+    if (x % 2 == 0)
+    {
+        Console.WriteLine(x + " even");
+    }
+    else
+    {
+        Console.WriteLine(x + " odd");
+    }
+}`}
+  columns={["x", "x % 2", "== 0 ?", "Branch", "Output"]}
+  rows={[
+    { line: 9, cells: ["1", "1", "false", "else", "1 odd"] },
+    { line: 5, cells: ["2", "0", "true", "if", "2 even"] },
+    { line: 9, cells: ["3", "1", "false", "else", "3 odd"] },
+    { line: 5, cells: ["4", "0", "true", "if", "4 even"] },
+    { line: 9, cells: ["5", "1", "false", "else", "5 odd"] },
+    { line: 5, cells: ["6", "0", "true", "if", "6 even"] }
+  ]}
+/>
+
+<LessonVideo clip="predictRun" />
+
+## Make it
+
+<CsChecker task="buzz" brief="Read a number n. For every number from 1 to n, print the number, but print <strong>Buzz</strong> instead if it divides exactly by 5." />
+
+## Fix the bug
+
+This should print only the even numbers, like **2 even**. The indentation makes it look right, but the output is wrong.
+Without curly braces, an if only owns the **one** line straight after it. Which line has escaped from the if?
+
+<CsChecker task="braces-bug" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="nested-tables" brief="Read a number n. Use a loop inside a loop to print every times-table line from <strong>1 x 1 = 1</strong> up to <strong>n x n</strong>." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "A loop that counts 1 to 3 has another loop that counts 1 to 3 inside it. How many times does the inner `Console.WriteLine` run?", a: "9 times: 3 for each of the 3 outer laps." },
+  { q: "A line is inside an if's `{ }`, and the if is inside a for's `{ }`. When does the line run?", a: "Every time round the loop, but only when the if's condition is true." },
+  { q: "Is the if tested again every time round the loop?", a: "Yes, from scratch, with the new value of the loop variable." },
+  { q: "Does C# care how many spaces are at the start of a line?", a: "No. The curly braces decide what is inside what. The spaces are there to help people read it." }
+]} />
+
+<SelfRating question="Could you trace a loop with an if inside it?" />

@@ -1,0 +1,50 @@
+{
+  "tasks": [
+    {
+      "id": "odd-even-loop",
+      "title": "Odd or even, six times",
+      "starter": "for (int x = 1; x <= 6; x++)\n{\n    if (x % 2 == 0)\n    {\n        Console.WriteLine(x + \" even\");\n    }\n    else\n    {\n        Console.WriteLine(x + \" odd\");\n    }\n}",
+      "tests": [{ "input": "", "output": "1 odd\n2 even\n3 odd\n4 even\n5 odd\n6 even" }]
+    },
+    {
+      "id": "buzz",
+      "title": "Buzz",
+      "starter": "int n = int.Parse(Console.ReadLine());\nfor (int x = 1; x <= n; x++)\n{\n    \n}",
+      "tests": [
+        { "input": "6", "output": "1\n2\n3\n4\nBuzz\n6" },
+        { "input": "10", "output": "1\n2\n3\n4\nBuzz\n6\n7\n8\n9\nBuzz" }
+      ],
+      "hints": {
+        "compile": "Put the if and else inside the loop's { }, each with its own { } too. Count your { and } : they should match.",
+        "lines": "Print exactly one line for each number: either the number or Buzz. Use if and else so only one runs.",
+        "other": "x % 5 == 0 means x divides exactly by 5."
+      }
+    },
+    {
+      "id": "braces-bug",
+      "title": "Fix the braces",
+      "starter": "for (int x = 1; x <= 6; x++)\n{\n    if (x % 2 == 0)\n        Console.Write(x);\n        Console.WriteLine(\" even\");\n}",
+      "tests": [{ "input": "", "output": "2 even\n4 even\n6 even" }],
+      "hints": {
+        "lines": "Line 5 runs every time round the loop, even for odd numbers. Put { } round both lines under the if, so they both belong to it.",
+        "compile": "Every { needs a matching }. Put { on the line after the if, and } after the second Console line.",
+        "other": "Both Console lines should be inside the if's { }."
+      }
+    },
+    {
+      "id": "nested-tables",
+      "title": "Times tables grid",
+      "starter": "int n = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "2", "output": "1 x 1 = 1\n1 x 2 = 2\n2 x 1 = 2\n2 x 2 = 4" },
+        { "input": "3", "output": "1 x 1 = 1\n1 x 2 = 2\n1 x 3 = 3\n2 x 1 = 2\n2 x 2 = 4\n2 x 3 = 6\n3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9" }
+      ],
+      "hints": {
+        "lines": "With n = 2 you should get 4 lines. The inner loop runs all the way for each outer lap. Both loops keep going while their variable is <= n.",
+        "compile": "The inner for, with its own { }, goes inside the outer for's { }. Inside, you can't reuse the name i: call the inner one j.",
+        "spaces": "+ doesn't add spaces. Put them inside the speech marks: \" x \" and \" = \".",
+        "other": "Use i for the outer loop and j for the inner one: Console.WriteLine(i + \" x \" + j + \" = \" + i * j);"
+      }
+    }
+  ]
+}

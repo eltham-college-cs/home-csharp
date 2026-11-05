@@ -1,0 +1,66 @@
+{
+  "tasks": [
+    {
+      "id": "name-badge",
+      "title": "Name badge",
+      "starter": "string name = Console.ReadLine();\nstring form = Console.ReadLine();\nConsole.WriteLine(\"Hello, my name is \" + name + \" from \" + form);",
+      "tests": [
+        { "input": "Sam\n9G", "output": "Hello, my name is Sam from 9G" },
+        { "input": "Ava\n9B", "output": "Hello, my name is Ava from 9B" }
+      ],
+      "hints": {
+        "spaces": "With + C# adds no spaces. They are inside the speech marks: \"is \" and \" from \"."
+      }
+    },
+    {
+      "id": "fix-score",
+      "title": "Fix the score",
+      "starter": "int homework = 3;\nint test = 4;\nConsole.WriteLine(\"Your score is \" + homework + test);",
+      "tests": [{ "input": "", "output": "Your score is 7" }],
+      "hints": {
+        "other": "C# joins from left to right, so it glues on 3 and then 4. Put brackets round the sum, (homework + test), or use $\"Your score is {homework + test}\".",
+        "spaces": "There is already a space at the end of \"Your score is \". Don't add another."
+      }
+    },
+    {
+      "id": "fix-plus",
+      "title": "Fix the greeting",
+      "starter": "string name = \"Sam\";\nConsole.WriteLine(\"Good morning, \" name);",
+      "tests": [{ "input": "", "output": "Good morning, Sam" }],
+      "hints": {
+        "compile": "C# doesn't know how to join the text and name. Put a + between them.",
+        "spaces": "There is already a space after the comma inside the speech marks. Don't add another."
+      }
+    },
+    {
+      "id": "favourite-things",
+      "title": "Favourite things",
+      "starter": "string food = Console.ReadLine();\nConsole.WriteLine($\"You like {food}\");\nstring animal = Console.ReadLine();\n",
+      "tests": [
+        { "input": "pizza\ncats", "output": "You like pizza\nYour favourite animal is cats" },
+        { "input": "chips\ndogs", "output": "You like chips\nYour favourite animal is dogs" }
+      ],
+      "hints": {
+        "lines": "You need a second Console.WriteLine() for the animal: Your favourite animal is cats.",
+        "spaces": "Type the sentence exactly, with one space between each word, and nothing after {animal}.",
+        "other": "Did you put $ before the speech marks and the variable in braces, {animal}? Without the $ C# prints the braces.",
+        "compile": "Check the line ends with ); and that every { has a }."
+      }
+    },
+    {
+      "id": "two-styles",
+      "title": "Two ways to join",
+      "starter": "string name = Console.ReadLine();\nint age = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "Sam\n12", "output": "Sam is 12 years old\nSam is 12 years old" },
+        { "input": "Ava\n13", "output": "Ava is 13 years old\nAva is 13 years old" }
+      ],
+      "hints": {
+        "spaces": "In the + version, every space must be inside the speech marks: \" is \" and \" years old\".",
+        "lines": "Print the sentence twice: two Console.WriteLine() lines.",
+        "other": "Check the $ version: $ goes before the speech marks, and each variable goes in braces, like {name}.",
+        "compile": "Check there is a + between every piece, and every line ends with ;"
+      }
+    }
+  ]
+}

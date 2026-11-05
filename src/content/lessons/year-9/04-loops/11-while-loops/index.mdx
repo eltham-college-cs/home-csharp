@@ -1,0 +1,103 @@
+---
+year: 9
+unit: Loops
+unitSlug: loops
+lesson: 11
+title: While loops
+summary: A loop for when nobody knows how many times. It keeps asking "are we there yet?"
+minutes: 15
+keywords: [while loop, condition-controlled, count-controlled, condition, iteration]
+mascotSays: "Are we there yet? Are we there yet? A while loop never gets tired of asking."
+---
+
+<ParentTip>
+You don't need to know C#. Ask your child to read the while line aloud as a question: "while count is greater than zero…". Then ask "when does the answer become no?"
+</ParentTip>
+
+## The big idea
+
+A `for` loop asks **"how many?"** A `while` loop asks **"are we there yet?"**, and it asks again every single time round.
+
+| | for | while |
+|---|---|---|
+| Proper name | count-controlled | condition-controlled |
+| You know in advance | how many times | when to stop |
+| It stops when | the count runs out | the condition becomes false |
+| Good for | times tables, every letter in a word | passwords, menus, games |
+
+Every while loop needs **three things**, or it breaks:
+
+1. **Start value**: set the variable before the loop. `int count = 5;`
+2. **Condition**: a true or false question about it, in round brackets. `while (count > 0)`
+3. **Update**: change the variable inside the loop's curly braces, so the answer can become false. `count = count - 1;`
+
+```csharp
+int count = 5;
+while (count > 0)
+{
+    Console.WriteLine(count);
+    count = count - 1;
+}
+Console.WriteLine("Lift off!");
+```
+
+<Note title="No semicolon after the while line">
+The `while (count > 0)` line is not a whole instruction on its own, so it has **no semicolon**. The lines that repeat go inside the `{` and `}` underneath it, just like an `if` or a `for` loop.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="countdown" predict="How many numbers will it print? Does it print 0?" />
+
+<TraceTable
+  code={`int count = 5;
+while (count > 0)
+{
+    Console.WriteLine(count);
+    count = count - 1;
+}
+Console.WriteLine("Lift off!");`}
+  columns={["Line", "count", "What happened"]}
+  rows={[
+    { line: 1, cells: ["1", "5", "start value set"] },
+    { line: 2, cells: ["2", "5", "5 > 0 is true: go in"] },
+    { line: 4, cells: ["4", "5", "prints 5"] },
+    { line: 5, cells: ["5", "4", "one taken off"] },
+    { line: 2, cells: ["2", "4", "4 > 0 is true: go round again"] },
+    { line: 4, cells: ["4", "4", "prints 4"] },
+    { line: 5, cells: ["5", "3", "one taken off"] },
+    { line: 2, cells: ["2", "…", "…and so on, until…"] },
+    { line: 5, cells: ["5", "0", "one taken off"] },
+    { line: 2, cells: ["2", "0", "0 > 0 is false: leave the loop"] },
+    { line: 7, cells: ["7", "0", "prints Lift off!"] }
+  ]}
+/>
+
+<LessonVideo clip="predictRun" />
+
+## Make it
+
+<CsChecker task="countdown-n" brief="Read a number. Use a <strong>while</strong> loop to count down from it to 1, then print <strong>Go!</strong>" />
+
+## Fill the gap
+
+<CsChecker task="seven-times" brief="Replace ____ with a condition so the loop prints the 7 times table up to 7 × 12 (84)." />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="past-100" brief="Add 1 + 2 + 3 + … and stop as soon as the total goes past 100. Print the last number you added, then the total, like the checker shows." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "Name the three things every while loop needs.", a: "A start value, a condition, and an update." },
+  { q: "Why use a while loop for a password, not a for loop?", a: "Nobody knows how many tries the user will need, so you can't write the number of times in a for loop's brackets." },
+  { q: "Counting down from 5, how many times is the condition checked?", a: "6 times: 5, 4, 3, 2 and 1 are true, then 0 is false." },
+  { q: "Does the `while (count > 0)` line end with a semicolon?", a: "No. The lines to repeat go inside the `{ }` underneath it." }
+]} />
+
+<SelfRating question="Could you write a while loop with a start value, condition and update?" />

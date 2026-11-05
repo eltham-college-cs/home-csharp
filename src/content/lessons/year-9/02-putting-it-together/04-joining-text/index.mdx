@@ -1,0 +1,94 @@
+---
+year: 9
+unit: Putting it together
+unitSlug: putting-it-together
+lesson: 4
+title: "Joining text: plus or dollar?"
+summary: Two ways to build a sentence, and how to get the spaces exactly right.
+minutes: 15
+keywords: [concatenation, string interpolation, string, int, order of operations, compile error]
+mascotSays: "Hi, I'm Hash! Let's glue some words together."
+---
+
+<ParentTip>
+You don't need to know C#. Ask "where does each space come from?" for every line your child prints. The dots in the checker show the spaces.
+</ParentTip>
+
+## The big idea
+
+There are two ways to build a sentence out of text and variables.
+
+**A plus is superglue.** `+` sticks pieces together with **no** space. You type every space yourself, inside the speech marks.
+
+**A dollar sign makes a fill-in-the-blanks sentence.** Put `$` just before the speech marks, then write the whole sentence with each variable in curly braces, like `{name}`. C# fills in each gap with what's inside the box. This is called **string interpolation**.
+
+```csharp
+string name = "Sam";
+int age = 12;
+Console.WriteLine("Hi " + name + " you are " + age);   // Hi Sam you are 12
+Console.WriteLine($"Hi {name} you are {age}");         // Hi Sam you are 12
+```
+
+Both lines print the same thing. Both are happy to mix text and numbers: C# turns `age` into text for you.
+
+<Note title="Joining is called concatenation">
+`"Hi" + "Sam"` gives `HiSam`. No space is added. Put the space inside the speech marks: `"Hi " + "Sam"`.
+</Note>
+
+<Note title="Don't forget the $">
+Without the `$`, the braces are just ordinary text: `Console.WriteLine("Hi {name}");` prints `Hi {name}`, braces and all.
+</Note>
+
+<Note title="Sums inside a sentence">
+C# works through `+` from left to right. In `"Total: " + 3 + 4`, it first makes the text `"Total: 3"`, then glues `4` on the end: `Total: 34`!
+Put brackets round the sum, `"Total: " + (3 + 4)`, or use the braces: `$"Total: {3 + 4}"`. Both print `Total: 7`.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="name-badge" predict="If you type Sam and then 9G, what will it print? Where does each space come from?" />
+
+<LessonVideo clip="predictRun" />
+
+## Spot the difference
+
+The dots show where the spaces are. What went wrong in the second line of each pair?
+
+<SpotTheDifference pairs={[
+  { kind: "Spaces", a: "Hello, my name is Sam", b: "Hello, my name isSam", answer: "The second one is missing the space after is. With + you add it inside the speech marks: \"is \"." },
+  { kind: "Spaces", a: "Sam scored 27", b: "Samscored27", answer: "With + you add your own spaces: name + \" scored \" + total." },
+  { kind: "Missing $", a: "You like pizza", b: "You like {food}", answer: "The $ is missing before the speech marks, so C# printed {food} instead of looking inside the box." }
+]} />
+
+## Fix the bug
+
+This program runs, but the score is wrong. The answer should be 7. Run it and work out where the 34 comes from.
+
+<CsChecker task="fix-score" />
+
+This one won't build. Read the message: what is missing between the text and the variable?
+
+<CsChecker task="fix-plus" />
+
+<LessonVideo clip="fixBug" />
+
+## Practise with $
+
+<CsChecker task="favourite-things" brief="Finish the program. It reads a favourite food, then a favourite animal. Print <strong>Your favourite animal is cats</strong> on the second line, using <code>$</code> and braces just like the first line." />
+
+## Extra challenge
+
+<CsChecker task="two-styles" brief="Read a name, then an age. Print <strong>Sam is 12 years old</strong> twice: first using <code>+</code>, then using <code>$</code> and braces. Both lines must match exactly." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "Which one lets you write the whole sentence and fill in the gaps: `+` or `$`?", a: "`$`. Write `$\"Hi {name}\"` and C# fills in `{name}` with what's inside the box." },
+  { q: "What does `Console.WriteLine(\"Hi\" + \"Sam\");` show?", a: "HiSam, with no space." },
+  { q: "What does `Console.WriteLine(\"Hi {name}\");` show?", a: "Hi {name}, exactly as typed. The $ is missing, so C# doesn't fill in the gap." },
+  { q: "Why does `\"Total: \" + 3 + 4` give Total: 34?", a: "C# joins from left to right: \"Total: \" + 3 is the text \"Total: 3\", then 4 is glued on. Use brackets, `(3 + 4)`, to do the sum first." }
+]} />
+
+<SelfRating question="Could you explain the difference between joining with + and with $?" />

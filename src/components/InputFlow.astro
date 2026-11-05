@@ -1,5 +1,5 @@
 ---
-// keyboard → input() → "15" → int() → 15
+// keyboard → Console.ReadLine() → "15" → int.Parse() → 15
 interface Props {
   typed?: string;
 }
@@ -7,14 +7,14 @@ const { typed = '15' } = Astro.props;
 const isNumber = /^-?\d+$/.test(typed);
 ---
 
-<figure class="flow-row" aria-label={`You type ${typed}. input() gives back the text "${typed}". int() changes it into the number ${typed}.`}>
+<figure class="flow-row" aria-label={`You type ${typed}. Console.ReadLine() gives back the text "${typed}". int.Parse() changes it into the number ${typed}.`}>
   <div class="flow-card plain" style="animation-delay:.1s">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1E5FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"></path></svg>
     <div class="flow-title">You type</div>
     <div class="flow-sub">{typed}</div>
   </div>
   <div class="flow-card blue" style="animation-delay:.4s">
-    <div class="flow-code">input()</div>
+    <div class="flow-code">Console.ReadLine()</div>
     <div class="flow-sub">takes the order</div>
   </div>
   <div class="flow-card gold" style="animation-delay:.7s">
@@ -25,7 +25,7 @@ const isNumber = /^-?\d+$/.test(typed);
     isNumber && (
       <>
         <div class="flow-card blue" style="animation-delay:1s">
-          <div class="flow-code">int()</div>
+          <div class="flow-code">int.Parse()</div>
           <div class="flow-sub">exchanges it</div>
         </div>
         <div class="flow-card green" style="animation-delay:1.3s">
@@ -95,9 +95,11 @@ const isNumber = /^-?\d+$/.test(typed);
   }
   .flow-code {
     font-family: var(--font-code);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
     color: var(--navy);
+    overflow-wrap: anywhere;
+    text-align: center;
   }
   .flow-code.big {
     font-size: 26px;

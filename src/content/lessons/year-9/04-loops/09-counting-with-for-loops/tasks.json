@@ -1,0 +1,54 @@
+{
+  "tasks": [
+    {
+      "id": "rounds",
+      "title": "Rounds",
+      "starter": "for (int i = 1; i <= 3; i++)\n{\n    Console.WriteLine(\"Round \" + i);\n}",
+      "tests": [{ "input": "", "output": "Round 1\nRound 2\nRound 3" }],
+      "hints": {
+        "spaces": "+ doesn't add a space. The space after Round is inside the speech marks.",
+        "lines": "The loop starts at 1 and keeps going while i <= 3. How many laps is that?"
+      }
+    },
+    {
+      "id": "count-to-n",
+      "title": "Count to n",
+      "starter": "int n = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "3", "output": "1\n2\n3" },
+        { "input": "5", "output": "1\n2\n3\n4\n5" }
+      ],
+      "hints": {
+        "lines": "To include n, keep going while i <= n (not i < n).",
+        "compile": "A for line looks like for (int i = 1; i <= n; i++) with no semicolon at the end, then { } round the lines to repeat.",
+        "timeout": "Check the third part of the for brackets: i++ makes i bigger each time, so the loop can finish.",
+        "other": "Start at 1, not 0, and print i inside the loop."
+      }
+    },
+    {
+      "id": "countdown-fives",
+      "title": "Countdown in fives",
+      "starter": "for (int x = 20; x <= 0; x -= 5)\n{\n    Console.WriteLine(x);\n}\nConsole.WriteLine(\"Liftoff!\");",
+      "tests": [{ "input": "", "output": "20\n15\n10\n5\n0\nLiftoff!" }],
+      "hints": {
+        "lines": "The loop keeps going while the middle part is true. Is 20 <= 0? Counting down, you want to keep going while x is still 0 or more.",
+        "timeout": "Counting down needs x -= 5. If x keeps getting bigger, it never reaches 0.",
+        "compile": "Only change the middle part of the for brackets. Keep the semicolons that separate the three parts."
+      }
+    },
+    {
+      "id": "times-table",
+      "title": "Times table",
+      "starter": "",
+      "tests": [
+        { "input": "3", "output": "3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\nDone!" },
+        { "input": "7", "output": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\nDone!" }
+      ],
+      "hints": {
+        "lines": "Done! should print once, after the loop. Is it inside the { } by mistake?",
+        "spaces": "+ doesn't add spaces. Put them inside the speech marks: \" x \" and \" = \".",
+        "other": "Inside the loop: Console.WriteLine(n + \" x \" + i + \" = \" + n * i);"
+      }
+    }
+  ]
+}

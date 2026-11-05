@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "id": "primm",
+      "title": "Predict the list",
+      "starter": "List<int> scores = new List<int> { 12, 19, 7 };\nConsole.WriteLine(scores[0]);\nConsole.WriteLine(scores[2]);\nConsole.WriteLine(scores.Count);\nforeach (int score in scores)\n{\n    Console.WriteLine(\"Score: \" + score);\n}",
+      "tests": [
+        {
+          "input": "",
+          "output": "12\n7\n3\nScore: 12\nScore: 19\nScore: 7"
+        }
+      ]
+    },
+    {
+      "id": "top-three",
+      "title": "My top three",
+      "starter": "",
+      "tests": [
+        {
+          "input": "",
+          "output": "Minecraft\nFortnite\nRoblox\n3"
+        }
+      ],
+      "hints": {
+        "compile": "The list line is: List<string> games = new List<string> { ... }; Each game needs speech marks, with commas between them.",
+        "other": "If you see System.Collections.Generic..., you printed the list itself. Print each game inside a foreach loop instead.",
+        "lines": "Print one game per line inside the loop, then games.Count after the loop has finished.",
+        "capitals": "Check the capital letters in each game name."
+      }
+    },
+    {
+      "id": "pick-a-player",
+      "title": "Pick a player",
+      "starter": "List<string> players = new List<string> { \"Ava\", \"Ben\", \"Chloe\", \"Dev\", \"Eli\" };\nConsole.WriteLine(players[0]);\n",
+      "tests": [
+        {
+          "input": "",
+          "output": "Ava\nChloe\nEli"
+        }
+      ],
+      "hints": {
+        "other": "Item 2 is the third name. For the last item, use players[4] or players[players.Count - 1].",
+        "error": "There are 5 players, so the indexes go from 0 to 4. C# has no players[-1]."
+      }
+    },
+    {
+      "id": "out-of-range",
+      "title": "Out of range",
+      "starter": "List<string> pets = new List<string> { \"dog\", \"cat\", \"fish\" };\nConsole.WriteLine(pets[3]);",
+      "tests": [
+        {
+          "input": "",
+          "output": "fish"
+        }
+      ],
+      "hints": {
+        "error": "Three items means the indexes are 0, 1 and 2. There is no item 3."
+      }
+    }
+  ]
+}

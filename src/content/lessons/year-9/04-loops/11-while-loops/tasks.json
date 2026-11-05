@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "id": "countdown",
+      "title": "Countdown",
+      "starter": "int count = 5;\nwhile (count > 0)\n{\n    Console.WriteLine(count);\n    count = count - 1;\n}\nConsole.WriteLine(\"Lift off!\");",
+      "tests": [{ "input": "", "output": "5\n4\n3\n2\n1\nLift off!" }]
+    },
+    {
+      "id": "countdown-n",
+      "title": "Countdown from any number",
+      "starter": "int count = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "3", "output": "3\n2\n1\nGo!" },
+        { "input": "10", "output": "10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nGo!" }
+      ],
+      "hints": {
+        "lines": "Go! should print once, after the loop, so put it after the closing }. And stop before 0.",
+        "timeout": "Is there an update inside the { }? Take one off count each time round.",
+        "other": "Start value, condition, update: count > 0, and take one off each time."
+      }
+    },
+    {
+      "id": "seven-times",
+      "title": "7 times table",
+      "starter": "int n = 1;\nwhile (____)\n{\n    Console.WriteLine(7 * n);\n    n = n + 1;\n}",
+      "tests": [{ "input": "", "output": "7\n14\n21\n28\n35\n42\n49\n56\n63\n70\n77\n84" }],
+      "hints": {
+        "compile": "C# doesn't know what ____ is. Replace it with a question about n, like n <= 12.",
+        "lines": "You need exactly 12 lines. Should the condition use < or <=?"
+      }
+    },
+    {
+      "id": "past-100",
+      "title": "Past 100",
+      "starter": "int total = 0;\nint number = 0;\n",
+      "tests": [{ "input": "", "output": "Last number: 14\nTotal: 105" }],
+      "hints": {
+        "other": "Keep going while total <= 100. Inside the loop, add one to number, then add number to total.",
+        "lines": "Print two lines after the loop: Last number: and Total:.",
+        "spaces": "Put a space after each colon inside the speech marks: \"Total: \" + total.",
+        "timeout": "Does something inside the loop change total, so the condition can become false?"
+      }
+    }
+  ]
+}

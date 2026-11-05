@@ -1,0 +1,108 @@
+---
+year: 9
+unit: Loops
+unitSlug: loops
+lesson: 9
+title: Counting with for loops
+summary: Make the computer repeat a job a set number of times, without copying and pasting.
+minutes: 15
+keywords: [for loop, increment, iteration, count-controlled, curly braces]
+mascotSays: "Three laps of the garden? I'll count them for you. Hedgehogs are great at laps."
+---
+
+<ParentTip>
+You don't need to know C#. Before each run, point at the three parts inside the for brackets and ask "where does it start, when does it stop, and how many numbers will it say?" Counting on fingers is a perfectly good strategy.
+</ParentTip>
+
+## The big idea
+
+A **for loop** is like a coach saying "run 3 laps". The coach counts the laps for you, and the **loop variable** holds the lap number each time round.
+
+```csharp
+for (int i = 1; i <= 3; i++)
+{
+    Console.WriteLine("Lap " + i);
+}
+```
+
+The brackets hold **three parts**, separated by semicolons:
+
+| Part | Code | Means |
+|---|---|---|
+| Start | `int i = 1` | make a box called i, and put 1 in it |
+| Keep going while | `i <= 3` | checked before every lap: if it's false, the loop stops |
+| Change each time | `i++` | after every lap, add 1 to i |
+
+The lines inside the curly braces `{ }` are the ones that repeat.
+`i++` means "add 1 to i". To hop by more than 1, write `i += 2` (add 2), and to count down, `i--` (take 1 away) or `i -= 2` (take 2 away).
+
+| Code | Gives |
+|---|---|
+| `for (int i = 2; i < 6; i++)` | 2, 3, 4, 5 |
+| `for (int i = 2; i <= 6; i++)` | 2, 3, 4, 5, 6 |
+| `for (int i = 0; i <= 8; i += 2)` | 0, 2, 4, 6, 8 |
+| `for (int i = 10; i >= 2; i -= 2)` | 10, 8, 6, 4, 2 |
+| `for (int i = 5; i < 5; i++)` | nothing at all |
+
+<Note title="Watch < and <=">
+`i < 6` stops **before** 6. `i <= 6` includes 6. One little = makes the difference of a whole lap.
+</Note>
+
+<Note title="No semicolon after the brackets">
+The for line has semicolons **inside** its brackets, but never one at the end. The `{ }` come straight after.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="rounds" predict="How many lines will it print? What is the last one?" />
+
+<TraceTable
+  code={`for (int i = 1; i <= 3; i++)
+{
+    Console.WriteLine("Round " + i);
+}`}
+  columns={["Loop", "i", "i <= 3 ?", "Output"]}
+  rows={[
+    { line: 3, cells: ["1st", "1", "true", "Round 1"] },
+    { line: 3, cells: ["2nd", "2", "true", "Round 2"] },
+    { line: 3, cells: ["3rd", "3", "true", "Round 3"] },
+    { line: 1, cells: ["—", "4", "false", "stop: the loop is finished"] }
+  ]}
+/>
+
+<LessonVideo clip="predictRun" />
+
+## Count to n
+
+<CsChecker task="count-to-n" brief="Read a whole number n. Print every number from 1 up to and including n, one per line." />
+
+## Fix the bug
+
+This should count down from 20 to 0 in fives, then print Liftoff! It only prints Liftoff!
+Read the middle part of the for brackets out loud. Is it true at the very start?
+
+<CsChecker task="countdown-fives" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<Parsons
+  prompt="Put the times table program in order. Which lines repeat, and which run only once?"
+  lines={["int n = int.Parse(Console.ReadLine());", "for (int i = 1; i <= 5; i++)", "{", "    Console.WriteLine(n + \" x \" + i + \" = \" + n * i);", "}", "Console.WriteLine(\"Done!\");"]}
+/>
+
+<CsChecker task="times-table" brief="Read a number and print its times table from 1 to 5, like <strong>3 x 1 = 3</strong>, then <strong>Done!</strong>" />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What does `for (int i = 1; i < 10; i += 3)` give?", a: "1, 4, 7. The next hop would be 10, and 10 < 10 is false, so it stops." },
+  { q: "What does `for (int i = 5; i < 5; i++)` give?", a: "Nothing. 5 < 5 is false straight away, so the lines inside never run." },
+  { q: "What does `for (int i = 0; i <= 7; i += 3)` give?", a: "0, 3, 6. 6 is not more than 7, so it counts. 9 is too far." },
+  { q: "What are the three parts inside the for brackets?", a: "Where to start, when to keep going, and how to change each time round." }
+]} />
+
+<SelfRating question="Could you predict the numbers a for loop will count through?" />

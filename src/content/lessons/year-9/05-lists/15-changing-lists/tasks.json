@@ -1,0 +1,112 @@
+{
+  "tasks": [
+    {
+      "id": "build-list",
+      "title": "Build a list",
+      "starter": "List<int> scores = new List<int>();\nscores.Add(7);\nscores.Add(9);\nscores.Add(4);\nscores.Insert(0, 2);\nscores.RemoveAt(2);\nConsole.WriteLine(scores[0]);\nConsole.WriteLine(scores.Count);\nConsole.WriteLine(scores.Contains(9));",
+      "tests": [
+        {
+          "input": "",
+          "output": "2\n3\nFalse"
+        }
+      ]
+    },
+    {
+      "id": "team-sheet",
+      "title": "Team sheet",
+      "starter": "List<string> team = new List<string>();\nstring name = Console.ReadLine();\nteam.Add(name);\n\nConsole.WriteLine(string.Join(\", \", team));\nConsole.WriteLine(team.Count);",
+      "tests": [
+        {
+          "input": "Sam\nAva\nLeo",
+          "output": "Sam, Ava, Leo\n3"
+        },
+        {
+          "input": "Ben\nChloe\nDev",
+          "output": "Ben, Chloe, Dev\n3"
+        }
+      ],
+      "hints": {
+        "other": "Repeat lines 2 and 3 twice more: read a name, then add it.",
+        "compile": "The variable name already exists, so the second time write name = Console.ReadLine(); without string at the start.",
+        "lines": "Print the list on one line and team.Count on the next."
+      }
+    },
+    {
+      "id": "on-the-list",
+      "title": "On the list?",
+      "starter": "List<string> guests = new List<string> { \"Ava\", \"Ben\", \"Chloe\" };\nstring name = Console.ReadLine();\n",
+      "tests": [
+        {
+          "input": "Ben",
+          "output": "Come in, Ben!"
+        },
+        {
+          "input": "Dev",
+          "output": "Sorry, Dev is not on the list."
+        },
+        {
+          "input": "ben",
+          "output": "Sorry, ben is not on the list."
+        }
+      ],
+      "hints": {
+        "other": "Use if (guests.Contains(name)) and an else. Contains matches capitals exactly, so ben is not Ben.",
+        "spaces": "Check the spaces around the name in each message.",
+        "punctuation": "Come in, ... ends with ! and the sorry message ends with a full stop."
+      }
+    },
+    {
+      "id": "wrong-score",
+      "title": "The wrong score",
+      "starter": "List<int> scores = new List<int> { 4, 8, 0, 9 };\nscores.Remove(0);\nConsole.WriteLine(string.Join(\", \", scores));",
+      "tests": [
+        {
+          "input": "",
+          "output": "8, 0, 9"
+        }
+      ],
+      "hints": {
+        "other": "Remove(0) looks for the value 0 and takes that out. To take out item 0, the first one, use RemoveAt(0)."
+      }
+    },
+    {
+      "id": "swap-ends",
+      "title": "Swap the ends",
+      "starter": "List<string> names = new List<string>();\nnames.Add(Console.ReadLine());\nnames.Add(Console.ReadLine());\nnames.Add(Console.ReadLine());\n\nConsole.WriteLine(string.Join(\", \", names));",
+      "tests": [
+        {
+          "input": "Ava\nBen\nChloe",
+          "output": "Chloe, Ben, Ava"
+        },
+        {
+          "input": "red\ngreen\nblue",
+          "output": "blue, green, red"
+        }
+      ],
+      "hints": {
+        "other": "Three lines: string temp = names[0]; then names[0] = names[2]; then names[2] = temp;",
+        "error": "There are 3 items, so the last index is 2, not 3."
+      }
+    },
+    {
+      "id": "five-scores",
+      "title": "Five scores",
+      "starter": "List<int> scores = new List<int>();\n\nConsole.WriteLine(string.Join(\", \", scores));",
+      "tests": [
+        {
+          "input": "3\n5\n7\n9\n11",
+          "output": "3, 5, 7, 9, 11"
+        },
+        {
+          "input": "10\n0\n4\n4\n2",
+          "output": "10, 0, 4, 4, 2"
+        }
+      ],
+      "hints": {
+        "compile": "scores is a List<int>, so it only holds ints. Turn the text into a number first: int.Parse(Console.ReadLine()).",
+        "lines": "Print the list once, after the loop, not inside it.",
+        "other": "for (int i = 0; i < 5; i++) runs five times. Inside it, read a number and add it to scores."
+      }
+    }
+  ]
+}

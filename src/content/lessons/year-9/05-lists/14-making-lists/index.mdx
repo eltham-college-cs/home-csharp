@@ -1,0 +1,104 @@
+---
+year: 9
+unit: Lists
+unitSlug: lists
+lesson: 14
+title: Making lists
+summary: One name that holds many values, and how to reach each one by its index.
+minutes: 15
+keywords: [list, item, index, Count, foreach, ArgumentOutOfRangeException]
+mascotSays: "I keep my snacks in a list: beetle, worm, beetle. Item 0 is always the best one."
+---
+
+<ParentTip>
+You don't need to know C#. Line up five objects on the table and number them from 0. Ask "what is item 0? What is item 4? Is there an item 5?"
+</ParentTip>
+
+## The big idea
+
+If you catch yourself writing `score1`, `score2`, `score3`… you want a **list**: one variable that stores several values, in order.
+
+```csharp
+List<int> scores = new List<int> { 12, 19, 7, 25, 16 };
+```
+
+Read it from the left:
+
+- `List<int>` is the type: "a list of ints". A list holds **one type** of thing, and that type goes in the angle brackets `< >`. A list of names is a `List<string>`. You can't put `"hello"` into a `List<int>`: C# won't build the program.
+- `new List<int> { … }` makes the list, with the starting items inside the curly braces and a comma between each one.
+
+Text items need speech marks:
+
+```csharp
+List<string> names = new List<string> { "Ava", "Ben" };
+```
+
+Each item has an **index**: its position number. Computers count from **0**.
+
+<MemoryBoxes list={{ name: "scores", items: ["12", "19", "7", "25", "16"] }} caption="Five items, so the last index is 4, not 5." />
+
+```csharp
+Console.WriteLine(scores[0]);     // 12
+Console.WriteLine(scores[2]);     // 7
+Console.WriteLine(scores[4]);     // 16
+Console.WriteLine(scores.Count);  // 5, how many items
+```
+
+To visit every item in turn, use a **foreach** loop. Read it as "for each score in scores":
+
+```csharp
+foreach (int score in scores)
+{
+    Console.WriteLine(score);
+}
+```
+
+Each time round the loop, `score` holds the next item: 12, then 19, then 7, and so on.
+
+<Note title="You can't print a whole list">
+`Console.WriteLine(scores);` does not show the items. It shows the list's type name, ``System.Collections.Generic.List`1[System.Int32]``, which is no use to anyone. Use a foreach loop, or `string.Join`, which joins every item into one piece of text with your choice of separator between them: `Console.WriteLine(string.Join(", ", scores));` prints `12, 19, 7, 25, 16`.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="primm" predict="Write down all six lines of output before you run it." />
+
+<LessonVideo clip="predictRun" />
+
+## Spot the difference
+
+Here are some lines a student expected, and what they really got. What went wrong each time?
+
+<SpotTheDifference pairs={[
+  { kind: "Whole list", a: "Ava, Ben", b: "System.Collections.Generic.List`1[System.String]", answer: "Console.WriteLine(names) shows the list's type, not its items. Use string.Join(\", \", names) or a foreach loop." },
+  { kind: "Index", a: "Ava", b: "Ben", answer: "names[0] is Ava, the first item. names[1] is Ben. Counting starts at 0." },
+  { kind: "Count", a: "2", b: "1", answer: "names.Count is 2. The last index is 1, one less than the count." }
+]} />
+
+## Make it
+
+<CsChecker task="top-three" brief="Create a <strong>List&lt;string&gt;</strong> called <strong>games</strong> holding <strong>Minecraft</strong>, <strong>Fortnite</strong> and <strong>Roblox</strong>, in that order. Use a <strong>foreach</strong> loop to print each game on its own line, then print how many games there are with <strong>.Count</strong>." />
+
+<CsChecker task="pick-a-player" brief="Print item 0, item 2 and the last item, one per line." />
+
+## Fix the bug
+
+This one builds fine, then crashes part-way through. Press Run and read the message. Which line asks for an item that isn't there?
+
+<CsChecker task="out-of-range" />
+
+<LessonVideo clip="fixBug" />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What is the index of the first item in a list?", a: "0." },
+  { q: "A list has 5 items. What is the last index?", a: "4. It's always one less than `.Count`." },
+  { q: "Write the line that makes a list called `pets` holding dog and cat.", a: "`List<string> pets = new List<string> { \"dog\", \"cat\" };`" },
+  { q: "Why can't you put `7` into a `List<string>`?", a: "A list holds one type. A `List<string>` only holds text, so C# won't build the program. (`\"7\"` with speech marks would be fine.)" },
+  { q: "What does `Console.WriteLine(pets);` show?", a: "Not the pets! It shows the list's type name. Use a foreach loop or `string.Join(\", \", pets)`." }
+]} />
+
+<SelfRating question="Could you explain why the last index is one less than the count?" />

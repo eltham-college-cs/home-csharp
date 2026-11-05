@@ -1,0 +1,132 @@
+---
+year: 9
+unit: Putting it together
+unitSlug: putting-it-together
+lesson: 6
+title: Tracing and debugging
+summary: Be the computer. Track every box line by line, then hunt down the bugs.
+minutes: 20
+keywords: [trace table, variable, temporary variable, compile error, runtime error, FormatException, comment]
+mascotSays: "Today you're the computer. Then we go bug hunting!"
+---
+
+<ParentTip>
+You don't need to know C#. This is test practice. Cover the answers and let your child predict every row of the trace table out loud before pressing Next step.
+</ParentTip>
+
+## The big idea
+
+A **trace table** lets you be the computer. You go one line at a time and write down what is in every box.
+
+The trickiest line is one like this:
+
+```csharp
+score = score + 5;
+```
+
+Read it from the **right**: take what is in `score`, add 5, then put the answer back in the `score` box. The old value is thrown away.
+
+Notice there is no `int` at the start. `int score = 8;` **creates** the box, once. After that you just use its name.
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+Write down all three lines of output before you run it. Why is the first one a word?
+
+<TraceTable
+  code={`int score = 8;
+Console.WriteLine("score");
+Console.WriteLine(score + 2);
+score = score + 5;
+Console.WriteLine(score);`}
+  columns={["Line", "score", "Output"]}
+  rows={[
+    { line: 1, cells: ["1", "8", "—"] },
+    { line: 2, cells: ["2", "8", "score"] },
+    { line: 3, cells: ["3", "8", "10"] },
+    { line: 4, cells: ["4", "13", "—"] },
+    { line: 5, cells: ["5", "13", "13"] }
+  ]}
+/>
+
+<CsChecker task="predict-score" predict="What three lines will it print?" />
+
+<LessonVideo clip="predictRun" />
+
+## Swap two values
+
+To swap two boxes you need a spare box called `temp`. Without it, the first value is overwritten and lost.
+Assume the user types red, then blue.
+
+<TraceTable
+  code={`string a = Console.ReadLine();
+string b = Console.ReadLine();
+string temp = a;
+a = b;
+b = temp;
+Console.WriteLine(a + " " + b);`}
+  columns={["Line", "a", "b", "temp", "Output"]}
+  rows={[
+    { line: 1, cells: ["1", "\"red\"", "—", "—", "—"] },
+    { line: 2, cells: ["2", "\"red\"", "\"blue\"", "—", "—"] },
+    { line: 3, cells: ["3", "\"red\"", "\"blue\"", "\"red\"", "—"] },
+    { line: 4, cells: ["4", "\"blue\"", "\"blue\"", "\"red\"", "—"] },
+    { line: 5, cells: ["5", "\"blue\"", "\"red\"", "\"red\"", "—"] },
+    { line: 6, cells: ["6", "\"blue\"", "\"red\"", "\"red\"", "blue red"] }
+  ]}
+/>
+
+<CsChecker task="swap" brief="Finish the swap. If you type <strong>red</strong> then <strong>blue</strong>, it should print <strong>blue red</strong>." />
+
+## Two kinds of error
+
+C# can go wrong in two different ways.
+
+- A **compile error** (also called a build error) is found **before** the program runs. C# reads your whole program first, and if anything doesn't make sense, **none** of it runs. Missing semicolons, misspelt names and putting text in an `int` box are all compile errors.
+- A **runtime error** happens **while** the program is running. Everything before it has already happened, then the program stops. For example, `int.Parse()` can't turn the word seven into a number, so the program stops with a `FormatException`.
+
+Every compile error has a **line number** and a code that starts with **CS**. The checker shows it like this:
+
+```
+Your code didn't build. The first problem is on line 3:
+CS0103: The name 'Bonus' does not exist in the current context
+```
+
+Read it like this: look at **line 3**. The code **CS0103** means "C# doesn't know that name". The message tells you which name: `Bonus`.
+
+The messages can be hard to read. The **Error decoder** page (in the menu at the top) explains each one in plain English, with a broken and a fixed example. When the checker shows an error, it gives you a link straight to the right entry.
+
+<Note title="Fix the first error first">
+One slip can confuse C# about the lines after it. The checker shows only the first error. Fix that one, run again, and the others often disappear.
+</Note>
+
+## Bug hunt
+
+This program has **two** bugs. Run it, read the first error and fix it. Then run it again to find the next one.
+
+<CsChecker task="bug-hunt" />
+
+<Note title="Debug checklist">
+Is every name spelt the same, with the same capitals? Does every line end with a semicolon? Does text have speech marks? Did you use `int.Parse()` to turn the input into a number?
+</Note>
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="changing-score" brief="Read a starting score, a bonus and a penalty. Add the bonus, then take away the penalty. Start 10, bonus 7, penalty 3 should print <strong>Final score: 14</strong>." />
+
+Once it works, press Run and type **ten** instead of 10. What kind of error do you get: compile or runtime?
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What does `score = score + 5;` do?", a: "Takes the value in score, adds 5, and puts the answer back in score." },
+  { q: "Why do we need `temp` when swapping?", a: "To keep a copy of the first value. Otherwise it is overwritten and lost." },
+  { q: "If `a` is red and `b` is blue, what happens with `a = b;` then `b = a;`?", a: "Both end up blue. The red was thrown away on the first line." },
+  { q: "What is the difference between a compile error and a runtime error?", a: "A compile error is found before the program runs, so none of it runs. A runtime error happens part-way through, so some of the program has already run." },
+  { q: "An error is on line 4 and says `CS1002: ; expected`. Where do you look?", a: "At the end of line 4 (or the line just before it). A semicolon is missing." }
+]} />
+
+<SelfRating question="Could you fill in a trace table for a short program?" />

@@ -1,0 +1,117 @@
+---
+year: 9
+unit: Making decisions
+unitSlug: making-decisions
+lesson: 7
+title: "Making decisions: if, else if, else"
+summary: Ask C# a yes or no question, and choose which road to take.
+minutes: 15
+keywords: [comparison operator, condition, bool, selection, curly braces, "&& / ||", compile error]
+mascotSays: "Left or right? Today your programs choose which way to go."
+---
+
+<ParentTip>
+You don't need to know C#. Pick a mark between 0 and 100 and ask "which line will it print?" before each run. Try the boundaries: 70, 50 and 40.
+</ParentTip>
+
+## The big idea
+
+A **condition** is a yes or no question. C# answers it with `true` or `false`.
+
+| Operator | Means | true when |
+|---|---|---|
+| `==` | is equal to | `5 == 5` |
+| `!=` | is not equal to | `5 != 4` |
+| `>` | greater than | `7 > 3` |
+| `<` | less than | `3 < 7` |
+| `>=` | greater than or equal to | `5 >= 5` |
+| `<=` | less than or equal to | `4 <= 5` |
+
+`if`, `else if` and `else` are a **road junction**. C# checks each sign in order and takes the **first** road whose answer is true. Every other road is skipped.
+
+```csharp
+if (mark >= 50)
+{
+    Console.WriteLine("Pass");
+}
+else
+{
+    Console.WriteLine("Not yet");
+}
+```
+
+Two things to notice:
+
+- The condition always goes inside **round brackets** `( )`.
+- The lines that belong to each road go inside **curly braces** `{ }`. Braces come in pairs. There is no semicolon after `if (...)` or after a brace.
+
+<Note title="= is not ==">
+`mark = 70;` **sets** the box. `mark == 70` **asks** a question. If you write `if (mark = 70)`, C# won't build your program: it says `CS0029: Cannot implicitly convert type 'int' to 'bool'`. That means "I wanted a true or false question, but you gave me a number".
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Trace it
+
+`mark` is 72. Once one branch runs, the rest are never even tested.
+
+<TraceTable
+  code={`int mark = 72;
+if (mark >= 70)
+{
+    Console.WriteLine("Distinction");
+}
+else if (mark >= 50)
+{
+    Console.WriteLine("Merit");
+}
+else
+{
+    Console.WriteLine("Keep going");
+}`}
+  columns={["Line", "Test", "Result", "What happened"]}
+  rows={[
+    { line: 1, cells: ["1", "—", "—", "mark set to 72"] },
+    { line: 2, cells: ["2", "72 >= 70", "true", "go into this branch"] },
+    { line: 4, cells: ["4", "—", "—", "prints Distinction"] },
+    { line: 6, cells: ["6–13", "never tested", "skipped", "jump past the whole chain"] }
+  ]}
+/>
+
+## Predict, then run
+
+<CsChecker task="grades" predict="What will it print for 55? For 70? For 39?" />
+
+<LessonVideo clip="predictRun" />
+
+## Fix the bug
+
+The lucky number is 7. This program won't build. Read the error, then fix the condition.
+
+<CsChecker task="lucky-number" />
+
+<LessonVideo clip="fixBug" />
+
+## Two questions at once
+
+Sometimes one question isn't enough. You can join two conditions:
+
+- `&&` means **and**: both must be true. `age >= 13 && age <= 19` is true for teenagers.
+- `||` means **or**: at least one must be true. `day == "Saturday" || day == "Sunday"` is true at the weekend.
+
+<CsChecker task="teen-check" brief="Read an age. If it is from 13 to 19, print <strong>Teenager</strong>. Otherwise print <strong>Not a teenager</strong>." />
+
+## Extra challenge
+
+<CsChecker task="password-check" brief="Read a password. If it is <strong>gold</strong>, print <strong>Access granted</strong>. Otherwise print <strong>Access denied</strong>." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What is the difference between `=` and `==`?", a: "`=` puts a value in a box. `==` asks whether two things are equal." },
+  { q: "What happens with `\"7\" == 7` in C#?", a: "C# won't build it (CS0019). Text and a number can't be compared. Convert the text first with `int.Parse()`." },
+  { q: "Why must `mark >= 70` come before `mark >= 50`?", a: "72 is also >= 50. If that test came first, 72 would get Merit and the Distinction test would never run." },
+  { q: "Is `age > 10 && age < 5` ever true?", a: "No. && needs both to be true, and no number is bigger than 10 and smaller than 5 at once." }
+]} />
+
+<SelfRating question="Could you choose between if, else if and else correctly?" />

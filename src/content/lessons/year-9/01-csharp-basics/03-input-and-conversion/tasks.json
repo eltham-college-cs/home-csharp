@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "id": "hello-name",
+      "title": "Hello, what's your name?",
+      "starter": "string name = Console.ReadLine();\nConsole.WriteLine(\"Hello, \" + name + \"!\");",
+      "tests": [
+        { "input": "Susie", "output": "Hello, Susie!" },
+        { "input": "Ade", "output": "Hello, Ade!" },
+        { "input": "Sam", "output": "Hello, Sam!" }
+      ],
+      "hints": {
+        "capitals": "Look at the very first letter. C# cares about capital letters.",
+        "spaces": "+ adds no spaces. The only space is the one inside \"Hello, \".",
+        "punctuation": "Check the comma after Hello and the ! at the end."
+      }
+    },
+    {
+      "id": "age-in-ten",
+      "title": "Age in 10 years",
+      "starter": "int age = Console.ReadLine();\nint future = age + 10;\nConsole.WriteLine(\"In 10 years you will be \" + future);",
+      "tests": [
+        { "input": "12", "output": "In 10 years you will be 22" },
+        { "input": "13", "output": "In 10 years you will be 23" }
+      ],
+      "hints": {
+        "compile": "Console.ReadLine() gives you text, but age is an int box. Wrap it: int.Parse(Console.ReadLine()). Count the brackets: there are two ) at the end.",
+        "error": "When you run it, type your age in digits, like 13, not in words."
+      }
+    },
+    {
+      "id": "minutes-to-seconds",
+      "title": "Minutes to seconds",
+      "starter": "",
+      "tests": [
+        { "input": "3", "output": "3 minutes is 180 seconds" },
+        { "input": "10", "output": "10 minutes is 600 seconds" }
+      ],
+      "hints": {
+        "spaces": "+ adds no spaces. Put them inside the speech marks: \" minutes is \" and \" seconds\".",
+        "compile": "Read the number with int.Parse(Console.ReadLine()) and store it in an int box.",
+        "other": "Times the minutes by 60 to get the seconds. Print only the answer, with no question first.",
+        "lines": "Print just one line, and don't print a question before reading the number."
+      }
+    }
+  ]
+}

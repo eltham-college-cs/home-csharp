@@ -1,0 +1,91 @@
+---
+year: 9
+unit: Making decisions
+unitSlug: making-decisions
+lesson: 8
+title: The remainder operator %
+summary: Find what is left over after dividing, and use it to spot even numbers.
+minutes: 15
+keywords: [remainder, integer division, comparison operator, condition, selection]
+mascotSays: "Sharing sweets fairly? I always want to know how many are left over for me."
+---
+
+<ParentTip>
+You don't need to know C#. Use real objects: share 7 sweets between 2 people. How many does each person get, and how many are left over? That is 7 / 2 and 7 % 2.
+</ParentTip>
+
+## The big idea
+
+`%` gives you **what is left over** after dividing. Think of sharing sweets fairly:
+
+- 7 sweets between 2 friends: each gets 3, and **1** is left over. So `7 % 2` is `1`.
+- 6 sweets between 3 friends: each gets 2, and **0** are left over. So `6 % 3` is `0`.
+
+In C#, `/` and `%` make a perfect pair. When both numbers are ints, `/` gives the whole-number answer and throws the remainder away, and `%` gives you just the remainder:
+
+| Sum | Answer | In sweets |
+|---|---|---|
+| `17 / 5` | `3` | each of 5 friends gets 3 |
+| `17 % 5` | `2` | 2 are left over |
+
+<Note title="Careful with /">
+`7 / 2` is `3`, not 3.5, because 7 and 2 are both ints. C# isn't wrong: it's answering "how many whole times?"
+</Note>
+
+A remainder of 0 means it divided exactly. That gives us a neat test:
+
+```csharp
+if (x % 2 == 0)
+{
+    Console.WriteLine("even");
+}
+```
+
+<LessonVideo clip="bigIdea" />
+
+## Trace it
+
+<TraceTable
+  code={`int sweets = 17;
+int friends = 5;
+int each = sweets / friends;
+int left = sweets % friends;
+Console.WriteLine(each + " each, " + left + " left");`}
+  columns={["sweets", "friends", "each", "left", "Output"]}
+  rows={[
+    { line: 1, cells: ["17", "", "", "", ""] },
+    { line: 2, cells: ["17", "5", "", "", ""] },
+    { line: 3, cells: ["17", "5", "3", "", ""] },
+    { line: 4, cells: ["17", "5", "3", "2", ""] },
+    { line: 5, cells: ["17", "5", "3", "2", "3 each, 2 left"] }
+  ]}
+/>
+
+## Predict, then run
+
+<CsChecker task="remainders" predict="Work out all four answers on paper first. Watch out: the last one is / not %." />
+
+<LessonVideo clip="predictRun" />
+
+## Odd or even?
+
+<CsChecker task="odd-or-even" brief="Read a whole number. Print <strong>7 is odd</strong> or <strong>10 is even</strong>." />
+
+## Fix the bug
+
+This should print **Yes** when the number divides exactly by 5, and **No** when it doesn't. Try it with 25. What goes wrong?
+
+<CsChecker task="divisible-by-5" />
+
+<LessonVideo clip="fixBug" />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What is `7 % 3`?", a: "1. 3 fits into 7 twice (6), with 1 left over." },
+  { q: "What is `7 / 3` in C#?", a: "2. Both numbers are ints, so C# gives the whole-number answer and drops the remainder." },
+  { q: "Write the condition that is true only when x divides exactly by 5.", a: "`x % 5 == 0`" },
+  { q: "What is `10 % 2`, and what does that tell you?", a: "0, so 10 is even." }
+]} />
+
+<SelfRating question="Could you use % to test for even, odd or exact division?" />

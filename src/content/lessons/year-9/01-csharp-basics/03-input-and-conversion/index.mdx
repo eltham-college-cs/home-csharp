@@ -1,0 +1,83 @@
+---
+year: 9
+unit: C# basics
+unitSlug: csharp-basics
+lesson: 3
+title: Input and conversion
+summary: Today we teach the computer to listen, and to turn words into numbers.
+minutes: 15
+keywords: [Console.ReadLine, int.Parse, type conversion, string, int, compile error, runtime error, FormatException]
+mascotSays: "Hi, I'm Hash! Let's get the computer listening."
+---
+
+<ParentTip>
+You don't need to know C#. Read the big idea aloud, then ask
+"what do you think will happen?" before every Run.
+</ParentTip>
+
+## The big idea
+
+`Console.ReadLine()` is like a waiter taking your order. The program stops and waits until
+you type an answer and press Enter. Whatever you type comes back as **text** (a `string`), even if it looks like a number.
+
+`int.Parse()` is like a currency exchange: it swaps the text `"15"` for the number `15`,
+so you can do sums with it.
+
+<InputFlow typed="15" />
+
+```csharp
+string name = Console.ReadLine();             // text stays text
+int age = int.Parse(Console.ReadLine());      // text swapped for a number
+```
+
+<Note title="Always store the answer in a box">
+`string name = Console.ReadLine();` keeps the answer in the variable `name`. Without the `string name =` part, the answer is thrown away.
+</Note>
+
+<Note title="Text won't fit in a number box">
+`int age = Console.ReadLine();` won't build. `Console.ReadLine()` gives text, and an `int` box only holds whole numbers.
+C# spots this **before** the program runs. Wrap it in `int.Parse( )` and count the brackets: `int.Parse(Console.ReadLine())` ends with two.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+When you press Run, the page will ask you to type an answer, just as a real program would.
+
+<CsChecker task="hello-name" predict="If you type Susie, what will it print?" />
+
+<LessonVideo clip="predictRun" />
+
+## Match it exactly
+
+The dots show spaces. Can you find what's different in each pair?
+
+<SpotTheDifference pairs={[
+  { kind: "Spaces", a: "Total: 25", b: "Total:  25", answer: "There are two spaces after the colon." },
+  { kind: "Capitals", a: "Your age is", b: "your age is", answer: "The first letter should be a capital Y." },
+  { kind: "Punctuation", a: "Hello, Sam!", b: "Hello Sam.", answer: "The comma is missing, and . should be !" }
+]} />
+
+## Fix the bug
+
+This program won't build. Press Run and read the message. Then fix it.
+
+<CsChecker task="age-in-ten" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="minutes-to-seconds" brief="Read a number of minutes and print how many seconds that is, like: <strong>3 minutes is 180 seconds</strong>. Don't print a question first: just read the number." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What does `Console.ReadLine()` always give you back?", a: "Text (a string), even if you type a number." },
+  { q: "What turns the text `\"15\"` into the number `15`?", a: "`int.Parse()`, for example `int.Parse(\"15\")`." },
+  { q: "Why won't `int age = Console.ReadLine();` build?", a: "`Console.ReadLine()` gives text, and an int box can only hold whole numbers. Use `int.Parse(Console.ReadLine())`." },
+  { q: "What happens with `int.Parse(\"cat\")`?", a: "The program builds, but stops while it is running with a FormatException, because \"cat\" isn't a whole number." }
+]} />
+
+<SelfRating question="Could you explain Console.ReadLine() and int.Parse() to someone else?" />

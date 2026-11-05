@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "three-boxes",
+      "title": "Look inside the boxes",
+      "starter": "string name = \"Sam\";\nint age = 12;\nConsole.WriteLine(name);\nConsole.WriteLine(age);\nConsole.WriteLine(\"My name is \" + name);",
+      "tests": [{ "input": "", "output": "Sam\n12\nMy name is Sam" }],
+      "hints": {
+        "spaces": "+ adds no spaces. The space after is comes from inside the speech marks: \"My name is \".",
+        "lines": "There are three Console.WriteLine() lines, so there should be three lines of output."
+      }
+    },
+    {
+      "id": "fix-capital",
+      "title": "Fix the score",
+      "starter": "int score = 10;\nConsole.WriteLine(Score);",
+      "tests": [{ "input": "", "output": "10" }],
+      "hints": {
+        "compile": "C# can't find a box called Score. Look carefully at the capital letter: is the box called score or Score?"
+      }
+    },
+    {
+      "id": "fix-quotes",
+      "title": "Fix the greeting",
+      "starter": "string name = \"Sam\";\nConsole.WriteLine(\"Hello \" + \"name\");",
+      "tests": [{ "input": "", "output": "Hello Sam" }],
+      "hints": {
+        "other": "Speech marks around name make C# print the word name. Take them off to look inside the box.",
+        "spaces": "There is already a space at the end of \"Hello \". Don't add another."
+      }
+    },
+    {
+      "id": "all-about-ava",
+      "title": "All about Ava",
+      "starter": "string name = \"Ava\";\nstring colour = \"red\";\n",
+      "tests": [{ "input": "", "output": "Hi, I'm Ava and I like red" }],
+      "hints": {
+        "spaces": "+ adds no spaces. Put them inside the speech marks: \"Hi, I'm \" and \" and I like \".",
+        "other": "Use the variables name and colour (no speech marks), joined to the text with +.",
+        "compile": "Check there is a + between every piece, and a ; at the end."
+      }
+    }
+  ]
+}

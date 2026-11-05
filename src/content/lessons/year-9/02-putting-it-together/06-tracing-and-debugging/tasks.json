@@ -1,0 +1,49 @@
+{
+  "tasks": [
+    {
+      "id": "predict-score",
+      "title": "Changing score",
+      "starter": "int score = 8;\nConsole.WriteLine(\"score\");\nConsole.WriteLine(score + 2);\nscore = score + 5;\nConsole.WriteLine(score);",
+      "tests": [{ "input": "", "output": "score\n10\n13" }]
+    },
+    {
+      "id": "swap",
+      "title": "Swap two values",
+      "starter": "string a = Console.ReadLine();\nstring b = Console.ReadLine();\nstring temp = a;\n\nConsole.WriteLine(a + \" \" + b);",
+      "tests": [
+        { "input": "red\nblue", "output": "blue red" },
+        { "input": "cat\ndog", "output": "dog cat" }
+      ],
+      "hints": {
+        "compile": "temp, a and b already exist, so don't put string in front of them again. Write a = b; then b = temp;",
+        "other": "temp is holding a copy of a. Now put b into a, then put temp into b."
+      }
+    },
+    {
+      "id": "bug-hunt",
+      "title": "Bug hunt",
+      "starter": "int score = Console.ReadLine();\nint bonus = 5;\nint total = score + Bonus;\nConsole.WriteLine(\"Total: \" + total);",
+      "tests": [
+        { "input": "10", "output": "Total: 15" },
+        { "input": "3", "output": "Total: 8" }
+      ],
+      "hints": {
+        "compile": "Read the line number and the CS code. Line 1: Console.ReadLine() gives text, so wrap it in int.Parse( ). Line 3: capitals matter, so is it bonus or Bonus?",
+        "spaces": "\"Total: \" already ends with a space. + doesn't add another one."
+      }
+    },
+    {
+      "id": "changing-score",
+      "title": "Final score",
+      "starter": "int score = int.Parse(Console.ReadLine());\nint bonus = int.Parse(Console.ReadLine());\nint penalty = int.Parse(Console.ReadLine());\nscore = score + bonus;\n\nConsole.WriteLine(\"Final score: \" + score);",
+      "tests": [
+        { "input": "10\n7\n3", "output": "Final score: 14" },
+        { "input": "20\n5\n10", "output": "Final score: 15" }
+      ],
+      "hints": {
+        "compile": "score already exists, so don't put int in front of it again: score = score - penalty;",
+        "other": "Take the penalty away from score, and store it back in score: score = score - penalty;"
+      }
+    }
+  ]
+}

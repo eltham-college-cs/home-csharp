@@ -1,0 +1,118 @@
+---
+year: 9
+unit: Putting it together
+unitSlug: putting-it-together
+lesson: 5
+title: Calculations with input
+summary: Read numbers from the user, work something out, and print the answer.
+minutes: 15
+keywords: [Console.ReadLine, int.Parse, double.Parse, operator, integer division, order of operations, variable, FormatException]
+mascotSays: "Let's turn C# into a calculator. Just watch out when you divide!"
+---
+
+<ParentTip>
+You don't need to know C#. Before your child presses Run, ask them to work out the answer on paper first. Then check if C# agrees.
+</ParentTip>
+
+## The big idea
+
+Almost every program follows the same three steps, like a recipe:
+
+1. **Input**: read the numbers. Use `int.Parse(Console.ReadLine())` so they are numbers, not text.
+2. **Process**: do the sum and keep the answer in a new variable.
+3. **Output**: print the answer.
+
+```csharp
+int age = int.Parse(Console.ReadLine());            // 1. input
+int futureAge = age + 5;                            // 2. process
+Console.WriteLine("In five years: " + futureAge);   // 3. output
+```
+
+Read `int.Parse(Console.ReadLine())` from the **inside out**: `Console.ReadLine()` collects the text, `int.Parse()` turns it into a number, and `=` puts it in the `int` box.
+
+<InputFlow typed="12" />
+
+<Note title="Maths order">
+C# does `*` and `/` before `+` and `-`. So `2 * 8 + 3 * 5` is `16 + 15`, which is `31`.
+</Note>
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="future-age" predict="If you type 12, what will it print?" />
+
+<LessonVideo clip="predictRun" />
+
+## Trace it
+
+Here is the same program in smaller steps. Assume the user types 12. Predict each row, then press Next step.
+Quotes show a string in the table; they are not printed.
+
+<TraceTable
+  code={`string ageText = Console.ReadLine();
+int age = int.Parse(ageText);
+int futureAge = age + 5;
+Console.WriteLine("In five years: " + futureAge);`}
+  columns={["Line", "ageText", "age", "futureAge", "Output"]}
+  rows={[
+    { line: 1, cells: ["1", "\"12\"", "—", "—", "—"] },
+    { line: 2, cells: ["2", "\"12\"", "12", "—", "—"] },
+    { line: 3, cells: ["3", "\"12\"", "12", "17", "—"] },
+    { line: 4, cells: ["4", "\"12\"", "12", "17", "In five years: 17"] }
+  ]}
+/>
+
+<Parsons
+  prompt="Put the Tuck Shop program in order: input, process, output."
+  lines={["int money = int.Parse(Console.ReadLine());", "int price = int.Parse(Console.ReadLine());", "int change = money - price;", "Console.WriteLine(\"Your change is \" + change + \" pounds\");"]}
+/>
+
+## Whole numbers and decimals
+
+Here is a C# surprise. When **both** numbers are ints, `/` gives a whole-number answer and throws the remainder away.
+So `7 / 2` is `3`, not 3.5. This is called **integer division**.
+
+If one of the numbers has a decimal point, C# keeps the decimal part: `7 / 2.0` is `3.5`.
+
+<CsChecker task="share-sweets" predict="You have 7 sweets to share between 2 friends. If you type 7, what two lines will it print?" />
+
+<Note title="Reading a decimal">
+For numbers that can have a decimal point, such as a price, use a `double` box and `double.Parse()`:
+
+```csharp
+double price = double.Parse(Console.ReadLine());
+Console.WriteLine(price * 2);
+```
+
+If the user types 1.25, this prints 2.5. A double that comes out whole, like 5.0, prints as just `5`.
+</Note>
+
+## Fill the gaps
+
+Replace each `___` so the program doubles a number, then adds 10. If you type 5, you should get 20.
+
+<CsChecker task="double-trouble" />
+
+## Fix it
+
+This program should print your change. It is missing the middle step, so C# won't even build it. Read the message: which name doesn't it know?
+
+<CsChecker task="tuck-shop" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="cinema-trip" brief="Adults cost £8 and children cost £5. Read how many adults, then how many children. Print the total, like: <strong>The total cost is 31 pounds</strong>" />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What does `5 * 3 + 4` give?", a: "19. Multiply first, then add." },
+  { q: "Why do we put `int.Parse()` around `Console.ReadLine()` before doing maths?", a: "`Console.ReadLine()` always gives text. `int.Parse()` turns it into a number so C# can do the sum." },
+  { q: "What does `Console.WriteLine(7 / 2);` print?", a: "3. Both numbers are ints, so C# drops the remainder. `7 / 2.0` would print 3.5." },
+  { q: "What happens if the user types seven instead of 7?", a: "The program stops with a FormatException. `int.Parse()` can only convert digits, not words." }
+]} />
+
+<SelfRating question="Could you write a program that reads two numbers and adds them?" />

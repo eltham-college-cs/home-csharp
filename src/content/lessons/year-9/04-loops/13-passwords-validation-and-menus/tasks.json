@@ -1,0 +1,58 @@
+{
+  "tasks": [
+    {
+      "id": "password",
+      "title": "Password loop",
+      "starter": "string password = \"gold\";\nstring attempt = Console.ReadLine();\nwhile (attempt != password)\n{\n    Console.WriteLine(\"Incorrect. Try again.\");\n    attempt = Console.ReadLine();\n}\nConsole.WriteLine(\"Access granted.\");",
+      "tests": [
+        { "input": "silver\nbronze\ngold", "output": "Incorrect. Try again.\nIncorrect. Try again.\nAccess granted." },
+        { "input": "gold", "output": "Access granted." }
+      ]
+    },
+    {
+      "id": "lockout",
+      "title": "Locked out",
+      "starter": "string password = \"gold\";\nint tries = 0;\nstring attempt = \"\";\nwhile (attempt != password)\n{\n    attempt = Console.ReadLine();\n    tries = tries + 1;\n}\nif (attempt == password)\n{\n    Console.WriteLine(\"Access granted.\");\n}\nelse\n{\n    Console.WriteLine(\"Locked out.\");\n}",
+      "tests": [
+        { "input": "silver\nbronze\ncopper", "output": "Locked out." },
+        { "input": "silver\ngold", "output": "Access granted." },
+        { "input": "gold", "output": "Access granted." }
+      ],
+      "hints": {
+        "timeout": "The loop kept asking after the third wrong password, but the user only gets three tries. Add && tries < 3 to the while line.",
+        "compile": "Check the while line: (attempt != password && tries < 3), with one ( and one )."
+      }
+    },
+    {
+      "id": "age-check",
+      "title": "Age check",
+      "starter": "int age = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "4\n99\n13", "output": "Enter an age between 11 and 18.\nEnter an age between 11 and 18.\nThanks!" },
+        { "input": "12", "output": "Thanks!" },
+        { "input": "18", "output": "Thanks!" }
+      ],
+      "hints": {
+        "timeout": "Is there an age = int.Parse(Console.ReadLine()); inside the loop? Without it, age never changes.",
+        "error": "Your program asked for more ages than the test gives. Check the loop stops once the age is between 11 and 18.",
+        "lines": "Check your condition: too young is age < 11, too old is age > 18, joined with ||.",
+        "punctuation": "Enter an age between 11 and 18. ends with a full stop."
+      }
+    },
+    {
+      "id": "menu",
+      "title": "Game menu",
+      "starter": "string choice = \"\";\n",
+      "tests": [
+        { "input": "p\ns\nq", "output": "Starting game...\nHigh score: 42\nBye!" },
+        { "input": "q", "output": "Bye!" },
+        { "input": "s\ns\nq", "output": "High score: 42\nHigh score: 42\nBye!" }
+      ],
+      "hints": {
+        "timeout": "Your loop didn't stop. Check it stops when choice is \"q\", and that choice = Console.ReadLine(); is inside the loop.",
+        "punctuation": "Starting game... has three full stops.",
+        "lines": "Bye! should print once, after the closing } of the loop."
+      }
+    }
+  ]
+}

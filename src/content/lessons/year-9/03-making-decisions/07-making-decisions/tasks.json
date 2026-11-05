@@ -1,0 +1,59 @@
+{
+  "tasks": [
+    {
+      "id": "grades",
+      "title": "Grade checker",
+      "starter": "int mark = int.Parse(Console.ReadLine());\nif (mark >= 70)\n{\n    Console.WriteLine(\"Distinction\");\n}\nelse if (mark >= 50)\n{\n    Console.WriteLine(\"Merit\");\n}\nelse if (mark >= 40)\n{\n    Console.WriteLine(\"Pass\");\n}\nelse\n{\n    Console.WriteLine(\"Not yet\");\n}",
+      "tests": [
+        { "input": "55", "output": "Merit" },
+        { "input": "41", "output": "Pass" },
+        { "input": "70", "output": "Distinction" },
+        { "input": "39", "output": "Not yet" }
+      ]
+    },
+    {
+      "id": "lucky-number",
+      "title": "Lucky number",
+      "starter": "int guess = int.Parse(Console.ReadLine());\nif (guess = 7)\n{\n    Console.WriteLine(\"Lucky seven!\");\n}\nelse\n{\n    Console.WriteLine(\"Not this time\");\n}",
+      "tests": [
+        { "input": "7", "output": "Lucky seven!" },
+        { "input": "3", "output": "Not this time" },
+        { "input": "70", "output": "Not this time" }
+      ],
+      "hints": {
+        "compile": "Look at line 2. One = puts a value in a box. To ask \"is it equal?\" you need two: ==",
+        "punctuation": "Keep the ! after Lucky seven."
+      }
+    },
+    {
+      "id": "teen-check",
+      "title": "Teenager?",
+      "starter": "int age = int.Parse(Console.ReadLine());\n",
+      "tests": [
+        { "input": "14", "output": "Teenager" },
+        { "input": "13", "output": "Teenager" },
+        { "input": "19", "output": "Teenager" },
+        { "input": "12", "output": "Not a teenager" },
+        { "input": "20", "output": "Not a teenager" }
+      ],
+      "hints": {
+        "compile": "Check the round brackets around the condition, the curly braces, and the semicolons. && is two & signs.",
+        "other": "Try if (age >= 13 && age <= 19). Check 13 and 19 carefully: they are teenagers too."
+      }
+    },
+    {
+      "id": "password-check",
+      "title": "Password check",
+      "starter": "string password = Console.ReadLine();\n",
+      "tests": [
+        { "input": "gold", "output": "Access granted" },
+        { "input": "silver", "output": "Access denied" },
+        { "input": "Gold", "output": "Access denied" }
+      ],
+      "hints": {
+        "compile": "Use == to compare. Put the condition in round brackets and each road's code in curly braces.",
+        "other": "Compare with == \"gold\" in lowercase. \"Gold\" with a capital is a different password."
+      }
+    }
+  ]
+}
