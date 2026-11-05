@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import Yoka from '../components/Yoka.astro';
+import Mascot from '../components/Mascot.astro';
 import CodeBashPractice from '../components/CodeBashPractice.astro';
 import type { Lesson } from '../lib/lessons';
 import { lessonUrl } from '../lib/lessons';
@@ -46,14 +46,10 @@ const d = entry.data;
         {d.codebashTopic && <span class="muted">CodeBash: {d.codebashTopic}</span>}
       </div>
     </div>
-    {
-      d.year === 7 && (
-        <div class="hero-yoka">
-          <div class="speech">{d.yokaSays ?? "Hi, I'm Yoka! Let's do this together."}</div>
-          <Yoka mood="idle" size={210} />
-        </div>
-      )
-    }
+    <div class="hero-mascot">
+      <div class="speech">{d.mascotSays ?? "Hi, I'm Hash! Let's do this together."}</div>
+      <Mascot mood="idle" size={210} />
+    </div>
   </section>
 
   <article class="lesson-body">

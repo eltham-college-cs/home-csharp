@@ -14,14 +14,12 @@ interface Props {
   /** Sets the year theme. Shared pages leave it out. */
   year?: number;
 }
-const { title, description = 'C# practice at home for Eltham College Years 7 and 8.', year } = Astro.props;
+const { title, description = 'C# practice at home for Eltham College Year 9.', year } = Astro.props;
 const path = Astro.url.pathname.replace(/\/?$/, '/');
-const yearQuery = year ? `?year=${year}` : '';
 const nav = [
-  { href: url('/year-7/'), label: 'Year 7', match: url('/year-7/') },
-  { href: url('/year-8/'), label: 'Year 8', match: url('/year-8/') },
-  { href: url(`/error-decoder/${yearQuery}`), label: 'Error decoder', match: url('/error-decoder/') },
-  { href: url(`/key-words/${yearQuery}`), label: 'Key words', match: url('/key-words/') },
+  { href: url('/year-9/'), label: 'Year 9', match: url('/year-9/') },
+  { href: url('/error-decoder/'), label: 'Error decoder', match: url('/error-decoder/') },
+  { href: url('/key-words/'), label: 'Key words', match: url('/key-words/') },
   { href: url('/parents/'), label: 'For grown-ups', match: url('/parents/') },
 ];
 const fullTitle = title === 'C# at Home' ? title : `${title} · C# at Home`;

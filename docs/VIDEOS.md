@@ -12,13 +12,13 @@ Each lesson has up to three video slots. Record one clip per slot.
 
 ## File names
 
-`y<year>-l<lesson two digits>-<slot>.mp4`, for example `y7-l03-predict-run.mp4`.
-Put it in `public/videos/year-7/`, with a captions file and a poster image of the same name:
+`y<year>-l<lesson two digits>-<slot>.mp4`, for example `y9-l03-predict-run.mp4`.
+Put it in `public/videos/year-9/`, with a captions file and a poster image of the same name:
 
 ```
-public/videos/year-7/y7-l03-predict-run.mp4
-public/videos/year-7/y7-l03-predict-run.vtt
-public/videos/year-7/y7-l03-predict-run.jpg
+public/videos/year-9/y9-l03-predict-run.mp4
+public/videos/year-9/y9-l03-predict-run.vtt
+public/videos/year-9/y9-l03-predict-run.jpg
 ```
 
 That's it: a file with the right name is picked up automatically on the next build, with
@@ -57,8 +57,8 @@ Run `npm run dev` and open `http://localhost:4321/home-csharp/record/`. Every vi
   `Space` to reveal the next answer, `Backspace` to hide it, `[` and `]` for the previous or
   next video, `H` to hide the key help. Blank trace tables and prediction boxes are there for
   you to write on.
-- **A script**: open `/record/scripts/year-7/` or `/record/scripts/year-8/` on a second screen,
+- **A script**: open `/record/scripts/year-9/` on a second screen,
   or print it. "Do" is what to annotate; the quoted text is what to say.
 
-Boards and scripts live in `src/data/recordings/year-7.ts` and `year-8.ts`. They are not part of
+Boards and scripts live in `src/data/recordings/year-9.ts`. They are not part of
 the live site.

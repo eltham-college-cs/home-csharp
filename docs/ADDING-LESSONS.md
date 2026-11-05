@@ -3,18 +3,21 @@
 One lesson is one folder. Copy an existing lesson folder and change it.
 
 ```
-src/content/lessons/year-8/03-lists/11-searching-a-list/
+src/content/lessons/year-9/05-lists/16-searching-a-list/
 ├── index.mdx      the page
 └── tasks.json     the code tasks and their tests
 ```
 
 - The number at the start of each folder sets the order. Units are folders too
-  (`03-lists`), and must also be listed in `src/content/years/year-8.md`.
+  (`05-lists`), and must also be listed in `src/content/years/year-9.md`.
 - `lesson:` in the frontmatter is the lesson number shown on the page and used in
-  video file names. Keep it unique within the year.
+  video file names. Number lessons 1, 2, 3… through the whole course.
+- `mascotSays:` is what Hash says in the lesson header (optional).
+- Code is only the statements that would go inside `Main`, like CodeBash: never write
+  `class Program` or `static void Main` in a starter or a model answer.
 - `draft: true` shows the lesson when you run `npm run dev`, but leaves it out of the live site.
 - To feature a lesson on the home page, add its folder path to `thisWeek:` in
-  `src/content/years/year-N.md`.
+  `src/content/years/year-9.md`.
 
 ## Components you can use in index.mdx
 

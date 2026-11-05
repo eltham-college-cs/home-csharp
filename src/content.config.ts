@@ -28,10 +28,10 @@ const lessons = defineCollection({
     keywords: z.array(z.string()).default([]),
     deck: z.string().url().optional(),
     codebashTopic: z.string().optional(),
-    /** Names of the matching CodeBash tasks in this year's "C# at Home" topic. */
+    /** Names of the matching CodeBash tasks in the "C# at Home" topic. */
     codebashTasks: z.array(z.string()).default([]),
-    /** What Yoka says in the Year 7 header. */
-    yokaSays: z.string().optional(),
+    /** What Hash the hedgehog says in the lesson header. */
+    mascotSays: z.string().optional(),
     videos: z.record(videoSlot).default({}),
     draft: z.boolean().default(false),
   }),

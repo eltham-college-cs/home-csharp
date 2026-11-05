@@ -24,7 +24,7 @@ const cases: [string, string, string][] = [
   ['CS1003', "Syntax error, ',' expected", 'cs1003-syntax'],
   ['CS1525', "Invalid expression term ')'", 'cs1003-syntax'],
   ['CS0136', "A local or parameter named 'i' cannot be declared in this scope", 'compile-general'],
-  ['CS5001', "Program does not contain a static 'Main' method suitable for an entry point", 'cs5001-empty'],
+  ['CS5001', "There's no code to run yet. Type your code in the box.", 'cs5001-empty'],
   ['FormatException', "The input string 'seven' was not in a correct format.", 'formatexception'],
   ['OverflowException', 'Value was either too large or too small for an Int32.', 'overflowexception'],
   ['ArgumentNullException', "Value cannot be null. (Parameter 's')", 'argumentnullexception'],

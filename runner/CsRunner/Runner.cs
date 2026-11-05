@@ -110,7 +110,7 @@ public static partial class Runner
             .Select(d =>
             {
                 var span = d.Location.GetLineSpan();
-                return new CompileError(span.StartLinePosition.Line + 1, span.StartLinePosition.Character + 1, d.Id, d.GetMessage());
+                return new CompileError(span.StartLinePosition.Line + 1, span.StartLinePosition.Character + 1, d.Id, StudentMessage(d));
             })
             .ToList();
 
@@ -130,6 +130,17 @@ public static partial class Runner
 
         return JsonSerializer.Serialize(new CompileResult(result.Success, sw.ElapsedMilliseconds, errors), RunnerJson.Default.CompileResult);
     }
+
+    /// <summary>
+    /// The compiler's message, except where it talks about things students never write.
+    /// Students only type the statements that go inside Main (like CodeBash), so an empty code
+    /// box should not report "Program does not contain a static 'Main' method".
+    /// </summary>
+    static string StudentMessage(Diagnostic d) => d.Id switch
+    {
+        "CS5001" => "There's no code to run yet. Type your code in the box.",
+        _ => d.GetMessage(),
+    };
 
     /// <summary>
     /// Runs the last compiled program.

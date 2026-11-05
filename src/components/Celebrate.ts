@@ -1,9 +1,8 @@
-// Particle burst for when every test passes (Year 7 only).
+// Particle burst for when every test passes.
 const COLOURS = ['#F2B533', '#2F7DD1', '#1F9D5C', '#D9578A', '#E3C783'];
 
 export function celebrate(container: HTMLElement) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (document.body.dataset.year !== '7') return;
   const layer = document.createElement('div');
   layer.className = 'burst';
   layer.setAttribute('aria-hidden', 'true');

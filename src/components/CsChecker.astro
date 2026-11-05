@@ -2,7 +2,7 @@
 // Code editor with Run and Check. Checking matches CodeBash (SPEC § 7).
 // Use in a lesson as <CsChecker task="task-id" /> (an id from the lesson's tasks.json)
 // or pass the task object itself.
-import Yoka from './Yoka.astro';
+import Mascot from './Mascot.astro';
 import { highlightHtml } from '../lib/highlight';
 import { dots } from '../lib/render-diff';
 import type { Task } from '../lib/lessons';
@@ -112,7 +112,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
   </div>
 
   <div class="results" aria-live="polite"></div>
-  <template class="yoka-tpl"><Yoka mood="idle" size={170} decorative /></template>
+  <template class="mascot-tpl"><Mascot mood="idle" size={170} decorative /></template>
 </div>
 
 <style is:global>
@@ -135,7 +135,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     overflow: hidden;
     color: #fff;
   }
-  [data-year='8'] .editor-card {
+  [data-year='9'] .editor-card {
     border-radius: 16px;
   }
   .editor-bar {
@@ -213,11 +213,6 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     flex-wrap: wrap;
     gap: 12px;
     padding: 0 24px 12px;
-  }
-  [data-year='7'] .editor-actions .btn {
-    font-size: 20px;
-    border-radius: 16px;
-    padding: 14px 26px;
   }
   .editor-help {
     padding: 0 24px 18px;
@@ -363,7 +358,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     color: var(--navy);
     line-height: 1.3;
   }
-  [data-year='8'] .predict label {
+  [data-year='9'] .predict label {
     font-size: 20px;
   }
   .predict input {
@@ -386,8 +381,8 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     padding: 12px 20px;
     font-size: 17px;
   }
-  [data-year='8'] .tests,
-  [data-year='8'] .brief {
+  [data-year='9'] .tests,
+  [data-year='9'] .brief {
     border-width: 1px;
   }
   .tests summary {
@@ -474,9 +469,6 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
   .test-bars span.no {
     background: var(--nearly);
   }
-  [data-year='7'] .test-bars {
-    display: none;
-  }
   .out-box {
     font-family: var(--font-code);
     font-size: 20px;
@@ -536,7 +528,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     align-items: center;
     gap: 14px;
   }
-  .hint-box .yoka {
+  .hint-box .mascot {
     display: none;
   }
   .error-code {
@@ -548,7 +540,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     color: var(--nearly-text);
     overflow-x: auto;
   }
-  .result .yoka.big {
+  .result .mascot.big {
     width: 170px;
     height: 170px;
   }
@@ -556,45 +548,45 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     .result {
       padding: 22px 18px;
     }
-    .result .yoka.big {
+    .result .mascot.big {
       width: 110px;
       height: 110px;
     }
   }
 
-  /* Year 8: compact results, Yoka only in the hint box */
-  [data-year='8'] .result {
+  /* Compact results, the mascot only in the hint box */
+  [data-year='9'] .result {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 22px;
   }
-  [data-year='8'] .result .yoka.big {
+  [data-year='9'] .result .mascot.big {
     display: none;
   }
-  [data-year='8'] .result-body .result-title {
+  [data-year='9'] .result-body .result-title {
     font-size: 20px;
     color: var(--navy) !important;
   }
-  [data-year='8'] .result-body p {
+  [data-year='9'] .result-body p {
     font-size: 17px;
   }
-  [data-year='8'] .out-box {
+  [data-year='9'] .out-box {
     font-size: 18px;
     background: var(--page);
   }
-  [data-year='8'] .hint-box {
+  [data-year='9'] .hint-box {
     background: var(--nearly-bg);
     border: 1px solid #f0ddaa;
     border-radius: 14px;
     padding: 12px 16px;
   }
-  [data-year='8'] .hint-box .yoka {
+  [data-year='9'] .hint-box .mascot {
     display: block;
     width: 72px;
     height: 72px;
   }
-  [data-year='8'] .hint-box p {
+  [data-year='9'] .hint-box p {
     font-size: 16px;
     color: var(--nearly-text);
   }
@@ -632,7 +624,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
   import { renderGot, renderLines, dots } from '../lib/render-diff';
   import { highlightHtml } from '../lib/highlight';
   import { findError } from '../data/errors';
-  import { setMood } from '../lib/yoka';
+  import { setMood, MASCOT_NAME } from '../lib/mascot';
   import { celebrate } from './Celebrate';
   import { url } from '../lib/url';
 
@@ -661,7 +653,6 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
 
   const LOAD_FAILED = "C# couldn't load. Check your internet connection, then reload the page.";
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const year = document.body.dataset.year ?? '7';
   const inputsOf = (t: Test) => (t.input === '' ? [] : t.input.split('\n'));
 
   function errorHtml(r: RunResult): string {
@@ -691,7 +682,7 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
     const consoleEl = root.querySelector<HTMLElement>('.console')!;
     const consoleBody = root.querySelector<HTMLElement>('.console-body')!;
     const results = root.querySelector<HTMLElement>('.results')!;
-    const tpl = root.querySelector<HTMLTemplateElement>('.yoka-tpl')!;
+    const tpl = root.querySelector<HTMLTemplateElement>('.mascot-tpl')!;
     const key = `pah:code:${data.id}`;
     let escaped = false;
     let busy = false;
@@ -919,23 +910,22 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
       let title: string;
       let body = '';
       if (allPass) {
-        title = year === '7' ? `${n} out of ${n}. Brilliant!` : `All ${n} tests passed`;
+        title = n === 1 ? 'Test passed. Well done!' : `All ${n} tests passed. Well done!`;
         const shown = programOutput(outcomes[0].result.segments);
         body = `<div class="out-box">${renderLines(shown)}</div>
           <p>Every space, capital letter and full stop matched. That's exactly what CodeBash checks too.</p>`;
       } else {
         const o = first!;
         const cat = o.category as Exclude<HintCategory, 'pass'>;
-        if (year === '7') {
-          title =
-            cat === 'error' || cat === 'timeout' || cat === 'compile'
-              ? passed
-                ? `Nearly! ${passed} out of ${n}.`
-                : "Let's fix this together."
-              : passed
-                ? `So close! ${passed} out of ${n}.`
-                : `Not quite yet: 0 out of ${n}.`;
-        } else title = `${passed} of ${n} tests passed`;
+        // Encouraging wording: the course is for students who find programming hard.
+        title =
+          cat === 'error' || cat === 'timeout' || cat === 'compile'
+            ? passed
+              ? `Nearly: ${passed} of ${n} tests passed.`
+              : "Let's fix this together."
+            : passed
+              ? `So close: ${passed} of ${n} tests passed.`
+              : `Not quite yet: 0 of ${n} tests passed.`;
 
         const typed = o.test.input
           ? `<p class="test-said">Test ${outcomes.indexOf(o) + 1}: the checker typed <strong class="out">${dots(o.test.input.split('\n').join(', then '))}</strong></p>`
@@ -967,11 +957,11 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
             </div>`;
         }
         body = `${typed}${detail}
-          <div class="hint-box"><span class="hint-yoka"></span><p><strong>${year === '7' ? "Yoka's hint" : 'Hint'}:</strong> ${esc(hint)}</p></div>`;
+          <div class="hint-box"><span class="hint-mascot"></span><p><strong>${MASCOT_NAME}'s hint:</strong> ${esc(hint)}</p></div>`;
       }
 
       results.innerHTML = `<div class="result ${allPass ? 'result--pass' : 'result--nearly'}">
-          <span class="big-yoka"></span>
+          <span class="big-mascot"></span>
           <div class="result-body">
             <p class="result-title">${title}</p>
             <div class="test-bars" aria-hidden="true">${bars}</div>
@@ -982,8 +972,8 @@ const payload = JSON.stringify({ id: uid, starter: task.starter, tests: task.tes
       const mood = allPass ? 'happy' : 'tryagain';
       const big = tpl.content.firstElementChild!.cloneNode(true) as Element;
       big.classList.add('big');
-      card.querySelector('.big-yoka')!.replaceWith(big);
-      const hintSlot = card.querySelector('.hint-yoka');
+      card.querySelector('.big-mascot')!.replaceWith(big);
+      const hintSlot = card.querySelector('.hint-mascot');
       if (hintSlot) hintSlot.replaceWith(tpl.content.firstElementChild!.cloneNode(true));
       setMood(card, mood);
       setMood(document.querySelector('.hero'), mood);

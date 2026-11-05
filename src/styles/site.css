@@ -137,10 +137,7 @@ pre {
   padding: 10px 16px;
   border: 2px solid var(--border);
 }
-[data-year='7'] .btn-soft {
-  border: 0;
-}
-[data-year='8'] .btn-soft {
+[data-year='9'] .btn-soft {
   background: #eef4fb;
   border: 0;
 }
@@ -168,9 +165,6 @@ pre {
   50% {
     box-shadow: 0 0 0 10px rgba(242, 181, 51, 0);
   }
-}
-[data-year='7'] .pulse {
-  animation: pulse 2s ease infinite;
 }
 
 /* ---------- Header and footer ---------- */
@@ -279,7 +273,7 @@ pre {
   flex-direction: column;
   gap: 40px;
 }
-[data-year='8'] .wrap {
+[data-year='9'] .wrap {
   gap: 36px;
 }
 @media (max-width: 640px) {
@@ -316,7 +310,7 @@ pre {
   border-radius: var(--radius-sm);
   padding: 22px;
 }
-[data-year='8'] .card {
+[data-year='9'] .card {
   border-width: 1px;
 }
 
@@ -331,7 +325,7 @@ pre {
   border-radius: var(--radius);
   padding: 40px;
 }
-[data-year='8'] .hero {
+[data-year='9'] .hero {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -344,17 +338,17 @@ pre {
   flex-direction: column;
   gap: 14px;
 }
-[data-year='8'] .hero-text {
+[data-year='9'] .hero-text {
   gap: 12px;
 }
 .hero .summary {
   font-size: 1.1em;
   color: #2b3440;
 }
-[data-year='8'] .hero .summary {
+[data-year='9'] .hero .summary {
   color: #3a4654;
 }
-.hero-yoka {
+.hero-mascot {
   flex: 1 1 240px;
   display: flex;
   flex-direction: column;
@@ -378,11 +372,11 @@ pre {
   .hero {
     padding: 24px 20px;
   }
-  .hero-yoka {
+  .hero-mascot {
     flex-direction: row;
     justify-content: center;
   }
-  .hero-yoka .yoka {
+  .hero-mascot .mascot {
     width: 120px;
     height: 120px;
   }
@@ -421,13 +415,13 @@ pre {
 .progress li.done a {
   background: var(--gold);
 }
-[data-year='8'] .progress li a {
+[data-year='9'] .progress li a {
   width: 32px;
   height: 8px;
   border-radius: 4px;
   background: var(--border);
 }
-[data-year='8'] .progress li.done a {
+[data-year='9'] .progress li.done a {
   background: var(--gold);
 }
 .progress .minutes {
@@ -462,7 +456,7 @@ pre {
   font-size: 18px;
   color: var(--nearly-text);
 }
-[data-year='8'] .parent-tip {
+[data-year='9'] .parent-tip {
   border-style: solid;
   border-width: 1px;
   border-color: #f0ddaa;
@@ -499,7 +493,7 @@ pre {
   align-items: center;
   justify-content: center;
 }
-[data-year='8'] .lesson-body > h2::before {
+[data-year='9'] .lesson-body > h2::before {
   width: auto;
   height: auto;
   background: none;
@@ -511,9 +505,6 @@ pre {
 .lesson-body > ul,
 .lesson-body > ol {
   max-width: 62ch;
-}
-[data-year='7'] .lesson-body > p {
-  font-size: 21px;
 }
 .lesson-body ul,
 .lesson-body ol {
@@ -536,7 +527,7 @@ pre {
   max-width: 100%;
   width: fit-content;
 }
-[data-year='8'] .lesson-body > table {
+[data-year='9'] .lesson-body > table {
   border-width: 1px;
 }
 .lesson-body th,
@@ -610,7 +601,7 @@ pre.code {
   padding: 16px 20px;
   max-width: 70ch;
 }
-[data-year='8'] .callout {
+[data-year='9'] .callout {
   border-width: 1px 1px 1px 6px;
 }
 .callout > * + * {
@@ -745,15 +736,15 @@ pre.code {
   color: var(--navy);
   line-height: 1.1;
 }
-.year-card.y8 {
+.year-card.y9 {
   background: #fff;
   border: 1px solid var(--border);
   font-family: 'Lexend', sans-serif;
 }
-.year-card.y8 .big {
+.year-card.y9 .big {
   font-family: 'Lexend', sans-serif;
 }
-.year-card.y8:hover {
+.year-card.y9:hover {
   border-color: #dda93e;
 }
 
@@ -788,7 +779,7 @@ pre.code {
   text-decoration: none;
   color: var(--text);
 }
-[data-year='8'] .lesson-link {
+[data-year='9'] .lesson-link {
   border-width: 1px;
 }
 .lesson-link:hover {
@@ -808,7 +799,7 @@ pre.code {
   align-items: center;
   justify-content: center;
 }
-[data-year='8'] .lesson-link .num {
+[data-year='9'] .lesson-link .num {
   border-radius: 10px;
 }
 .lesson-link .title {

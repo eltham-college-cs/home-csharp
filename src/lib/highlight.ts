@@ -1,5 +1,5 @@
 // A small C# highlighter shared by the code editor and static code blocks.
-// It only needs to cope with the C# taught in Years 7 and 8, and must never lose a character.
+// It only needs to cope with the C# taught in the course, and must never lose a character.
 
 export type Token = { type: 'kw' | 'bi' | 'str' | 'num' | 'com' | 'name' | 'text'; text: string };
 

@@ -57,22 +57,9 @@ const isNumber = /^-?\d+$/.test(typed);
     justify-content: center;
     gap: 2px;
   }
-  [data-year='8'] .flow-card {
+  [data-year='9'] .flow-card {
     border-width: 1px;
     border-radius: 14px;
-  }
-  [data-year='7'] .flow-card {
-    animation: flow-slide 0.6s ease both;
-  }
-  @keyframes flow-slide {
-    0% {
-      transform: translateX(-12px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
   }
   .flow-card.blue {
     background: #e8f3fd;

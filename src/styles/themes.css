@@ -42,27 +42,9 @@
   --tok-com: #9fb3c8;
 }
 
-[data-year='7'] {
-  --gold: #f2b533;
-  --blue: #1e5fa8;
-  --page: #fbfaf5;
-  --panel: #e8f3fd;
-  --muted: #3a4654;
-  --font-display: 'Fredoka', 'Lexend', 'Segoe UI', sans-serif;
-  --display-weight: 600;
-  --body-size: 20px;
-  --h1: 60px;
-  --h2: 38px;
-  --code-size: 22px;
-  --radius: 28px;
-  --radius-sm: 20px;
-  --nav-radius: 999px;
-  --tok-kw: #f2b533;
-  --tok-bi: #f2b533;
-  --tok-name: #7fb4e8;
-}
-
-[data-year='8'] {
+/* The course is for Year 9 students who need support (age 13-14): the calmer look first
+   designed for Year 8 in Python at Home. */
+[data-year='9'] {
   --gold: #dda93e;
   --blue: #2a5a8c;
   --page: #f7f8fa;

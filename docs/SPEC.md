@@ -5,7 +5,7 @@
 
 ## 1. Purpose and audience
 
-- **Students:** Years 7–8 (age 12–13), new to C# and to programming. Short, confidence-building
+- **Students:** Year 9 (age 13–14) who need support, new to C# and to programming. Short, confidence-building
   sessions of about 15 minutes, with instant feedback that matches CodeBash.
 - **Parents:** may know no C#. Each page tells them exactly what to do.
 - **Teacher (Mr Gordon):** adds one lesson by adding one folder. Records short
@@ -14,14 +14,13 @@
 ## 2. Site map and URLs
 
 ```
-/                                   Home: choose your year, "This week" links
+/                                   Home: start the course, "This week" links
 /parents/                           Start here, for parents (read once)
-/year-7/                            Year overview: units and lessons in order
-/year-7/csharp-basics/              Unit page (optional, lists its lessons)
-/year-7/csharp-basics/lesson-3-input-and-conversion/
-/year-8/ …   /year-9/ …
-/error-decoder/                     Shared; filtered to the current year
-/key-words/                         Shared glossary; tagged by year introduced
+/year-9/                            Course overview: units and lessons in order
+/year-9/csharp-basics/              Unit page (optional, lists its lessons)
+/year-9/csharp-basics/lesson-3-input-and-conversion/
+/error-decoder/                     Shared; filter: build errors / runtime errors
+/key-words/                         Shared glossary, A to Z, with the lessons that use each word
 ```
 
 Base path: the site is served from `https://eltham-college-cs.github.io/home-csharp/`,
@@ -39,12 +38,12 @@ home-csharp/
 ├── src/
 │   ├── content.config.ts           collection schemas (zod)
 │   ├── content/
-│   │   ├── years/year-7.md         title, units in order, "this week" lesson
-│   │   └── lessons/year-7/01-csharp-basics/03-input-and-conversion/
+│   │   ├── years/year-9.md         title, units in order, "this week" lesson
+│   │   └── lessons/year-9/01-csharp-basics/03-input-and-conversion/
 │   │       ├── index.mdx           page content
 │   │       └── tasks.json          checker tests
 │   ├── components/
-│   │   ├── Yoka.astro              mascot, moods: idle | happy | tryagain
+│   │   ├── Mascot.astro            Hash the hedgehog, moods: idle | happy | tryagain
 │   │   ├── CsChecker.astro         editor + Run + Check + results
 │   │   ├── OutputDiff.astro        expected vs got, spaces as ·
 │   │   ├── Celebrate.ts            particle burst
@@ -57,14 +56,14 @@ home-csharp/
 │   │   ├── LessonVideo.astro       see § 9
 │   │   └── ParentTip.astro
 │   ├── layouts/
-│   │   ├── BaseLayout.astro        header, nav, footer, theme by year
+│   │   ├── BaseLayout.astro        header, nav, footer, theme
 │   │   └── LessonLayout.astro      eyebrow, title, progress, sections
-│   ├── styles/themes.css           year themes (§ 5)
+│   ├── styles/themes.css           theme tokens (§ 5)
 │   └── lib/cs.ts                   main-thread side of the C# runner
 ├── runner/CsRunner/                .NET WebAssembly + Roslyn runner (see runner/README.md)
 ├── public/runner/                  built runner, copied in by `npm run runner` (git-ignored)
 │   └── pages/ …
-├── public/videos/year-7/ …         self-hosted clips, captions, posters
+├── public/videos/year-9/ …         self-hosted clips, captions, posters
 └── .github/workflows/deploy.yml
 ```
 
@@ -74,7 +73,7 @@ Lesson frontmatter (validate with zod in `content.config.ts`):
 
 ```yaml
 ---
-year: 7
+year: 9
 unit: C# basics
 unitSlug: csharp-basics
 lesson: 3
@@ -115,35 +114,30 @@ error decoder filter.
 
 `input` may contain several lines separated by `\n`, one per `Console.ReadLine()` call.
 
-## 5. Year themes
+## 5. Theme
 
-All years use Eltham navy and gold. Brightness, size and motion step down by year.
-Set `data-year="7|8|9"` on `<body>` and define these tokens in `themes.css`.
+One course, for Year 9 students who need support (age 13–14). It uses Eltham navy and gold
+with the calmer look first designed for Year 8 in Python at Home. The body has
+`data-year="9"`; tokens are in `themes.css`.
 
-| Token | Year 7 | Year 8 | Year 9 |
-|---|---|---|---|
-| `--navy` | #0A1B2E | #0A1B2E | #0A1B2E |
-| `--navy-2` | #163351 | #163351 | #163351 |
-| `--gold` | #F2B533 | #DDA93E | #C89B3C |
-| `--gold-light` | #E3C783 | #E3C783 | #E3C783 |
-| `--blue` | #1E5FA8 | #2A5A8C | #2A5A8C |
-| `--page` | #FBFAF5 | #F7F8FA | #F7F8FA |
-| `--panel` | #E8F3FD | #FFFFFF | #FFFFFF |
-| `--border` | #D7E3EF | #D7E3EF | #D7E3EF |
-| `--text` | #1A1D21 | #1A1D21 | #1A1D21 |
-| `--muted` | #3A4654 | #555D68 | #555D68 |
-| Display font | Fredoka 600 | Lexend 600 | Georgia 400 |
-| Body font | Lexend | Lexend | Lexend |
-| Code font | JetBrains Mono | JetBrains Mono | JetBrains Mono |
-| Body size | 20px | 18px | 17px |
-| H1 / H2 | 60 / 38px | 48 / 32px | 44 / 28px |
-| Radius (cards) | 20–28px | 14–16px | 12px |
-| Yoka | Header, feedback | Hint boxes only | None |
-| Motion | Full | Light (trace rows) | None |
+| Token | Value |
+|---|---|
+| `--navy` / `--navy-2` | #0A1B2E / #163351 |
+| `--gold` / `--gold-light` | #DDA93E / #E3C783 |
+| `--blue` | #2A5A8C |
+| `--page` / `--panel` | #F7F8FA / #FFFFFF |
+| `--border` | #D7E3EF |
+| `--text` / `--muted` | #1A1D21 / #555D68 |
+| Display / body font | Lexend 600 / Lexend |
+| Code font | JetBrains Mono |
+| Body size, H1 / H2 | 18px, 48 / 32px |
+| Radius (cards) | 14–16px |
+| Mascot | Lesson header and hint boxes (big in the home page hero) |
+| Motion | Light: mascot moods, celebration burst, trace rows |
 
-Feedback colours (all years): pass `#E6F4EC` / `#1F7A4D`, nearly `#FDF1D9` /
-`#D9A21E`, error highlight `#FCE9E7` / `#B3261E`. Never use red for a failed test
-in Year 7; use amber "nearly".
+Feedback colours: pass `#E6F4EC` / `#1F7A4D`, nearly `#FDF1D9` /
+`#D9A21E`, error highlight `#FCE9E7` / `#B3261E`. Never use red for a failed test;
+use amber "nearly".
 
 Self-host the Google Fonts (e.g. via `@fontsource`) so no third-party requests are made.
 
@@ -152,11 +146,11 @@ Self-host the Google Fonts (e.g. via `@fontsource`) so no third-party requests a
 Same order on every page. Sections can be omitted per lesson.
 
 1. Header: eyebrow (year, unit, lesson), H1, summary, progress, minutes.
-   Year 7: Yoka (idle) with a speech bubble.
+   Hash (idle) with a speech bubble (`mascotSays` in the frontmatter).
 2. Parent tip strip.
 3. **The big idea**: analogy in plain English + `InputFlow` or a diagram + video slot `bigIdea`.
 4. **Predict, then run**: prediction box, `CsChecker`, video slot `predictRun`.
-5. **How did it go?**: test results and Yoka feedback.
+5. **How did it go?**: test results and Hash's feedback.
 6. **Spot the difference / Match it exactly**: output-matching practice.
 7. **Fix the bug**: broken code, checker, link to error decoder, video slot `fixBug`.
 8. **Quiz me**: three questions, answers on reveal (parent asks).
@@ -202,16 +196,17 @@ Classify a failure in this order and show the matching hint:
 differing characters highlighted. Unit-test the comparison, classification and error
 decoder matching with Vitest. `/dev/runner/` (development only) checks the real runner.
 
-## 8. Yoka the mascot
+## 8. Hash the mascot
 
-Reference: `design/yoka-mascot.dc.html` and `design/yoka-moods.dc.html`.
-Rebuild as an inline SVG in `Yoka.astro` with props `mood` and `size`.
+Hash is a hedgehog: spines are sharp (C sharp), and Hash wears a `#` (a "hash") on its tummy.
+Inline SVG in `Mascot.astro` with props `mood`, `size` and `decorative`; the name and
+screen-reader labels are in `src/lib/mascot.ts`.
 
 | Mood | When | Face | Motion |
 |---|---|---|---|
-| `idle` | Page load, waiting | Open eyes, small smile | Blink every ~4 s, occasional tongue flick, gentle sway |
-| `happy` | All tests pass | Closed happy eyes, cheeks, open grin, tongue | Bounce, nod, tail wag, sparkles |
-| `tryagain` | Some tests fail | Determined brows, half smile | Nod, tail raised in a fist-pump |
+| `idle` | Page load, waiting | Open eyes, small smile, paws resting | Gentle bob, blink every ~5 s |
+| `happy` | All tests pass | Closed happy eyes, open grin, both paws up | Short bounce, paw wave, sparkles |
+| `tryagain` | Some tests fail | Determined brows, half smile, fist raised | Short fist-pump |
 
 Animate with CSS classes (not SMIL) so reduced motion can switch everything off.
 Expose `setMood()` so `CsChecker` can change mood after a run. Particle burst
@@ -241,18 +236,17 @@ Public repository. No secrets needed.
 
 ## 11. Build phases
 
-1. Scaffold Astro, themes, layouts, header and nav for all three years.
+1. Scaffold Astro, theme, layouts, header and nav.
 2. C# runner worker, `CsChecker`, `OutputDiff`, comparison logic with tests.
-3. Yoka and feedback states, `Celebrate`.
-4. Year 7 Lesson 3 page complete (content in this pack), matching
-   `design/year-7-lesson.dc.html`.
+3. Hash and feedback states, `Celebrate`.
+4. Lesson pages matching the layout in `design/year-8-lesson.dc.html` (a Python at Home
+   design: follow its layout and colours, not its Python content or mascot).
 5. Error decoder, key words, parents page, home page.
 6. `LessonVideo` with placeholders.
-7. Year 8 and Year 9 page variants matching their designs.
 
 ## 12. Done when
 
-- Lesson 3 page matches the Year 7 design at desktop and phone width.
+- Lesson pages match the design at desktop and phone width.
 - The checker passes, fails and classifies the Lesson 3 tests correctly.
 - Infinite loops time out without freezing the page.
 - Reduced motion shows no animation; keyboard alone can complete the page.

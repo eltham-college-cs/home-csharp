@@ -21,7 +21,7 @@ export type Step = {
 };
 
 export type VideoPlan = {
-  year: 7 | 8;
+  year: 9;
   lesson: number;
   clip: 'bigIdea' | 'predictRun' | 'fixBug';
   title: string;

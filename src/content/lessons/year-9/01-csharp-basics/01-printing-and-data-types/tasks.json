@@ -13,8 +13,8 @@
     {
       "id": "fix-semicolon",
       "title": "Fix the greeting",
-      "starter": "Console.WriteLine(\"Hello, Year 7!\")\nConsole.WriteLine(\"Welcome to C#.\");",
-      "tests": [{ "input": "", "output": "Hello, Year 7!\nWelcome to C#." }],
+      "starter": "Console.WriteLine(\"Hello, Year 9!\")\nConsole.WriteLine(\"Welcome to C#.\");",
+      "tests": [{ "input": "", "output": "Hello, Year 9!\nWelcome to C#." }],
       "hints": {
         "compile": "Look at the end of line 1. What does line 2 have at the end that line 1 doesn't?",
         "capitals": "Check the capital H and the capital Y.",
@@ -23,12 +23,12 @@
     },
     {
       "id": "year-and-sum",
-      "title": "Year 7 and a sum",
+      "title": "Year 9 and a sum",
       "starter": "",
-      "tests": [{ "input": "", "output": "Year 7\n56" }],
+      "tests": [{ "input": "", "output": "Year 9\n72" }],
       "hints": {
         "lines": "You need two Console.WriteLine() lines.",
-        "other": "Put 7 * 8 inside Console.WriteLine() with no speech marks, so C# does the sum."
+        "other": "Put 9 * 8 inside Console.WriteLine() with no speech marks, so C# does the sum."
       }
     }
   ]

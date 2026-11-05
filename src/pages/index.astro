@@ -1,11 +1,11 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Yoka from '../components/Yoka.astro';
+import Mascot from '../components/Mascot.astro';
 import { lessonUrl } from '../lib/lessons';
 import { url } from '../lib/url';
 
-const years = (await getCollection('years')).sort((a, b) => a.data.year - b.data.year);
+const years = await getCollection('years');
 const thisWeek = (
   await Promise.all(years.flatMap((y) => y.data.thisWeek.map((id) => getEntry('lessons', id))))
 ).filter((e) => e && !(import.meta.env.PROD && e.data.draft));
@@ -17,19 +17,19 @@ const thisWeek = (
       <span class="eyebrow">Eltham College · Computer Science</span>
       <h1>C# at Home</h1>
       <p class="summary">
-        Short, friendly C# sessions for when the lesson moved too fast. About 15 minutes each, with instant
-        feedback that works just like CodeBash.
+        Short, friendly C# sessions for Year 9, for when the lesson moved too fast. About 15 minutes each,
+        with instant feedback that works just like CodeBash.
       </p>
       <p><a href={url('/parents/')}>Grown-ups: start here (2 minute read)</a></p>
     </div>
-    <div class="hero-yoka">
-      <div class="speech">Pick your year and let's go!</div>
-      <Yoka mood="idle" size={190} />
+    <div class="hero-mascot">
+      <div class="speech">Ready? Let's write some C#!</div>
+      <Mascot mood="idle" size={190} />
     </div>
   </section>
 
   <section aria-labelledby="choose">
-    <h2 id="choose" style="margin-bottom:16px">Choose your year</h2>
+    <h2 id="choose" style="margin-bottom:16px">Start here</h2>
     <div class="year-grid">
       {
         years.map((y) => (
@@ -51,11 +51,11 @@ const thisWeek = (
             <li>
               <a class="lesson-link" href={lessonUrl(l!)}>
                 <span class="num" aria-hidden="true">
-                  {l!.data.year}
+                  {l!.data.lesson}
                 </span>
                 <span class="title-wrap">
                   <span class="title">
-                    Year {l!.data.year}: {l!.data.title}
+                    Lesson {l!.data.lesson}: {l!.data.title}
                   </span>
                   <span class="sum">{l!.data.summary}</span>
                 </span>

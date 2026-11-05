@@ -6,7 +6,7 @@ export type VideoSlot = { file?: string; captions?: string; poster?: string; you
 
 export const kebab = (s: string) => s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-/** y7-l03-predict-run: the name every file for this slot shares. */
+/** y9-l03-predict-run: the name every file for this slot shares. */
 export function baseName(year: number, lesson: number, clip: string) {
   return `y${year}-l${String(lesson).padStart(2, '0')}-${kebab(clip)}`;
 }

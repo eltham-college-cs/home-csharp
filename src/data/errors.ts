@@ -7,8 +7,6 @@
 
 export type ErrorEntry = {
   id: string;
-  /** The year this error is first likely to appear. */
-  year: 7 | 8;
   name: string;
   /** What C# prints (shortened). */
   looksLike: string;
@@ -23,7 +21,6 @@ export const errors: ErrorEntry[] = [
   // ---- Compile errors: C# couldn't build the program, so none of it ran ----
   {
     id: 'cs1002-semicolon',
-    year: 7,
     name: 'Missing semicolon',
     looksLike: 'CS1002: ; expected',
     match: /^CS1002:/,
@@ -38,7 +35,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0103-name',
-    year: 7,
     name: "C# doesn't know that name",
     looksLike: "CS0103: The name 'score' does not exist in the current context",
     match: /^CS0103:/,
@@ -55,7 +51,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0117-member',
-    year: 7,
     name: 'Capital letters in a method name',
     looksLike: "CS0117: 'Console' does not contain a definition for 'Writeline'",
     match: /^CS0117:/,
@@ -67,7 +62,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0029-if-equals',
-    year: 8,
     name: '= where you meant ==',
     looksLike: "CS0029: Cannot implicitly convert type 'int' to 'bool'",
     match: /^CS0029: Cannot implicitly convert type '(int|string|double|char)' to 'bool'/,
@@ -79,7 +73,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0029-string-to-int',
-    year: 7,
     name: 'Putting text in a number box',
     looksLike: "CS0029: Cannot implicitly convert type 'string' to 'int'",
     match: /^CS0029: Cannot implicitly convert type 'string' to '(int|double)'/,
@@ -94,7 +87,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0029-general',
-    year: 7,
     name: 'The value is the wrong type for the box',
     looksLike: "CS0029: Cannot implicitly convert type 'int' to 'string'",
     match: /^CS0029:/,
@@ -106,7 +98,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0266-double-to-int',
-    year: 7,
     name: 'A decimal will not fit in an int',
     looksLike: "CS0266: Cannot implicitly convert type 'double' to 'int'",
     match: /^CS0266: Cannot implicitly convert type 'double' to 'int'/,
@@ -118,7 +109,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0019-operator',
-    year: 7,
     name: 'Doing maths or comparing with text',
     looksLike: "CS0019: Operator '-' cannot be applied to operands of type 'string' and 'int'",
     match: /^CS0019:/,
@@ -130,7 +120,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs1503-argument',
-    year: 7,
     name: 'The wrong kind of value in the brackets',
     looksLike: "CS1503: Argument 1: cannot convert from 'int' to 'string'",
     match: /^CS1503:/,
@@ -142,7 +131,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0128-declared-twice',
-    year: 7,
     name: 'Variable created twice',
     looksLike: "CS0128: A local variable or function named 'score' is already defined in this scope",
     match: /^CS0128:/,
@@ -154,7 +142,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0165-unassigned',
-    year: 7,
     name: 'Variable used before it has a value',
     looksLike: "CS0165: Use of unassigned local variable 'total'",
     match: /^CS0165:/,
@@ -166,7 +153,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs0201-not-a-statement',
-    year: 8,
     name: 'A line that does nothing',
     looksLike: 'CS0201: Only assignment, call, increment, decrement … can be used as a statement',
     match: /^CS0201:/,
@@ -178,7 +164,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs1010-string',
-    year: 7,
     name: 'Speech marks not closed',
     looksLike: 'CS1010: Newline in constant',
     match: /^CS1010:/,
@@ -189,7 +174,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs1026-brackets',
-    year: 7,
     name: 'Missing bracket',
     looksLike: 'CS1026: ) expected',
     match: /^CS1026:/,
@@ -201,7 +185,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs1513-braces',
-    year: 8,
     name: 'Curly braces that do not match',
     looksLike: 'CS1513: } expected',
     match: /^CS151[34]:/,
@@ -216,7 +199,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs1003-syntax',
-    year: 7,
     name: "C# can't read the line",
     looksLike: "CS1003: Syntax error, ',' expected",
     match: /^CS(1003|1525|1001|1022|1519|0116|1031|1056|8124|1012):/,
@@ -228,9 +210,8 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'cs5001-empty',
-    year: 7,
     name: 'Nothing to run',
-    looksLike: "CS5001: Program does not contain a static 'Main' method suitable for an entry point",
+    looksLike: "CS5001: There's no code to run yet.",
     match: /^CS5001:/,
     meaning: 'Your program has no instructions in it yet, so there is nothing for C# to run. Write at least one line of code.',
     broken: '',
@@ -239,7 +220,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'compile-general',
-    year: 7,
     name: "Your code didn't build",
     looksLike: 'CSxxxx: …',
     match: /^CS\d{4}:/,
@@ -256,7 +236,6 @@ export const errors: ErrorEntry[] = [
   // ---- Runtime errors: the program started, then stopped ----
   {
     id: 'formatexception',
-    year: 7,
     name: "int.Parse() can't turn this into a number",
     looksLike: "FormatException: The input string 'seven' was not in a correct format.",
     match: /^FormatException:/,
@@ -271,7 +250,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'overflowexception',
-    year: 7,
     name: 'Number too big for an int',
     looksLike: 'OverflowException: Value was either too large or too small for an Int32.',
     match: /^OverflowException:/,
@@ -282,7 +260,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'argumentnullexception',
-    year: 7,
     name: 'Asked for more input than there is',
     looksLike: "ArgumentNullException: Value cannot be null. (Parameter 's')",
     match: /^ArgumentNullException:/,
@@ -294,7 +271,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'nullreferenceexception',
-    year: 7,
     name: 'Using something that is empty (null)',
     looksLike: 'NullReferenceException: Object reference not set to an instance of an object.',
     match: /^NullReferenceException:/,
@@ -306,7 +282,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'argumentoutofrange-index',
-    year: 8,
     name: 'Index out of range',
     looksLike: "ArgumentOutOfRangeException: Index was out of range. … (Parameter 'index')",
     match: /^ArgumentOutOfRangeException:.*[Ii]ndex/,
@@ -321,7 +296,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'indexoutofrange',
-    year: 8,
     name: 'Index outside the text or array',
     looksLike: 'IndexOutOfRangeException: Index was outside the bounds of the array.',
     match: /^IndexOutOfRangeException:/,
@@ -333,7 +307,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'collection-modified',
-    year: 8,
     name: 'Changing a list while looping through it',
     looksLike: 'InvalidOperationException: Collection was modified; enumeration operation may not execute.',
     match: /^InvalidOperationException: Collection was modified/,
@@ -345,7 +318,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'dividebyzero',
-    year: 7,
     name: 'Dividing by zero',
     looksLike: 'DivideByZeroException: Attempted to divide by zero.',
     match: /^DivideByZeroException:/,
@@ -356,7 +328,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'integer-division',
-    year: 7,
     name: 'Division gives the wrong answer',
     looksLike: '7 / 2 prints 3',
     match: /^$/,
@@ -368,7 +339,6 @@ export const errors: ErrorEntry[] = [
   },
   {
     id: 'never-finished',
-    year: 8,
     name: "The program didn't finish",
     looksLike: "Your program didn't finish. Is something repeating forever?",
     match: /^Timeout$/,
@@ -384,6 +354,11 @@ export const errors: ErrorEntry[] = [
     ],
   },
 ];
+
+/** Build errors stop the program before it starts; runtime errors stop it part-way through. */
+export function errorKind(e: ErrorEntry): 'build' | 'runtime' {
+  return e.match.source.startsWith('^CS') ? 'build' : 'runtime';
+}
 
 /** Find the decoder entry for an error (a compile error code or an exception type), if there is one. */
 export function findError(type: string, message: string): ErrorEntry | undefined {
