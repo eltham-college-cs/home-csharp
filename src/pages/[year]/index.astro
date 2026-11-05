@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLessons, lessonUrl } from '../../lib/lessons';
+import { url } from '../../lib/url';
+import CodeBashPractice from '../../components/CodeBashPractice.astro';
+
+export async function getStaticPaths() {
+  const years = await getCollection('years');
+  return years.map((y) => ({ params: { year: `year-${y.data.year}` }, props: { info: y.data } }));
+}
+
+const { info } = Astro.props;
+const lessons = await getLessons(info.year);
+---
+
+<BaseLayout title={info.title} description={info.tagline} year={info.year}>
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">C# at Home</span>
+      <h1>{info.title}</h1>
+      <p class="summary">{info.tagline}</p>
+      <p class="muted">
+        Work through the lessons in order. Each one takes about 15 minutes. Your ratings are saved on this computer
+        only.
+      </p>
+    </div>
+  </section>
+
+  <CodeBashPractice year={info.year} />
+
+  {
+    info.units.map((u, ui) => {
+      const list = lessons.filter((l) => l.data.unitSlug === u.slug);
+      if (!list.length) return null;
+      return (
+        <section class="unit" aria-labelledby={`unit-${u.slug}`}>
+          <div class="unit-head">
+            <h2 id={`unit-${u.slug}`}>
+              <a href={url(`/year-${info.year}/${u.slug}/`)} style="color:inherit;text-decoration:none">
+                {ui + 1}. {u.title}
+              </a>
+            </h2>
+            <span class="muted">{list.length} lessons</span>
+          </div>
+          <p class="muted">{u.summary}</p>
+          <ul class="lesson-list">
+            {list.map((l) => (
+              <li>
+                <a class="lesson-link" href={lessonUrl(l)}>
+                  <span class="num" aria-hidden="true">
+                    {l.data.lesson}
+                  </span>
+                  <span class="title-wrap">
+                    <span class="title">
+                      <span class="visually-hidden">Lesson {l.data.lesson}: </span>
+                      {l.data.title}
+                    </span>
+                    <span class="sum">{l.data.summary}</span>
+                  </span>
+                  <span class="rating-chip" data-rating-for={l.id} hidden />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })
+  }
+</BaseLayout>
+
+<script>
+  const labels: Record<string, string> = { notyet: 'Not yet', sortof: 'Sort of', yes: 'Got it' };
+  document.querySelectorAll<HTMLElement>('[data-rating-for]').forEach((chip) => {
+    try {
+      const v = localStorage.getItem(`pah:rating:${chip.dataset.ratingFor}`);
+      if (v && labels[v]) {
+        chip.textContent = labels[v];
+        chip.dataset.r = v;
+        chip.hidden = false;
+      }
+    } catch {}
+  });
+</script>

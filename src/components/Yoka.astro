@@ -1,0 +1,214 @@
+---
+// Yoka the python. Moods: idle | happy | tryagain. Animated with CSS classes only,
+// so prefers-reduced-motion switches everything off. Change mood with setMood()
+// from src/lib/yoka.ts.
+import { yokaLabels, type Mood } from '../lib/yoka';
+
+interface Props {
+  mood?: Mood;
+  size?: number;
+  class?: string;
+  /** Hide from screen readers when the text next to Yoka already says it all. */
+  decorative?: boolean;
+}
+const { mood = 'idle', size = 210, class: cls = '', decorative = false } = Astro.props;
+---
+
+<svg
+  class:list={['yoka', cls]}
+  data-mood={mood}
+  width={size}
+  height={size}
+  viewBox="0 0 200 200"
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : yokaLabels[mood]}
+  aria-hidden={decorative ? 'true' : undefined}
+  focusable="false"
+>
+  <g class="y-body">
+    <g class="y-tail-rest">
+      <path d="M40 172 C 22 180, 8 172, 12 158" fill="none" stroke="#0A1B2E" stroke-width="15" stroke-linecap="round"></path>
+      <path d="M40 172 C 22 180, 8 172, 12 158" fill="none" stroke="#F2B533" stroke-width="9" stroke-linecap="round"></path>
+    </g>
+    <g class="y-tail-raised">
+      <path d="M40 162 C 16 152, 12 118, 30 104 C 42 96, 52 108, 42 114" fill="none" stroke="#0A1B2E" stroke-width="15" stroke-linecap="round"></path>
+      <path d="M40 162 C 16 152, 12 118, 30 104 C 42 96, 52 108, 42 114" fill="none" stroke="#F2B533" stroke-width="9" stroke-linecap="round"></path>
+      <path d="M8 96 L 2 90 M10 108 L 2 108 M14 84 L 10 76" stroke="#2F7DD1" stroke-width="3" stroke-linecap="round"></path>
+    </g>
+
+    <ellipse cx="100" cy="166" rx="64" ry="18" fill="none" stroke="#0A1B2E" stroke-width="30"></ellipse>
+    <ellipse cx="100" cy="166" rx="64" ry="18" fill="none" stroke="#F2B533" stroke-width="22"></ellipse>
+    <ellipse cx="100" cy="166" rx="64" ry="18" fill="none" stroke="#163351" stroke-width="9" stroke-dasharray="6 17" stroke-linecap="round"></ellipse>
+
+    <ellipse cx="104" cy="144" rx="50" ry="14" fill="none" stroke="#0A1B2E" stroke-width="28"></ellipse>
+    <ellipse cx="104" cy="144" rx="50" ry="14" fill="none" stroke="#F2B533" stroke-width="20"></ellipse>
+    <ellipse cx="104" cy="144" rx="50" ry="14" fill="none" stroke="#163351" stroke-width="8" stroke-dasharray="6 16" stroke-linecap="round"></ellipse>
+
+    <path d="M152 142 C 174 118, 158 98, 132 94 C 110 90, 104 80, 112 66" fill="none" stroke="#0A1B2E" stroke-width="28" stroke-linecap="round"></path>
+    <path d="M152 142 C 174 118, 158 98, 132 94 C 110 90, 104 80, 112 66" fill="none" stroke="#F2B533" stroke-width="20" stroke-linecap="round"></path>
+    <path d="M152 142 C 174 118, 158 98, 132 94 C 110 90, 104 80, 112 66" fill="none" stroke="#163351" stroke-width="8" stroke-dasharray="6 16" stroke-linecap="round"></path>
+    <path d="M146 136 C 162 118, 152 104, 132 100" fill="none" stroke="#FFF1C9" stroke-width="5" stroke-linecap="round"></path>
+
+    <g class="y-head">
+      <path d="M80 58 C 78 36, 110 26, 138 32 C 154 36, 160 50, 152 60 C 142 72, 98 74, 80 58 Z" fill="#F2B533" stroke="#0A1B2E" stroke-width="4" stroke-linejoin="round"></path>
+      <path d="M92 40 L 98 36 L 104 40 M112 34 L 118 30 L 124 34" fill="none" stroke="#163351" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      <circle cx="150" cy="48" r="2" fill="#0A1B2E"></circle>
+      <polygon points="84,22 112,10 140,22 112,34" fill="#0A1B2E"></polygon>
+      <path d="M98 28 L 98 34 Q 112 40 126 34 L 126 28" fill="#163351"></path>
+      <line x1="136" y1="22" x2="142" y2="38" stroke="#0A1B2E" stroke-width="3"></line>
+      <circle cx="143" cy="40" r="4" fill="#E3C783"></circle>
+
+      <g class="y-face-idle">
+        <g class="y-blink">
+          <ellipse cx="110" cy="46" rx="8" ry="8" fill="#FFFFFF" stroke="#0A1B2E" stroke-width="2"></ellipse>
+          <ellipse cx="112" cy="47" rx="4" ry="4" fill="#0A1B2E"></ellipse>
+        </g>
+        <g class="y-blink">
+          <ellipse cx="132" cy="44" rx="8" ry="8" fill="#FFFFFF" stroke="#0A1B2E" stroke-width="2"></ellipse>
+          <ellipse cx="134" cy="45" rx="4" ry="4" fill="#0A1B2E"></ellipse>
+        </g>
+        <path d="M110 62 Q 128 68 146 58" fill="none" stroke="#0A1B2E" stroke-width="3.5" stroke-linecap="round"></path>
+        <path class="y-flick" d="M154 57 L 166 59 L 172 54 M166 59 L 172 64" fill="none" stroke="#D9455F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+
+      <g class="y-face-happy">
+        <path d="M101 48 Q 110 36 119 48" fill="none" stroke="#0A1B2E" stroke-width="4.5" stroke-linecap="round"></path>
+        <path d="M124 46 Q 133 34 142 46" fill="none" stroke="#0A1B2E" stroke-width="4.5" stroke-linecap="round"></path>
+        <ellipse cx="100" cy="58" rx="7" ry="4" fill="#F29CA8"></ellipse>
+        <ellipse cx="146" cy="55" rx="6" ry="3.5" fill="#F29CA8"></ellipse>
+        <path d="M108 60 Q 128 80 150 57 Z" fill="#0A1B2E"></path>
+        <path d="M120 66 Q 128 72 138 64" fill="none" stroke="#D9455F" stroke-width="4" stroke-linecap="round"></path>
+        <path class="y-flick-fast" d="M154 57 L 168 58 L 174 52 M168 58 L 174 64" fill="none" stroke="#D9455F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+
+      <g class="y-face-try">
+        <ellipse cx="110" cy="46" rx="8" ry="8" fill="#FFFFFF" stroke="#0A1B2E" stroke-width="2"></ellipse>
+        <ellipse cx="132" cy="44" rx="8" ry="8" fill="#FFFFFF" stroke="#0A1B2E" stroke-width="2"></ellipse>
+        <circle cx="113" cy="44" r="4" fill="#0A1B2E"></circle>
+        <circle cx="135" cy="42" r="4" fill="#0A1B2E"></circle>
+        <path d="M100 35 L 116 37" stroke="#0A1B2E" stroke-width="3.5" stroke-linecap="round"></path>
+        <path d="M126 35 L 141 31" stroke="#0A1B2E" stroke-width="3.5" stroke-linecap="round"></path>
+        <path d="M114 62 Q 128 66 140 60 Q 144 57 147 54" fill="none" stroke="#0A1B2E" stroke-width="3.5" stroke-linecap="round"></path>
+      </g>
+    </g>
+
+    <g class="y-sparkles">
+      <path d="M0 -9 L 2.5 -2.5 L 9 0 L 2.5 2.5 L 0 9 L -2.5 2.5 L -9 0 L -2.5 -2.5 Z" transform="translate(30 40)" fill="#F2B533" stroke="#0A1B2E" stroke-width="1.5"></path>
+      <path d="M0 -7 L 2 -2 L 7 0 L 2 2 L 0 7 L -2 2 L -7 0 L -2 -2 Z" transform="translate(178 30)" fill="#2F7DD1"></path>
+      <path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" transform="translate(184 110)" fill="#1F9D5C"></path>
+      <path d="M0 -6 L 2 -2 L 6 0 L 2 2 L 0 6 L -2 2 L -6 0 L -2 -2 Z" transform="translate(56 92)" fill="#D9578A"></path>
+    </g>
+  </g>
+</svg>
+
+<style is:global>
+  .yoka {
+    flex: none;
+    overflow: visible;
+  }
+  .yoka .y-face-happy,
+  .yoka .y-face-try,
+  .yoka .y-tail-raised,
+  .yoka .y-sparkles {
+    display: none;
+  }
+  .yoka[data-mood='happy'] .y-face-idle,
+  .yoka[data-mood='tryagain'] .y-face-idle,
+  .yoka[data-mood='tryagain'] .y-tail-rest {
+    display: none;
+  }
+  .yoka[data-mood='happy'] .y-face-happy,
+  .yoka[data-mood='happy'] .y-sparkles,
+  .yoka[data-mood='tryagain'] .y-face-try,
+  .yoka[data-mood='tryagain'] .y-tail-raised {
+    display: inline;
+  }
+  .yoka .y-flick {
+    opacity: 0;
+  }
+
+  .yoka .y-head {
+    transform-origin: 120px 60px;
+  }
+  .yoka .y-tail-rest {
+    transform-origin: 40px 172px;
+  }
+  .yoka .y-tail-raised {
+    transform-origin: 40px 162px;
+  }
+  .yoka .y-blink {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes y-bob-small {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  @keyframes y-bob-big {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes y-bob-tiny {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  @keyframes y-sway {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(-3deg); }
+  }
+  @keyframes y-nod-happy {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+  @keyframes y-nod-try {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(7deg); }
+  }
+  @keyframes y-wag {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(-14deg); }
+  }
+  @keyframes y-pump {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(12deg); }
+  }
+  @keyframes y-blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.12); }
+  }
+  @keyframes y-flick {
+    0%, 60%, 80%, 100% { opacity: 0; }
+    64%, 76% { opacity: 1; }
+  }
+  @keyframes y-flick-fast {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @keyframes y-sparkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  [data-year='7'] .yoka[data-mood='idle'] .y-body { animation: y-bob-small 3s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='idle'] .y-head { animation: y-sway 6s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='idle'] .y-blink { animation: y-blink 4s infinite; }
+  [data-year='7'] .yoka[data-mood='idle'] .y-flick { animation: y-flick 3s infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-body { animation: y-bob-big 0.6s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-head { animation: y-nod-happy 0.6s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-tail-rest { animation: y-wag 0.5s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-flick-fast { animation: y-flick-fast 0.6s steps(1) infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-sparkles path { animation: y-sparkle 1.2s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-sparkles path:nth-child(2) { animation-delay: 0.4s; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-sparkles path:nth-child(3) { animation-delay: 0.8s; }
+  [data-year='7'] .yoka[data-mood='happy'] .y-sparkles path:nth-child(4) { animation-delay: 0.6s; }
+  [data-year='7'] .yoka[data-mood='tryagain'] .y-body { animation: y-bob-tiny 0.9s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='tryagain'] .y-head { animation: y-nod-try 0.9s ease-in-out infinite; }
+  [data-year='7'] .yoka[data-mood='tryagain'] .y-tail-raised { animation: y-pump 0.9s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .yoka * {
+      animation: none !important;
+    }
+  }
+</style>

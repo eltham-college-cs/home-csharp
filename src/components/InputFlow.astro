@@ -1,0 +1,118 @@
+---
+// keyboard → input() → "15" → int() → 15
+interface Props {
+  typed?: string;
+}
+const { typed = '15' } = Astro.props;
+const isNumber = /^-?\d+$/.test(typed);
+---
+
+<figure class="flow-row" aria-label={`You type ${typed}. input() gives back the text "${typed}". int() changes it into the number ${typed}.`}>
+  <div class="flow-card plain" style="animation-delay:.1s">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1E5FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"></path></svg>
+    <div class="flow-title">You type</div>
+    <div class="flow-sub">{typed}</div>
+  </div>
+  <div class="flow-card blue" style="animation-delay:.4s">
+    <div class="flow-code">input()</div>
+    <div class="flow-sub">takes the order</div>
+  </div>
+  <div class="flow-card gold" style="animation-delay:.7s">
+    <div class="flow-code big">"{typed}"</div>
+    <div class="flow-sub">text</div>
+  </div>
+  {
+    isNumber && (
+      <>
+        <div class="flow-card blue" style="animation-delay:1s">
+          <div class="flow-code">int()</div>
+          <div class="flow-sub">exchanges it</div>
+        </div>
+        <div class="flow-card green" style="animation-delay:1.3s">
+          <div class="flow-code big">{typed}</div>
+          <div class="flow-sub">number</div>
+        </div>
+      </>
+    )
+  }
+</figure>
+
+<style is:global>
+  .flow-row {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+  .flow-card {
+    border: 2px solid var(--border);
+    background: #fff;
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  [data-year='8'] .flow-card {
+    border-width: 1px;
+    border-radius: 14px;
+  }
+  [data-year='7'] .flow-card {
+    animation: flow-slide 0.6s ease both;
+  }
+  @keyframes flow-slide {
+    0% {
+      transform: translateX(-12px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  .flow-card.blue {
+    background: #e8f3fd;
+    border-color: #9cc4ec;
+  }
+  .flow-card.gold {
+    background: #fff4d6;
+    border-color: #e8c35a;
+  }
+  .flow-card.green {
+    background: var(--pass-bg);
+    border-color: #8fcba8;
+  }
+  .flow-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .flow-sub {
+    font-size: 16px;
+    color: #3a4654;
+  }
+  .flow-card.blue .flow-sub {
+    color: #1e4a7a;
+  }
+  .flow-card.gold .flow-sub,
+  .flow-card.gold .flow-code {
+    color: #7a5300;
+  }
+  .flow-card.green .flow-sub,
+  .flow-card.green .flow-code {
+    color: #1f6b45;
+  }
+  .flow-code {
+    font-family: var(--font-code);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .flow-code.big {
+    font-size: 26px;
+  }
+</style>

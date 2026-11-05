@@ -1,0 +1,124 @@
+---
+import type { Block } from '../../data/recordings/types';
+import { highlightHtml } from '../../lib/highlight';
+import { dots } from '../../lib/render-diff';
+
+interface Props {
+  block: Block;
+}
+const { block: b } = Astro.props;
+const reveal = 'reveal' in b && b.reveal ? '' : undefined;
+const isText = (v: string) => /^["']/.test(v);
+---
+
+{
+  b.kind === 'code' && (
+    <figure class="b b-code" data-reveal={reveal} style={`--chars:${Math.max(16, ...b.code.split('\n').map((l) => l.length))}`}>
+      {b.label && <figcaption>{b.label}</figcaption>}
+      <ol>
+        {b.code.split('\n').map((l) => (
+          <li>
+            <code set:html={highlightHtml(l) || ' '} />
+          </li>
+        ))}
+      </ol>
+    </figure>
+  )
+}
+{
+  b.kind === 'output' && (
+    <figure class="b b-output" data-reveal={reveal}>
+      <figcaption>{b.label ?? 'Output'}</figcaption>
+      <pre set:html={b.text.split('\n').map(dots).join('\n')} />
+    </figure>
+  )
+}
+{
+  b.kind === 'error' && (
+    <figure class="b b-error" data-reveal={reveal}>
+      <pre>{b.text}</pre>
+    </figure>
+  )
+}
+{
+  b.kind === 'blank' && (
+    <figure class="b b-blank" style={`--lines:${b.lines ?? 2}`}>
+      <figcaption>{b.label}</figcaption>
+    </figure>
+  )
+}
+{
+  b.kind === 'boxes' && (
+    <div class="b b-boxes" data-reveal={reveal}>
+      {b.boxes.map((x) => (
+        <div class="b-box">
+          <div class:list={['b-val', { text: isText(x.value) }]}>{x.value || ' '}</div>
+          <div class="b-name">{x.name}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+{
+  b.kind === 'list' && (
+    <div class="b b-boxes" data-reveal={reveal}>
+      <div class="b-listname">
+        <code>{b.name}</code> =
+      </div>
+      {b.items.map((x, i) => (
+        <div class="b-box">
+          <div class:list={['b-val', { text: isText(x) }]}>{x}</div>
+          <div class="b-index">{i}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+{
+  b.kind === 'flow' && (
+    <div class="b b-flow" data-reveal={reveal}>
+      <div class="bf plain"><span class="bf-main">{b.typed}</span><span class="bf-sub">you type</span></div>
+      <span class="bf-arrow" aria-hidden="true">→</span>
+      <div class="bf blue"><span class="bf-main">input()</span><span class="bf-sub">takes the order</span></div>
+      <span class="bf-arrow" aria-hidden="true">→</span>
+      <div class="bf gold"><span class="bf-main">"{b.typed}"</span><span class="bf-sub">text</span></div>
+      <span class="bf-arrow" aria-hidden="true">→</span>
+      <div class="bf blue"><span class="bf-main">int()</span><span class="bf-sub">exchanges it</span></div>
+      <span class="bf-arrow" aria-hidden="true">→</span>
+      <div class="bf green"><span class="bf-main">{b.typed}</span><span class="bf-sub">number</span></div>
+    </div>
+  )
+}
+{
+  b.kind === 'table' && (
+    <figure class="b b-table" data-reveal={reveal}>
+      {b.label && <figcaption>{b.label}</figcaption>}
+      <table>
+        <thead>
+          <tr>{b.columns.map((c) => <th>{c}</th>)}</tr>
+        </thead>
+        <tbody>
+          {b.rows.map((r) => (
+            <tr>{r.map((c) => <td>{c}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </figure>
+  )
+}
+{
+  b.kind === 'points' && (
+    <ul class="b b-points" data-reveal={reveal}>
+      {b.items.map((x) => (
+        <li>{x}</li>
+      ))}
+    </ul>
+  )
+}
+{
+  b.kind === 'big' && (
+    <p class="b b-big" data-reveal={reveal}>
+      {b.text}
+    </p>
+  )
+}

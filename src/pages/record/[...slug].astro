@@ -1,0 +1,622 @@
+---
+// Recording boards and scripts for Mr Gordon's lesson videos.
+// Only built in development (`npm run dev`); the live site has no /record/ pages.
+import '@fontsource/fredoka/500.css';
+import '@fontsource/fredoka/600.css';
+import '@fontsource/lexend/400.css';
+import '@fontsource/lexend/500.css';
+import '@fontsource/lexend/600.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '../../styles/site.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BoardBlock from '../../components/record/BoardBlock.astro';
+import Yoka from '../../components/Yoka.astro';
+import { plans, planId, clipLabel, type VideoPlan } from '../../data/recordings';
+import { url } from '../../lib/url';
+
+export function getStaticPaths() {
+  if (import.meta.env.PROD) return [];
+  return [
+    { params: { slug: undefined }, props: { kind: 'index' as const } },
+    ...[7, 8].map((y) => ({ params: { slug: `scripts/year-${y}` }, props: { kind: 'scripts' as const, year: y } })),
+    ...plans.map((p, i) => ({
+      params: { slug: planId(p) },
+      props: { kind: 'board' as const, plan: p, prev: plans[i - 1], next: plans[i + 1] },
+    })),
+  ];
+}
+
+type Props =
+  | { kind: 'index' }
+  | { kind: 'scripts'; year: number }
+  | { kind: 'board'; plan: VideoPlan; prev?: VideoPlan; next?: VideoPlan };
+const props = Astro.props as Props;
+const boardUrl = (p: VideoPlan) => url(`/record/${planId(p)}/`);
+const fileOf = (p: VideoPlan) => `public/videos/year-${p.year}/${planId(p)}.mp4`;
+const wordCount = (p: VideoPlan) => p.script.reduce((n, s) => n + s.say.split(/\s+/).length, 0);
+---
+
+{
+  props.kind === 'index' && (
+    <BaseLayout title="Recording boards">
+      <section class="hero">
+        <div class="hero-text">
+          <span class="eyebrow">For Mr Gordon · only in npm run dev</span>
+          <h1>Recording boards</h1>
+          <p class="summary">One board and one script for every lesson video. Open a board full screen, start recording, and annotate.</p>
+          <p class="muted">
+            Keys on a board: <kbd>Space</kbd> reveal the next answer · <kbd>Backspace</kbd> hide it again · <kbd>]</kbd> next video ·{' '}
+            <kbd>[</kbd> previous · <kbd>F</kbd> full screen · <kbd>H</kbd> show these keys.
+          </p>
+          <p>
+            Scripts to print or keep on a second screen: <a href={url('/record/scripts/year-7/')}>Year 7</a> ·{' '}
+            <a href={url('/record/scripts/year-8/')}>Year 8</a>
+          </p>
+        </div>
+      </section>
+      {[7, 8].map((y) => (
+        <section class="unit">
+          <h2>Year {y}</h2>
+          <table class="rec-table">
+            <thead>
+              <tr>
+                <th>Lesson</th>
+                <th>Video</th>
+                <th>Length</th>
+                <th>Save as</th>
+              </tr>
+            </thead>
+            <tbody>
+              {plans
+                .filter((p) => p.year === y)
+                .map((p) => (
+                  <tr>
+                    <td>
+                      {p.lesson}. {p.title}
+                    </td>
+                    <td>
+                      <a href={boardUrl(p)}>{clipLabel[p.clip]}</a>
+                    </td>
+                    <td>{p.minutes} min</td>
+                    <td>
+                      <code>{planId(p)}.mp4</code>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </section>
+      ))}
+    </BaseLayout>
+  )
+}
+
+{
+  props.kind === 'scripts' && (
+    <BaseLayout title={`Year ${props.year} video scripts`} year={props.year}>
+      <section class="hero script-hero">
+        <div class="hero-text">
+          <span class="eyebrow">Video scripts · Year {props.year}</span>
+          <h1>Year {props.year} video scripts</h1>
+          <p class="muted">
+            <strong>Do</strong> is what to annotate or press on the board. <strong>Say</strong> is what to say. Pause for 3 seconds
+            after every question. About 130 words is one minute.
+          </p>
+        </div>
+      </section>
+      {plans
+        .filter((p) => p.year === props.year)
+        .map((p) => (
+          <article class="script" id={planId(p)}>
+            <header>
+              <span class="eyebrow">
+                Lesson {p.lesson} · {p.title}
+              </span>
+              <h2>{clipLabel[p.clip]}</h2>
+              <p class="muted script-meta">
+                {p.minutes} min · about {wordCount(p)} words · save as <code>{fileOf(p)}</code> ·{' '}
+                <a href={boardUrl(p)} target="_blank">
+                  Open board
+                </a>
+              </p>
+            </header>
+            <p class="board-sum">
+              <strong>On screen:</strong> {p.board.heading}
+              {p.board.sub ? ` (${p.board.sub})` : ''}
+            </p>
+            <ol class="steps">
+              {p.script.map((s) => (
+                <li>
+                  {s.do && <p class="do">{s.do}</p>}
+                  <p class="say">“{s.say}”</p>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))}
+    </BaseLayout>
+  )
+}
+
+{
+  props.kind === 'board' && (
+    <html lang="en-GB">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+          Board: Y{props.plan.year} L{props.plan.lesson} {clipLabel[props.plan.clip]}
+        </title>
+      </head>
+      <body data-year={String(props.plan.year)} class="board-body">
+        <div class="stage" id="stage">
+          <header class="stage-head">
+            <span class="eyebrow">
+              Year {props.plan.year} · Lesson {props.plan.lesson} · {props.plan.title} · {clipLabel[props.plan.clip]}
+            </span>
+            <h1>{props.plan.board.heading}</h1>
+            {props.plan.board.sub && <p class="stage-sub">{props.plan.board.sub}</p>}
+            {props.plan.year === 7 && (
+              <div class="stage-yoka">
+                <Yoka mood="idle" size={150} decorative />
+              </div>
+            )}
+          </header>
+          <div class:list={['stage-cols', { single: !props.plan.board.right?.length }]}>
+            <div class="col">
+              {props.plan.board.left.map((b) => (
+                <BoardBlock block={b} />
+              ))}
+            </div>
+            {props.plan.board.right?.length ? (
+              <div class="col">
+                {props.plan.board.right.map((b) => (
+                  <BoardBlock block={b} />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <nav class="board-help" id="help" aria-label="Board controls">
+          <a href={url('/record/')}>All boards</a>
+          {props.prev && <a href={boardUrl(props.prev)}>[ previous</a>}
+          {props.next && <a href={boardUrl(props.next)}>next ]</a>}
+          <span>Space: reveal · Backspace: hide · F: full screen · H: hide this</span>
+          <span id="count" />
+        </nav>
+        <script define:vars={{ prevUrl: props.prev ? boardUrl(props.prev) : '', nextUrl: props.next ? boardUrl(props.next) : '' }}>
+          const stage = document.getElementById('stage');
+          const fit = () => {
+            const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+          };
+          window.addEventListener('resize', fit);
+          fit();
+          // Shrink a column that is too tall for the stage. Hidden answers still take up space.
+          document.fonts.ready.then(() => {
+            const cols = document.querySelector('.stage-cols');
+            cols.querySelectorAll('.col').forEach((col) => {
+              const h = col.offsetHeight;
+              if (h > cols.clientHeight) col.style.zoom = String(cols.clientHeight / h);
+            });
+          });
+          const hidden = Array.from(document.querySelectorAll('[data-reveal]'));
+          let shown = 0;
+          const help = document.getElementById('help');
+          const count = document.getElementById('count');
+          const render = () => {
+            hidden.forEach((el, i) => el.classList.toggle('on', i < shown));
+            count.textContent = hidden.length ? `Revealed ${shown} of ${hidden.length}` : '';
+          };
+          render();
+          document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.key === 'ArrowRight') {
+              e.preventDefault();
+              shown = Math.min(hidden.length, shown + 1);
+            } else if (e.key === 'Backspace' || e.key === 'ArrowLeft') {
+              e.preventDefault();
+              shown = Math.max(0, shown - 1);
+            } else if (e.key === ']' && nextUrl) location.href = nextUrl;
+            else if (e.key === '[' && prevUrl) location.href = prevUrl;
+            else if (e.key === 'f' || e.key === 'F') {
+              if (document.fullscreenElement) document.exitFullscreen();
+              else document.documentElement.requestFullscreen();
+            } else if (e.key === 'h' || e.key === 'H') help.hidden = !help.hidden;
+            render();
+          });
+        </script>
+      </body>
+    </html>
+  )
+}
+
+<style is:global>
+  .rec-table {
+    border-collapse: collapse;
+    background: #fff;
+    border: 2px solid var(--border);
+    font-size: 17px;
+    width: 100%;
+  }
+  .rec-table th,
+  .rec-table td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #eef2f7;
+  }
+  .rec-table code {
+    white-space: nowrap;
+  }
+
+  /* Scripts */
+  .script {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    break-inside: avoid-page;
+  }
+  .script h2 {
+    font-size: 28px;
+  }
+  .script-meta {
+    font-size: 15px;
+  }
+  .board-sum {
+    font-size: 16px;
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  [data-year='8'] .board-sum {
+    background: #eef4fb;
+  }
+  .steps {
+    margin: 0;
+    padding-left: 1.4em;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .steps .do {
+    font-size: 15px;
+    font-weight: 600;
+    color: #7a5300;
+    background: var(--nearly-bg);
+    display: inline-block;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+  }
+  .steps .do::before {
+    content: 'Do: ';
+  }
+  .steps .say {
+    font-size: 18px;
+    line-height: 1.55;
+  }
+  @media print {
+    .site-header,
+    .site-footer,
+    .skip-link,
+    .script-meta a {
+      display: none !important;
+    }
+    body {
+      background: #fff;
+      font-size: 12pt;
+    }
+    .wrap {
+      padding: 0;
+      gap: 16px;
+    }
+    .hero.script-hero {
+      padding: 0;
+      background: none;
+      border: 0;
+    }
+    .script {
+      border: 1px solid #999;
+      break-inside: auto;
+    }
+    .steps .say {
+      font-size: 12pt;
+    }
+  }
+
+  /* Boards: a 1920 × 1080 stage scaled to fit the window */
+  .board-body {
+    background: #0a1b2e;
+    overflow: hidden;
+    margin: 0;
+  }
+  .stage {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: center;
+    background: var(--page);
+    padding: 56px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    overflow: hidden;
+  }
+  .stage-head {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 200px;
+  }
+  .stage-head .eyebrow {
+    font-size: 22px;
+  }
+  .stage-head h1 {
+    font-size: 64px;
+  }
+  .stage-sub {
+    font-size: 34px;
+    color: var(--muted);
+  }
+  .stage-yoka {
+    position: absolute;
+    right: 0;
+    top: -16px;
+  }
+  .stage-cols {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .stage-cols.single {
+    grid-template-columns: 1fr;
+  }
+  .stage .col {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+  }
+  .b {
+    margin: 0;
+  }
+  .b figcaption {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  [data-reveal] {
+    visibility: hidden;
+  }
+  [data-reveal].on {
+    visibility: visible;
+  }
+  .b-code {
+    container-type: inline-size;
+  }
+  .b-code ol {
+    list-style: none;
+    margin: 0;
+    padding: 24px 0;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 24px;
+    counter-reset: ln;
+  }
+  .b-code li {
+    counter-increment: ln;
+    display: flex;
+    gap: 24px;
+    padding: 0 32px;
+    /* Shrink long lines to fit: about 0.6em per character, plus the line number. */
+    font-size: min(40px, calc((100cqw - 64px) / (var(--chars) * 0.6 + 2.6)));
+    line-height: 1.6;
+    white-space: pre;
+  }
+  .b-code li::before {
+    content: counter(ln);
+    color: #6f86a0;
+    font-family: var(--font-code);
+    min-width: 1.2em;
+    text-align: right;
+  }
+  .b-code code {
+    font-family: var(--font-code);
+    font-weight: 500;
+    font-size: inherit;
+    background: none;
+    color: #fff;
+    padding: 0;
+    white-space: pre;
+  }
+  .b-output pre,
+  .b-error pre {
+    margin: 0;
+    font-family: var(--font-code);
+    font-size: 36px;
+    line-height: 1.5;
+    padding: 20px 28px;
+    border-radius: 20px;
+    white-space: pre-wrap;
+  }
+  .b-output pre {
+    background: #061220;
+    color: #fff;
+  }
+  .b-output .sp {
+    color: #6f86a0;
+  }
+  .b-error pre {
+    background: var(--nearly-bg);
+    color: var(--nearly-text);
+    border: 3px solid var(--nearly);
+    font-size: 30px;
+  }
+  .b-blank {
+    background: #fff;
+    border: 4px dashed #9cc4ec;
+    border-radius: 20px;
+    padding: 16px 24px;
+    min-height: calc(var(--lines) * 64px + 64px);
+  }
+  .b-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .b-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .b-val {
+    font-family: var(--font-code);
+    font-size: 38px;
+    background: #fff;
+    border: 5px solid var(--navy);
+    border-radius: 18px;
+    padding: 20px 28px;
+    min-width: 170px;
+    min-height: 100px;
+    text-align: center;
+    color: #1f6b45;
+  }
+  .b-val.text {
+    color: #7a5300;
+  }
+  .b-name {
+    font-family: var(--font-code);
+    font-size: 28px;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 10px;
+    padding: 4px 16px;
+  }
+  .b-index {
+    font-size: 28px;
+    color: var(--muted);
+  }
+  .b-listname {
+    font-size: 38px;
+    align-self: center;
+  }
+  .b-listname code {
+    font-size: inherit;
+  }
+  .b-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .bf {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 4px solid var(--border);
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px 12px;
+  }
+  .bf.blue { background: #e8f3fd; border-color: #9cc4ec; color: #1e4a7a; }
+  .bf.gold { background: #fff4d6; border-color: #e8c35a; color: #7a5300; }
+  .bf.green { background: var(--pass-bg); border-color: #8fcba8; color: #1f6b45; }
+  .bf-main {
+    font-family: var(--font-code);
+    font-size: 42px;
+    font-weight: 500;
+  }
+  .bf.plain .bf-main,
+  .bf.blue .bf-main {
+    color: var(--navy);
+  }
+  .bf-sub {
+    font-size: 24px;
+  }
+  .bf-arrow {
+    align-self: center;
+    font-size: 44px;
+    color: var(--muted);
+  }
+  .b-table table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border: 3px solid var(--border);
+    font-size: 30px;
+  }
+  .b-table th,
+  .b-table td {
+    text-align: left;
+    padding: 12px 18px;
+    border: 2px solid var(--border);
+    height: 68px;
+  }
+  .b-table td {
+    font-family: var(--font-code);
+  }
+  .b-table th {
+    color: var(--blue);
+    font-size: 26px;
+  }
+  .b-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 36px;
+  }
+  .b-points li {
+    background: #fff;
+    border: 3px solid var(--border);
+    border-left: 12px solid var(--gold);
+    border-radius: 16px;
+    padding: 14px 24px;
+    font-family: var(--font-code);
+  }
+  .b-big {
+    font-family: var(--font-code);
+    font-size: 56px;
+    color: var(--navy);
+    white-space: pre-line;
+  }
+  .board-help {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    background: rgba(10, 27, 46, 0.92);
+    color: #c9d6e4;
+    font-family: 'Lexend', sans-serif;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    z-index: 5;
+  }
+  .board-help a {
+    color: #e3c783;
+  }
+  .board-help[hidden] {
+    display: none;
+  }
+</style>

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { errors } from '../data/errors';
+import { highlightHtml } from '../lib/highlight';
+---
+
+<BaseLayout title="Error decoder" description="C# error messages explained in plain English.">
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Shared · Years 7 and 8</span>
+      <h1>Error decoder</h1>
+      <p class="summary">
+        An error message is C# telling you exactly where it got stuck. It names the <strong>line number</strong> and the problem.
+        A code like CS1002 means C# found the mistake before running anything; a name like FormatException means
+        the program started, then stopped.
+      </p>
+    </div>
+  </section>
+
+  <div class="filter" role="group" aria-label="Show errors for">
+    <span class="muted">Show:</span>
+    <button type="button" data-f="all" aria-pressed="true">Everything</button>
+    <button type="button" data-f="7" aria-pressed="false">Year 7</button>
+    <button type="button" data-f="8" aria-pressed="false">Year 8</button>
+  </div>
+
+  <div class="entry-list">
+    {
+      errors.map((e) => (
+        <article class="entry" id={e.id} data-year={e.year}>
+          <span class="tag">From Year {e.year}</span>
+          <h2 style="font-size:28px">{e.name}</h2>
+          <div class="looks">{e.looksLike}</div>
+          <p>{e.meaning}</p>
+          <div class="before-after">
+            <figure>
+              <figcaption>Broken</figcaption>
+              <pre class="code"><code set:html={highlightHtml(e.broken)} /></pre>
+            </figure>
+            <figure>
+              <figcaption>Fixed</figcaption>
+              <pre class="code"><code set:html={highlightHtml(e.fixed)} /></pre>
+            </figure>
+          </div>
+          <div>
+            <strong>Check:</strong>
+            <ul>
+              {e.check.map((c) => (
+                <li>{c}</li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  // Year 8 sees Year 7 errors too: they build on each other.
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-f]'));
+  const entries = Array.from(document.querySelectorAll<HTMLElement>('.entry'));
+  const apply = (f: string) => {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+    entries.forEach((e) => {
+      e.hidden = f !== 'all' && Number(e.dataset.year) > Number(f);
+      if (f === '8' && e.dataset.year === '7') e.hidden = false;
+    });
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.f!)));
+  const y = new URLSearchParams(location.search).get('year');
+  if (y === '7' || y === '8') apply(y);
+  if (location.hash) {
+    const target = document.querySelector<HTMLElement>(location.hash);
+    if (target?.hidden) apply('all');
+    target?.scrollIntoView();
+  }
+</script>

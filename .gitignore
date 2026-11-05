@@ -1,0 +1,15 @@
+.DS_Store
+.astro/
+__pycache__/
+node_modules/
+dist/
+
+# .NET build output, and the runner copied into the site at build time
+bin/
+obj/
+runner/publish/
+public/runner/
+
+# Model answers stay on this computer: the repository is public.
+src/content/lessons/**/solutions.json
+codegrade/

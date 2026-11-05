@@ -1,0 +1,35 @@
+{
+  "tasks": [
+    {
+      "id": "two-lines",
+      "title": "Hello and a sum",
+      "starter": "Console.WriteLine(\"Hello, Eltham College!\");\nConsole.WriteLine(5 * 3 + 4);",
+      "tests": [{ "input": "", "output": "Hello, Eltham College!\n19" }],
+      "hints": {
+        "lines": "Each Console.WriteLine() makes its own line. You should have exactly two lines.",
+        "other": "The second line is a sum. C# multiplies before it adds."
+      }
+    },
+    {
+      "id": "fix-semicolon",
+      "title": "Fix the greeting",
+      "starter": "Console.WriteLine(\"Hello, Year 7!\")\nConsole.WriteLine(\"Welcome to C#.\");",
+      "tests": [{ "input": "", "output": "Hello, Year 7!\nWelcome to C#." }],
+      "hints": {
+        "compile": "Look at the end of line 1. What does line 2 have at the end that line 1 doesn't?",
+        "capitals": "Check the capital H and the capital Y.",
+        "punctuation": "Keep the comma and the ! inside the speech marks."
+      }
+    },
+    {
+      "id": "year-and-sum",
+      "title": "Year 7 and a sum",
+      "starter": "",
+      "tests": [{ "input": "", "output": "Year 7\n56" }],
+      "hints": {
+        "lines": "You need two Console.WriteLine() lines.",
+        "other": "Put 7 * 8 inside Console.WriteLine() with no speech marks, so C# does the sum."
+      }
+    }
+  ]
+}

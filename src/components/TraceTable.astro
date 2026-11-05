@@ -1,0 +1,230 @@
+---
+// Step through a program one line at a time and fill the trace table row by row.
+import { highlightHtml } from '../lib/highlight';
+import { dots } from '../lib/render-diff';
+
+interface Props {
+  code: string;
+  columns: string[];
+  rows: { line?: number; cells: string[] }[];
+  caption?: string;
+  /** Show every row straight away instead of stepping. */
+  static?: boolean;
+}
+const { code, columns, rows, caption, static: isStatic = false } = Astro.props;
+const lines = code.replace(/\n$/, '').split('\n');
+const outputCol = columns.findIndex((c) => /output|prints/i.test(c));
+const wordy = columns.map((c) => /what happened|why|action|keep going|step/i.test(c));
+---
+
+<figure class="trace" data-trace={isStatic ? undefined : ''}>
+  <div class="trace-grid">
+    <ol class="trace-code" aria-label="The program">
+      {lines.map((l, i) => <li data-line={i + 1}><span class="ln" aria-hidden="true">{i + 1}</span><code set:html={highlightHtml(l) || ' '} /></li>)}
+    </ol>
+    <div class="trace-table-wrap">
+      <table>
+        {caption && <caption>{caption}</caption>}
+        <thead>
+          <tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((r) => (
+              <tr data-line={r.line}>
+                {r.cells.map((c, i) => (
+                  <td class:list={{ mono: !wordy[i] }} set:html={i === outputCol && c !== '—' ? dots(c) : c.replace(/&/g, '&amp;').replace(/</g, '&lt;')} />
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {
+    !isStatic && (
+      <div class="trace-controls">
+        <button type="button" class="btn btn-gold" data-next>Next step</button>
+        <button type="button" class="btn btn-soft" data-all>Show all</button>
+        <button type="button" class="btn btn-soft" data-again>Start again</button>
+        <span class="trace-status" aria-live="polite" />
+      </div>
+    )
+  }
+</figure>
+
+<style is:global>
+  .trace {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .trace-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .trace-code {
+    flex: 1 1 340px;
+    min-width: 0;
+    list-style: none;
+    margin: 0;
+    padding: 16px 0;
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: calc(var(--code-size) - 2px);
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .trace-code li {
+    display: flex;
+    gap: 14px;
+    padding: 0 18px;
+    white-space: pre;
+    border-left: 5px solid transparent;
+  }
+  .trace-code li.now {
+    background: var(--navy-2);
+    border-left-color: var(--gold);
+  }
+  .trace-code .ln {
+    color: #9fb3c8;
+    font-family: var(--font-code);
+    min-width: 1.4em;
+    text-align: right;
+    user-select: none;
+  }
+  .trace-code code {
+    font-family: var(--font-code);
+    font-weight: 500;
+    font-size: inherit;
+    background: none;
+    color: #fff;
+    padding: 0;
+    border-radius: 0;
+    white-space: pre;
+  }
+  .trace-table-wrap {
+    flex: 1 1 340px;
+    min-width: 0;
+    overflow-x: auto;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+  }
+  [data-year='8'] .trace-table-wrap {
+    border-width: 1px;
+  }
+  .trace table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 17px;
+  }
+  .trace caption {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 0 8px;
+  }
+  .trace th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 2px solid var(--border);
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  .trace td {
+    padding: 8px;
+    border-bottom: 1px solid #eef2f7;
+    vertical-align: top;
+  }
+  .trace td.mono {
+    font-family: var(--font-code);
+    font-size: 16px;
+  }
+  .trace tr.hidden-row td {
+    color: transparent;
+  }
+  .trace tr.hidden-row td *,
+  .trace tr.hidden-row td .sp {
+    color: transparent;
+  }
+  .trace tr.now td {
+    background: #fff4d6;
+  }
+  @keyframes rise {
+    0% {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  .trace tr.shown {
+    animation: rise 0.4s ease both;
+  }
+  .trace-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .trace-status {
+    font-size: 16px;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-trace]').forEach((fig) => {
+    const rows = Array.from(fig.querySelectorAll<HTMLTableRowElement>('tbody tr'));
+    const codeLines = Array.from(fig.querySelectorAll<HTMLElement>('.trace-code li'));
+    const status = fig.querySelector<HTMLElement>('.trace-status')!;
+    const next = fig.querySelector<HTMLButtonElement>('[data-next]')!;
+    let step = 0;
+
+    const render = (animate: boolean) => {
+      rows.forEach((r, i) => {
+        const shown = i < step;
+        r.classList.toggle('hidden-row', !shown);
+        r.classList.toggle('now', i === step - 1);
+        r.classList.toggle('shown', animate && i === step - 1);
+        r.setAttribute('aria-hidden', shown ? 'false' : 'true');
+      });
+      const line = rows[step - 1]?.dataset.line;
+      codeLines.forEach((li) => li.classList.toggle('now', !!line && li.dataset.line === line));
+      next.disabled = step >= rows.length;
+      status.textContent =
+        step === 0
+          ? 'Predict each row, then press Next step.'
+          : `Step ${step} of ${rows.length}${line ? `: line ${line}` : ''}. ${Array.from(rows[step - 1].cells)
+              .map((c, i) => `${fig.querySelectorAll('th')[i]?.textContent}: ${c.textContent}`)
+              .join(', ')}`;
+    };
+
+    next.addEventListener('click', () => {
+      step = Math.min(rows.length, step + 1);
+      render(true);
+    });
+    fig.querySelector('[data-all]')!.addEventListener('click', () => {
+      step = rows.length;
+      render(false);
+    });
+    fig.querySelector('[data-again]')!.addEventListener('click', () => {
+      step = 0;
+      render(false);
+      next.focus();
+    });
+    render(false);
+  });
+</script>

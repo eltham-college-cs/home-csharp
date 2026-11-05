@@ -1,0 +1,30 @@
+{
+  "name": "home-csharp",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "runner": "node scripts/build-runner.mjs",
+    "predev": "node scripts/build-runner.mjs",
+    "dev": "astro dev",
+    "prebuild": "node scripts/build-runner.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "verify": "node scripts/verify-tasks.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "4.3.14",
+    "@fontsource/fredoka": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@fontsource/lexend": "5.3.0",
+    "astro": "5.18.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@types/node": "22.18.0",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  }
+}

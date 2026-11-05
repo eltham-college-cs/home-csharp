@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/url';
+---
+
+<BaseLayout title="For grown-ups" description="How to help your child with C# at home, even if you have never coded.">
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Start here · for parents and carers</span>
+      <h1>You don't need to know C#</h1>
+      <p class="summary">
+        Your job is to be a curious partner, not a teacher. Fifteen minutes, a few questions, and lots of
+        encouragement.
+      </p>
+    </div>
+  </section>
+
+  <article class="lesson-body">
+    <h2>Your three jobs</h2>
+    <ol>
+      <li><strong>Read aloud.</strong> Read "The big idea" together. The comparisons (a waiter, a labelled box) are there for you as much as for them.</li>
+      <li><strong>Ask "what will happen?"</strong> Before every press of Run, ask for a prediction, then ask "why?". Getting a prediction wrong is useful: it shows exactly what to look at next.</li>
+      <li><strong>Check answers.</strong> The "Quiz me" questions have hidden answers. Read the question, let them answer, then press Reveal.</li>
+    </ol>
+
+    <h2>What the page does for you</h2>
+    <ul>
+      <li><strong>Run</strong> runs their program. If the program asks a question, a box appears to type the answer.</li>
+      <li><strong>Check my code</strong> tests the program exactly as CodeBash does at school. Every space, capital letter and full stop has to match. Dots (·) show where the spaces are.</li>
+      <li>If something is wrong, the page explains what to look at. Red error messages link to the <a href={url('/error-decoder/')}>error decoder</a>, which explains each one in plain English.</li>
+      <li>The <a href={url('/key-words/')}>key words</a> page explains every word they meet.</li>
+    </ul>
+
+    <h2>Good things to say</h2>
+    <ul>
+      <li>"What do you think will happen? Why?"</li>
+      <li>"Read me the error. Which line number does it give?"</li>
+      <li>"Which line do you think is the problem?"</li>
+      <li>"You've fixed that one. Can you explain what was wrong?"</li>
+    </ul>
+    <p>Try not to type for them. Pointing at the screen and asking a question works better.</p>
+
+    <h2>Privacy</h2>
+    <p>
+      C# runs inside your web browser. Nothing your child types is sent anywhere: there are no accounts, no
+      cookies and no tracking. Their ratings and saved code are stored on this computer only. The first time they
+      open a lesson, the browser downloads C# (about 7 MB), so the first run can take a few seconds. After that it
+      is remembered.
+    </p>
+
+    <h2>If you get stuck</h2>
+    <p>
+      That's normal. Note down which lesson and which task, and your child can bring it to their next Computer
+      Science lesson.
+    </p>
+  </article>
+</BaseLayout>

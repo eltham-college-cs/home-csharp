@@ -1,0 +1,82 @@
+---
+year: 7
+unit: C# basics
+unitSlug: csharp-basics
+lesson: 1
+title: Printing and data types
+summary: Make the computer talk, and learn the difference between text and numbers.
+minutes: 15
+keywords: [Console.WriteLine, semicolon, string, int, data type, operator, order of operations, compile error]
+yokaSays: "Hi, I'm Yoka! Let's make the computer talk."
+---
+
+<ParentTip>
+Read the big idea aloud together. Then, before every Run, ask "what do you think will appear on the screen?"
+</ParentTip>
+
+## The big idea
+
+`Console.WriteLine()` is the computer's **speech bubble**. Whatever you put inside the brackets appears on the screen, on its own line.
+
+Every instruction in C# ends with a **semicolon** `;`, just like a full stop ends a sentence.
+
+```csharp
+Console.WriteLine("Hello!");
+```
+
+C# has different kinds of data. Today we meet two:
+
+- A **string** is a piece of text. It always wears speech marks: `"Hello"`.
+- An **int** (short for integer) is a whole number, like `7`, `42` or `-3`. No speech marks.
+
+<MemoryBoxes boxes={[
+  { name: "a string", value: "\"Hello\"" },
+  { name: "an int", value: "12" },
+  { name: "a string!", value: "\"12\"" }
+]} caption='Speech marks make it text. 12 is a number, but "12" is text.' />
+
+You can do maths with ints: `+` add, `-` subtract, `*` multiply, `/` divide.
+C# does `*` and `/` before `+` and `-`, just like in maths.
+
+<LessonVideo clip="bigIdea" />
+
+## Predict, then run
+
+<CsChecker task="two-lines" predict="What two lines will this print? Careful with the sum!" />
+
+<LessonVideo clip="predictRun" />
+
+## Match it exactly
+
+The checker compares your output with the answer letter by letter. The dots show spaces.
+Can you find what's different in each pair?
+
+<SpotTheDifference pairs={[
+  { kind: "Capitals", a: "Hello, Year 7!", b: "hello, Year 7!", answer: "The H should be a capital." },
+  { kind: "Spaces", a: "Hello, Year 7!", b: "Hello,Year 7!", answer: "There should be a space after the comma." },
+  { kind: "Punctuation", a: "Hello, Year 7!", b: "Hello, Year 7", answer: "The ! is missing at the end." }
+]} />
+
+## Fix the bug
+
+C# checks your whole program **before** it runs any of it. If it finds a mistake, nothing runs, and it tells you the line number.
+Press Run and read the message. What is missing?
+
+<CsChecker task="fix-semicolon" />
+
+<LessonVideo clip="fixBug" />
+
+## Extra challenge
+
+<CsChecker task="year-and-sum" brief="Print <strong>Year 7</strong> on the first line. On the second line, let C# work out <strong>7 * 8</strong> for you." />
+
+## Quiz me
+
+<QuizMe questions={[
+  { q: "What does `Console.WriteLine()` do?", a: "It shows whatever is inside the brackets on the screen, then moves to a new line." },
+  { q: "What goes at the end of every instruction in C#?", a: "A semicolon `;`." },
+  { q: "Which is an int: `7` or `\"7\"`?", a: "`7`. The one with speech marks is a string (text)." },
+  { q: "What will `Console.WriteLine(5 * 3 + 4);` show?", a: "19. C# multiplies first (15), then adds 4." }
+]} />
+
+<SelfRating question='Could you explain the difference between 7 and "7"?' />

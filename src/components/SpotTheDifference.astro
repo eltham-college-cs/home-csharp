@@ -1,0 +1,73 @@
+---
+// Pairs of outputs that differ by a space, a capital or a punctuation mark.
+import { dots } from '../lib/render-diff';
+
+interface Props {
+  pairs: { kind: string; a: string; b: string; answer: string }[];
+}
+const { pairs } = Astro.props;
+---
+
+<div class="spot-grid">
+  {
+    pairs.map((p) => (
+      <div class="spot-card">
+        <span class="spot-kind">{p.kind}</span>
+        <span class="out spot-line" set:html={dots(p.a)} />
+        <span class="out spot-line" set:html={dots(p.b)} />
+        <details class="reveal">
+          <summary class="btn btn-soft">Show answer</summary>
+          <p>{p.answer}</p>
+        </details>
+      </div>
+    ))
+  }
+</div>
+
+<style is:global>
+  .spot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .spot-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  [data-year='8'] .spot-card {
+    border-width: 1px;
+  }
+  .spot-kind {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .spot-line {
+    font-size: 20px;
+  }
+  .reveal summary {
+    list-style: none;
+    width: fit-content;
+    margin-top: 4px;
+  }
+  .reveal summary::-webkit-details-marker {
+    display: none;
+  }
+  .reveal[open] summary {
+    display: none;
+  }
+  .reveal p {
+    background: var(--pass-bg);
+    color: #1f4d35;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 17px;
+  }
+</style>

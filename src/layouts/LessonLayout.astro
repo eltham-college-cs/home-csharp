@@ -1,0 +1,103 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Yoka from '../components/Yoka.astro';
+import CodeBashPractice from '../components/CodeBashPractice.astro';
+import type { Lesson } from '../lib/lessons';
+import { lessonUrl } from '../lib/lessons';
+import { url } from '../lib/url';
+
+interface Props {
+  entry: Lesson;
+  sections: { slug: string; text: string }[];
+  prev?: Lesson;
+  next?: Lesson;
+}
+const { entry, sections, prev, next } = Astro.props;
+const d = entry.data;
+---
+
+<BaseLayout title={`Year ${d.year}: ${d.title}`} description={d.summary} year={d.year}>
+  <section class="hero" aria-labelledby="lesson-title">
+    <div class="hero-text">
+      <span class="eyebrow">Year {d.year} · {d.unit} · Lesson {d.lesson}</span>
+      <h1 id="lesson-title">{d.title}</h1>
+      <p class="summary">{d.summary}</p>
+      <nav class="progress" aria-label="Lesson sections">
+        <ol>
+          {
+            sections.map((s, i) => (
+              <li class:list={{ done: i === 0 }}>
+                <a href={`#${s.slug}`} aria-label={`Section ${i + 1}: ${s.text}`} />
+              </li>
+            ))
+          }
+        </ol>
+        <span class="minutes">About {d.minutes} minutes</span>
+      </nav>
+      <div class="hero-links">
+        <a href={url(`/year-${d.year}/`)}>All Year {d.year} lessons</a>
+        {
+          d.deck && (
+            <a href={d.deck} target="_blank" rel="noopener noreferrer">
+              Lesson slides<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          )
+        }
+        {d.codebashTopic && <span class="muted">CodeBash: {d.codebashTopic}</span>}
+      </div>
+    </div>
+    {
+      d.year === 7 && (
+        <div class="hero-yoka">
+          <div class="speech">{d.yokaSays ?? "Hi, I'm Yoka! Let's do this together."}</div>
+          <Yoka mood="idle" size={210} />
+        </div>
+      )
+    }
+  </section>
+
+  <article class="lesson-body">
+    <slot />
+    {d.codebashTasks.length > 0 && <CodeBashPractice year={d.year} tasks={d.codebashTasks} />}
+  </article>
+
+  <nav class="pager" aria-label="More lessons">
+    {
+      prev && (
+        <a href={lessonUrl(prev)}>
+          <span class="dir">← Previous lesson</span>
+          <span class="t">{prev.data.title}</span>
+        </a>
+      )
+    }
+    {
+      next && (
+        <a href={lessonUrl(next)} class="next">
+          <span class="dir">Next lesson →</span>
+          <span class="t">{next.data.title}</span>
+        </a>
+      )
+    }
+  </nav>
+</BaseLayout>
+
+<script>
+  // Light up the progress bar as the reader moves through the sections.
+  const dots = Array.from(document.querySelectorAll<HTMLLIElement>('.progress li'));
+  const heads = Array.from(document.querySelectorAll<HTMLElement>('.lesson-body > h2'));
+  if (dots.length && heads.length && 'IntersectionObserver' in window) {
+    let furthest = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const i = heads.indexOf(e.target as HTMLElement);
+          if (i > furthest) furthest = i;
+        }
+        dots.forEach((d, i) => d.classList.toggle('done', i <= furthest));
+      },
+      { rootMargin: '0px 0px -40% 0px' },
+    );
+    heads.forEach((h) => io.observe(h));
+  }
+</script>

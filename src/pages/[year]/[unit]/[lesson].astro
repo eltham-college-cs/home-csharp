@@ -1,0 +1,55 @@
+---
+import { render } from 'astro:content';
+import LessonLayout from '../../../layouts/LessonLayout.astro';
+import { getLessons, lessonSlug, tasksFor, type Lesson } from '../../../lib/lessons';
+import ParentTip from '../../../components/ParentTip.astro';
+import Note from '../../../components/Note.astro';
+import InputFlow from '../../../components/InputFlow.astro';
+import MemoryBoxes from '../../../components/MemoryBoxes.astro';
+import CsChecker from '../../../components/CsChecker.astro';
+import OutputDiff from '../../../components/OutputDiff.astro';
+import TraceTable from '../../../components/TraceTable.astro';
+import SpotTheDifference from '../../../components/SpotTheDifference.astro';
+import Parsons from '../../../components/Parsons.astro';
+import QuizMe from '../../../components/QuizMe.astro';
+import SelfRating from '../../../components/SelfRating.astro';
+import LessonVideo from '../../../components/LessonVideo.astro';
+
+// Every lesson can use these without importing them.
+const components = {
+  ParentTip, Note, InputFlow, MemoryBoxes, CsChecker, OutputDiff, TraceTable,
+  SpotTheDifference, Parsons, QuizMe, SelfRating, LessonVideo,
+};
+
+export async function getStaticPaths() {
+  const all = await getLessons();
+  return all.map((entry) => {
+    const sameYear = all.filter((l) => l.data.year === entry.data.year);
+    const i = sameYear.indexOf(entry);
+    return {
+      params: { year: `year-${entry.data.year}`, unit: entry.data.unitSlug, lesson: lessonSlug(entry) },
+      props: { entry, prev: sameYear[i - 1], next: sameYear[i + 1] },
+    };
+  });
+}
+
+interface Props {
+  entry: Lesson;
+  prev?: Lesson;
+  next?: Lesson;
+}
+const { entry, prev, next } = Astro.props;
+Astro.locals.lesson = {
+  id: entry.id,
+  year: entry.data.year,
+  lesson: entry.data.lesson,
+  videos: entry.data.videos,
+  tasks: tasksFor(entry),
+};
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2);
+---
+
+<LessonLayout entry={entry} sections={sections} prev={prev} next={next}>
+  <Content components={components} />
+</LessonLayout>

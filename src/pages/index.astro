@@ -1,0 +1,75 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Yoka from '../components/Yoka.astro';
+import { lessonUrl } from '../lib/lessons';
+import { url } from '../lib/url';
+
+const years = (await getCollection('years')).sort((a, b) => a.data.year - b.data.year);
+const thisWeek = (
+  await Promise.all(years.flatMap((y) => y.data.thisWeek.map((id) => getEntry('lessons', id))))
+).filter((e) => e && !(import.meta.env.PROD && e.data.draft));
+---
+
+<BaseLayout title="C# at Home">
+  <section class="hero home-hero">
+    <div class="hero-text">
+      <span class="eyebrow">Eltham College · Computer Science</span>
+      <h1>C# at Home</h1>
+      <p class="summary">
+        Short, friendly C# sessions for when the lesson moved too fast. About 15 minutes each, with instant
+        feedback that works just like CodeBash.
+      </p>
+      <p><a href={url('/parents/')}>Grown-ups: start here (2 minute read)</a></p>
+    </div>
+    <div class="hero-yoka">
+      <div class="speech">Pick your year and let's go!</div>
+      <Yoka mood="idle" size={190} />
+    </div>
+  </section>
+
+  <section aria-labelledby="choose">
+    <h2 id="choose" style="margin-bottom:16px">Choose your year</h2>
+    <div class="year-grid">
+      {
+        years.map((y) => (
+          <a class:list={['year-card', `y${y.data.year}`]} href={url(`/year-${y.data.year}/`)}>
+            <span class="big">Year {y.data.year}</span>
+            <span>{y.data.tagline}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    thisWeek.length > 0 && (
+      <section aria-labelledby="week">
+        <h2 id="week" style="margin-bottom:16px">This week</h2>
+        <ul class="lesson-list">
+          {thisWeek.map((l) => (
+            <li>
+              <a class="lesson-link" href={lessonUrl(l!)}>
+                <span class="num" aria-hidden="true">
+                  {l!.data.year}
+                </span>
+                <span class="title-wrap">
+                  <span class="title">
+                    Year {l!.data.year}: {l!.data.title}
+                  </span>
+                  <span class="sum">{l!.data.summary}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  body[data-year='shared'] .home-hero {
+    background: #e8f3fd;
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+// "Could you explain it?" Stored in this browser only (localStorage), per lesson.
+interface Props {
+  question: string;
+}
+const { question } = Astro.props;
+const id = Astro.locals.lesson?.id ?? 'lesson';
+---
+
+<section class="self-rating" data-rating={id} aria-labelledby={`rate-${id.replace(/\W+/g, '-')}`}>
+  <div>
+    <span class="label">LAST STEP</span>
+    <p class="question" id={`rate-${id.replace(/\W+/g, '-')}`}>{question}</p>
+  </div>
+  <div class="choices" role="group" aria-label="How confident do you feel?">
+    <button type="button" data-v="notyet" aria-pressed="false">Not yet</button>
+    <button type="button" data-v="sortof" aria-pressed="false">Sort of</button>
+    <button type="button" data-v="yes" aria-pressed="false">Yes!</button>
+  </div>
+  <p class="thanks" aria-live="polite"></p>
+</section>
+
+<script>
+  const messages: Record<string, string> = {
+    notyet: "That's fine. Watch the video again, or try the first task once more. Mr Gordon can help in class too.",
+    sortof: 'Good progress. Try the quiz again tomorrow to make it stick.',
+    yes: 'Brilliant. Try explaining it to your grown-up right now!',
+  };
+  document.querySelectorAll<HTMLElement>('[data-rating]').forEach((root) => {
+    const key = `pah:rating:${root.dataset.rating}`;
+    const thanks = root.querySelector<HTMLElement>('.thanks')!;
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('button'));
+    const show = (v: string | null, announce: boolean) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+      if (announce && v) thanks.textContent = messages[v];
+    };
+    try {
+      show(localStorage.getItem(key), false);
+    } catch {}
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        try {
+          localStorage.setItem(key, b.dataset.v!);
+        } catch {}
+        show(b.dataset.v!, true);
+      }),
+    );
+  });
+</script>

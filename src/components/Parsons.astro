@@ -1,0 +1,176 @@
+---
+// Put the lines of a program in the right order. Works with drag and drop,
+// and with the Move up / Move down buttons for keyboard users.
+interface Props {
+  /** The lines in the correct order (indentation included). */
+  lines: string[];
+  prompt?: string;
+}
+const { lines, prompt = 'Put the lines in the right order.' } = Astro.props;
+// A fixed shuffle so the page is the same every time it builds.
+const order = lines.map((_, i) => i);
+let seed = lines.join('').length + 7;
+for (let i = order.length - 1; i > 0; i--) {
+  seed = (seed * 9301 + 49297) % 233280;
+  const j = Math.floor((seed / 233280) * (i + 1));
+  [order[i], order[j]] = [order[j], order[i]];
+}
+if (order.every((v, i) => v === i) && order.length > 1) order.reverse();
+---
+
+<div class="parsons" data-parsons={JSON.stringify(lines)}>
+  <p class="parsons-prompt">{prompt}</p>
+  <ol class="parsons-list">
+    {
+      order.map((i) => (
+        <li class="parsons-line" draggable="true" data-i={i}>
+          <span class="grip" aria-hidden="true">⋮⋮</span>
+          <code class="pl">{lines[i]}</code>
+          <span class="moves">
+            <button type="button" class="mv" data-up aria-label={`Move up: ${lines[i].trim()}`}>↑</button>
+            <button type="button" class="mv" data-down aria-label={`Move down: ${lines[i].trim()}`}>↓</button>
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="parsons-actions">
+    <button type="button" class="btn btn-gold" data-check-order>Check the order</button>
+    <span class="parsons-msg" aria-live="polite"></span>
+  </div>
+</div>
+
+<style is:global>
+  .parsons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .parsons-list {
+    list-style: none;
+    margin: 0;
+    padding: 12px;
+    background: var(--navy);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .parsons-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--navy-2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 6px 8px 6px 12px;
+    cursor: grab;
+    border: 2px solid transparent;
+  }
+  .parsons-line.dragging {
+    opacity: 0.5;
+  }
+  .parsons-line.right {
+    border-color: #8fcba8;
+  }
+  .parsons-line.wrong {
+    border-color: var(--nearly);
+  }
+  .grip {
+    color: #9fb3c8;
+  }
+  .pl {
+    flex: 1;
+    white-space: pre;
+    font-size: calc(var(--code-size) - 3px);
+    background: none !important;
+    color: #fff !important;
+    padding: 0 !important;
+    overflow-x: auto;
+  }
+  .moves {
+    display: flex;
+    gap: 6px;
+  }
+  .mv {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 0;
+    background: #0a1b2e;
+    color: var(--gold-light);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .mv:focus-visible {
+    outline-color: var(--gold-light);
+  }
+  .parsons-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .parsons-msg {
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-parsons]').forEach((root) => {
+    const list = root.querySelector<HTMLOListElement>('.parsons-list')!;
+    const msg = root.querySelector<HTMLElement>('.parsons-msg')!;
+    let dragged: HTMLElement | null = null;
+    const clear = () => {
+      list.querySelectorAll('.parsons-line').forEach((li) => li.classList.remove('right', 'wrong'));
+      msg.textContent = '';
+    };
+
+    list.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('button');
+      if (!btn) return;
+      const li = btn.closest('li')!;
+      if (btn.hasAttribute('data-up') && li.previousElementSibling) list.insertBefore(li, li.previousElementSibling);
+      else if (btn.hasAttribute('data-down') && li.nextElementSibling) list.insertBefore(li.nextElementSibling, li);
+      clear();
+      btn.focus();
+      const pos = Array.from(list.children).indexOf(li) + 1;
+      msg.textContent = `Moved to position ${pos}.`;
+    });
+
+    list.addEventListener('dragstart', (e) => {
+      dragged = (e.target as HTMLElement).closest('li');
+      dragged?.classList.add('dragging');
+    });
+    list.addEventListener('dragend', () => {
+      dragged?.classList.remove('dragging');
+      dragged = null;
+      clear();
+    });
+    list.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const over = (e.target as HTMLElement).closest('li');
+      if (!dragged || !over || over === dragged) return;
+      const rect = over.getBoundingClientRect();
+      const after = e.clientY > rect.top + rect.height / 2;
+      list.insertBefore(dragged, after ? over.nextElementSibling : over);
+    });
+
+    root.querySelector('[data-check-order]')!.addEventListener('click', () => {
+      const answer: string[] = JSON.parse(root.dataset.parsons!);
+      const items = Array.from(list.querySelectorAll<HTMLElement>('.parsons-line'));
+      let right = 0;
+      items.forEach((li, pos) => {
+        // Compare text, so two identical lines can go in either place.
+        const ok = answer[Number(li.dataset.i)] === answer[pos];
+        li.classList.toggle('right', ok);
+        li.classList.toggle('wrong', !ok);
+        if (ok) right++;
+      });
+      msg.textContent =
+        right === items.length
+          ? 'Every line is in the right place. Well done!'
+          : `${right} of ${items.length} lines are in the right place. The amber lines need to move.`;
+    });
+  });
+</script>

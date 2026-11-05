@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+  <!--
+    The in-browser C# runner for C# at Home.
+    Compiles a student's program with Roslyn and runs it, all inside the browser
+    (a Web Worker). No server, so no student code leaves the device.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Students' programs need parts of the framework the runner itself never calls,
+         so those assemblies are kept whole when trimming (see TrimmerRootAssembly below). -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <WasmEnableSIMD>true</WasmEnableSIMD>
+    <!-- Keep real exception messages ("The input string 'seven' was not in a correct format.")
+         instead of resource keys; students see them. -->
+    <UseSystemResourceKeys>false</UseSystemResourceKeys>
+    <!-- Reference assemblies Roslyn compiles student code against. -->
+    <RefPackDir>$(NetCoreTargetingPackRoot)/Microsoft.NETCore.App.Ref/$(BundledNETCoreAppPackageVersion)/ref/$(TargetFramework)</RefPackDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="$(RefPackDir)/System.Runtime.dll" LogicalName="ref/System.Runtime.dll" />
+    <EmbeddedResource Include="$(RefPackDir)/System.Console.dll" LogicalName="ref/System.Console.dll" />
+    <EmbeddedResource Include="$(RefPackDir)/System.Collections.dll" LogicalName="ref/System.Collections.dll" />
+    <EmbeddedResource Include="$(RefPackDir)/System.Linq.dll" LogicalName="ref/System.Linq.dll" />
+    <EmbeddedResource Include="$(RefPackDir)/System.Runtime.Extensions.dll" LogicalName="ref/System.Runtime.Extensions.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="System.Private.CoreLib" />
+    <TrimmerRootAssembly Include="System.Runtime" />
+    <TrimmerRootAssembly Include="System.Console" />
+    <TrimmerRootAssembly Include="System.Collections" />
+    <TrimmerRootAssembly Include="System.Linq" />
+    <TrimmerRootAssembly Include="System.Runtime.Extensions" />
+  </ItemGroup>
+</Project>

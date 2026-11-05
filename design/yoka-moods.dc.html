@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Yoka mascot moods</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&amp;family=Lexend:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBFAF5}
+</style>
+</helmet>
+<div style="font-family: Lexend, sans-serif; color: #1A1D21; background: #FBFAF5; padding: 48px; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 15px; font-weight: 500; letter-spacing: .08em; color: #1E5FA8">MASCOT</span>
+<h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 48px; color: #0A1B2E">Yoka's moods</h1>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<div style="background: #E8F3FD; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<dc-import name="yoka-mascot" mood="idle" size="220" hint-size="220px,220px"></dc-import>
+<span style="font-family: Fredoka, sans-serif; font-size: 28px; font-weight: 600; color: #0A1B2E">Waiting</span>
+<span style="font-size: 17px; color: #2B3440">Blinks and flicks his tongue while the child reads or types.</span>
+</div>
+<div style="background: #E6F4EC; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<dc-import name="yoka-mascot" mood="happy" size="220" hint-size="220px,220px"></dc-import>
+<span style="font-family: Fredoka, sans-serif; font-size: 28px; font-weight: 600; color: #1F6B45">All tests pass</span>
+<span style="font-size: 17px; color: #1F4D35">Happy eyes, big grin, bouncing, tail wagging, sparkles.</span>
+</div>
+<div style="background: #FFF4D6; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<dc-import name="yoka-mascot" mood="tryagain" size="220" hint-size="220px,220px"></dc-import>
+<span style="font-family: Fredoka, sans-serif; font-size: 28px; font-weight: 600; color: #7A5300">Keep trying</span>
+<span style="font-size: 17px; color: #4A3300">Determined brows, nodding, tail raised in a fist-pump.</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":620}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+---
+// Runner self-test: runs small C# programs through the real runner (src/lib/cs.ts) and
+// checks the results. Only built in development (`npm run dev`, then open /dev/runner/).
+// window.runnerTests holds the results for automated checks.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  if (import.meta.env.PROD) return [];
+  return [{ params: { slug: 'runner' } }];
+}
+---
+
+<BaseLayout title="Runner self-test" year={8}>
+  <main class="wrap" style="padding: 32px 16px">
+    <h1>C# runner self-test</h1>
+    <p id="status">Starting…</p>
+    <table class="rt">
+      <thead><tr><th>Check</th><th>Result</th><th>What came back</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+</BaseLayout>
+
+<style>
+  .rt { border-collapse: collapse; width: 100%; background: #fff; font-size: 15px; }
+  .rt td, .rt th { border: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
+  .rt code { white-space: pre-wrap; word-break: break-word; font-size: 13px; }
+  .rt .pass { background: #e6f4ec; }
+  .rt .fail { background: #fce9e7; }
+</style>
+
+<script>
+  import { runCSharp, warmUp } from '../../lib/cs';
+  import { classify, programOutput, type RunResult } from '../../lib/compare';
+  import { findError } from '../../data/errors';
+
+  type Case = {
+    name: string;
+    code: string;
+    input?: string[];
+    mode?: 'run' | 'test';
+    seed?: number;
+    expect: (r: RunResult) => boolean;
+    /** Error decoder entry this program's error should open. */
+    decoder?: string;
+  };
+  const out = (r: RunResult) => programOutput(r.segments);
+  const err = (r: RunResult) => r.error;
+
+  const cases: Case[] = [
+    { name: 'Hello world', code: 'Console.WriteLine("Hello, world!");', expect: (r) => out(r) === 'Hello, world!\n' },
+    {
+      name: 'Input, int.Parse, typed answers echoed',
+      code: 'Console.Write("First: ");\nint a = int.Parse(Console.ReadLine());\nint b = Convert.ToInt32(Console.ReadLine());\nConsole.WriteLine(a + b);',
+      input: ['3', '4'],
+      expect: (r) => out(r) === 'First: 7\n' && r.segments.filter((s) => s.kind === 'in').map((s) => s.text).join('') === '3\n4\n',
+    },
+    { name: 'Integer division', code: 'Console.WriteLine(7 / 2);\nConsole.WriteLine(7 / 2.0);', expect: (r) => out(r) === '3\n3.5\n' },
+    { name: 'Interpolation and doubles', code: 'double p = 2.5;\nConsole.WriteLine($"Cost: {p * 2}");', expect: (r) => out(r) === 'Cost: 5\n' },
+    { name: 'Run mode asks for input', code: 'string a = Console.ReadLine();\nConsole.WriteLine(a);\nstring b = Console.ReadLine();', input: ['one'], expect: (r) => r.needInput === true && out(r) === 'one\n' },
+    { name: 'Test mode: ReadLine gives null when input runs out', code: 'string a = Console.ReadLine();\nConsole.WriteLine(a == null);', mode: 'test', expect: (r) => out(r) === 'True\n' },
+    { name: 'Same seed, same random numbers', code: 'Random r = new Random();\nConsole.WriteLine(r.Next(1, 1000000));\nConsole.WriteLine(Random.Shared.Next(1, 1000000));', seed: 5, expect: () => true },
+    { name: 'Lists', code: 'List<string> pets = new List<string> { "cat", "dog" };\npets.Add("fish");\npets.Insert(0, "rabbit");\npets.Remove("dog");\nforeach (string p in pets) Console.WriteLine(p);\nConsole.WriteLine(pets.Count);', expect: (r) => out(r) === 'rabbit\ncat\nfish\n3\n' },
+    { name: 'Static state resets between runs', code: 'C.n++;\nConsole.WriteLine(C.n);\nclass C { public static int n; }', expect: (r) => out(r) === '1\n' },
+    { name: 'Printing forever counts as never finishing', code: 'while (true) Console.WriteLine("again");', expect: (r) => r.timeout === true },
+    { name: 'Silent infinite loop times out', code: 'int x = 0;\nwhile (x < 10) { }', expect: (r) => r.timeout === true },
+    { name: 'Works again after a timeout', code: 'Console.WriteLine("back");', expect: (r) => out(r) === 'back\n' },
+
+    // Compile errors: one per error decoder entry.
+    { name: 'Missing semicolon', code: 'Console.WriteLine("Hi")', decoder: 'cs1002-semicolon', expect: (r) => !!err(r)?.compile && err(r)?.line === 1 },
+    { name: 'Lower-case console', code: 'console.WriteLine("Hi");', decoder: 'cs0103-name', expect: (r) => err(r)?.type === 'CS0103' },
+    { name: 'Undeclared variable', code: 'Console.WriteLine(score);', decoder: 'cs0103-name', expect: (r) => err(r)?.type === 'CS0103' },
+    { name: 'Writeline with a small l', code: 'Console.Writeline("Hi");', decoder: 'cs0117-member', expect: (r) => err(r)?.type === 'CS0117' },
+    { name: 'String into an int', code: 'int age = Console.ReadLine();', decoder: 'cs0029-string-to-int', expect: (r) => err(r)?.type === 'CS0029' },
+    { name: 'Double into an int', code: 'int half = 7 / 2.0;', decoder: 'cs0266-double-to-int', expect: (r) => err(r)?.type === 'CS0266' },
+    { name: '= instead of == in an if', code: 'int x = 5;\nif (x = 5)\n{\n    Console.WriteLine("five");\n}', decoder: 'cs0029-if-equals', expect: (r) => err(r)?.type === 'CS0029' },
+    { name: 'Maths with text', code: 'string money = "10";\nConsole.WriteLine(money - 2);', decoder: 'cs0019-operator', expect: (r) => err(r)?.type === 'CS0019' },
+    { name: 'Comparing text with a number', code: 'string mark = "60";\nif (mark >= 50)\n{\n    Console.WriteLine("Pass");\n}', decoder: 'cs0019-operator', expect: (r) => err(r)?.type === 'CS0019' },
+    { name: 'Declared twice', code: 'int score = 0;\nint score = 5;', decoder: 'cs0128-declared-twice', expect: (r) => err(r)?.type === 'CS0128' },
+    { name: 'Used before a value is set', code: 'int total;\nConsole.WriteLine(total);', decoder: 'cs0165-unassigned', expect: (r) => err(r)?.type === 'CS0165' },
+    { name: 'Unclosed string', code: 'Console.WriteLine("Hi);', decoder: 'cs1010-string', expect: (r) => err(r)?.type === 'CS1010' },
+    { name: 'Missing )', code: 'Console.WriteLine("Hi";', decoder: 'cs1026-brackets', expect: (r) => err(r)?.type === 'CS1026' },
+    { name: 'Missing }', code: 'if (true)\n{\n    Console.WriteLine("Hi");', decoder: 'cs1513-braces', expect: (r) => err(r)?.type === 'CS1513' },
+    { name: 'Comparison on its own', code: 'int x = 1;\nx == 2;', decoder: 'cs0201-not-a-statement', expect: (r) => err(r)?.type === 'CS0201' },
+    { name: 'int.Parse of a number', code: 'int x = int.Parse(5);', decoder: 'cs1503-argument', expect: (r) => err(r)?.type === 'CS1503' },
+    { name: 'Missing quotes', code: 'Console.WriteLine(Hello world);', decoder: 'cs0103-name', expect: (r) => !!err(r)?.compile },
+
+    // Runtime errors.
+    { name: 'int.Parse("seven")', code: 'Console.WriteLine("Age?");\nint age = int.Parse("seven");', decoder: 'formatexception', expect: (r) => err(r)?.type === 'FormatException' && err(r)?.line === 2 && out(r) === 'Age?\n' },
+    { name: 'Too big for an int', code: 'int big = int.Parse("99999999999");', decoder: 'overflowexception', expect: (r) => err(r)?.type === 'OverflowException' },
+    { name: 'More ReadLine() calls than answers', code: 'int a = int.Parse(Console.ReadLine());\nint b = int.Parse(Console.ReadLine());', input: ['1'], mode: 'test', decoder: 'argumentnullexception', expect: (r) => err(r)?.type === 'ArgumentNullException' && err(r)?.line === 2 },
+    { name: 'Null text from ReadLine', code: 'string name = Console.ReadLine();\nConsole.WriteLine(name.ToUpper());', mode: 'test', decoder: 'nullreferenceexception', expect: (r) => err(r)?.type === 'NullReferenceException' },
+    { name: 'List index too big', code: 'List<int> xs = new List<int> { 1 };\nConsole.WriteLine(xs[5]);', decoder: 'argumentoutofrange-index', expect: (r) => err(r)?.type === 'ArgumentOutOfRangeException' && err(r)?.line === 2 },
+    { name: 'String index too big', code: 'string w = "cat";\nConsole.WriteLine(w[3]);', decoder: 'indexoutofrange', expect: (r) => err(r)?.type === 'IndexOutOfRangeException' },
+    { name: 'Divide by zero', code: 'int zero = 0;\nConsole.WriteLine(10 / zero);', decoder: 'dividebyzero', expect: (r) => err(r)?.type === 'DivideByZeroException' },
+    { name: 'Changing a list in foreach', code: 'List<int> xs = new List<int> { 1, 2 };\nforeach (int x in xs)\n{\n    xs.Add(x);\n}', decoder: 'collection-modified', expect: (r) => err(r)?.type === 'InvalidOperationException' },
+  ];
+
+  const rows = document.getElementById('rows')!;
+  const status = document.getElementById('status')!;
+  const results: { name: string; pass: boolean; ms: number; result: RunResult; decoderFound?: string }[] = [];
+  (window as any).runnerTests = { results, done: false };
+
+  const t0 = performance.now();
+  await warmUp();
+  const readyMs = Math.round(performance.now() - t0);
+  status.textContent = `Ready in ${readyMs} ms. Running…`;
+
+  for (const c of cases) {
+    const t = performance.now();
+    let r: RunResult;
+    let pass = false;
+    try {
+      r = await runCSharp(c.code, c.input ?? [], c.mode ?? 'run', c.seed ?? 42);
+      pass = c.expect(r);
+    } catch (e) {
+      r = { segments: [], error: { type: 'Crash', message: String(e), line: null } };
+    }
+    let decoderFound: string | undefined;
+    if (c.decoder) {
+      decoderFound = r.timeout ? 'never-finished' : r.error ? findError(r.error.type, r.error.message)?.id : undefined;
+      pass = pass && decoderFound === c.decoder;
+    }
+    const ms = Math.round(performance.now() - t);
+    results.push({ name: c.name, pass, ms, result: r, decoderFound });
+    const tr = document.createElement('tr');
+    tr.className = pass ? 'pass' : 'fail';
+    tr.innerHTML = `<td>${c.name}</td><td>${pass ? 'pass' : 'FAIL'} (${ms} ms)${c.decoder ? `<br>decoder: ${decoderFound ?? 'none'}` : ''}</td><td><code></code></td>`;
+    tr.querySelector('code')!.textContent = JSON.stringify(r);
+    rows.append(tr);
+  }
+
+  // Seeding: the same seed must give the same numbers on a second run.
+  const seedCase = cases.find((c) => c.name.startsWith('Same seed'))!;
+  const a = await runCSharp(seedCase.code, [], 'run', 5);
+  const b = await runCSharp(seedCase.code, [], 'run', 5);
+  const d = await runCSharp(seedCase.code, [], 'run', 6);
+  const seeded = out(a) === out(b) && out(a) !== out(d);
+  results.push({ name: 'Seeded replays match', pass: seeded, ms: 0, result: a });
+
+  // classify() sanity check on a real run.
+  const hello = await runCSharp('Console.WriteLine("hello, Sam!");', [], 'test');
+  results.push({ name: 'classify spots capitals', pass: classify('Hello, Sam!', hello) === 'capitals', ms: 0, result: hello });
+
+  const passed = results.filter((r) => r.pass).length;
+  status.textContent = `Ready in ${readyMs} ms. ${passed}/${results.length} checks pass.`;
+  (window as any).runnerTests.done = true;
+</script>

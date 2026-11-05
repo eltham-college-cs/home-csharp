@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { keywords, termSlug, findKeyword } from '../data/keywords';
+import { getLessons, lessonUrl } from '../lib/lessons';
+
+const lessons = await getLessons();
+const usedIn = new Map<string, { title: string; href: string; year: number }[]>();
+for (const l of lessons) {
+  for (const w of l.data.keywords) {
+    const k = findKeyword(w);
+    if (!k) continue;
+    const list = usedIn.get(k.term) ?? [];
+    if (!list.some((x) => x.href === lessonUrl(l))) list.push({ title: l.data.title, href: lessonUrl(l), year: l.data.year });
+    usedIn.set(k.term, list);
+  }
+}
+const sorted = [...keywords].sort((a, b) => a.year - b.year || a.term.localeCompare(b.term, 'en', { sensitivity: 'base' }));
+---
+
+<BaseLayout title="Key words" description="Every C# word for Years 7 and 8, explained simply.">
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Shared · Years 7 and 8</span>
+      <h1>Key words</h1>
+      <p class="summary">Every word you meet in the lessons, in plain English. Tagged with the year it first appears.</p>
+    </div>
+  </section>
+
+  <div class="filter" role="group" aria-label="Show key words for">
+    <span class="muted">Show:</span>
+    <button type="button" data-f="all" aria-pressed="true">Everything</button>
+    <button type="button" data-f="7" aria-pressed="false">Year 7</button>
+    <button type="button" data-f="8" aria-pressed="false">Year 8</button>
+  </div>
+
+  <div class="glossary">
+    {
+      sorted.map((k) => (
+        <div class="entry" id={termSlug(k.term)} data-year={k.year}>
+          <span class="tag">Year {k.year}</span>
+          <h2 class="dt">{k.term}</h2>
+          <p>{k.meaning}</p>
+          {k.example && (
+            <p>
+              <code>{k.example}</code>
+            </p>
+          )}
+          {usedIn.get(k.term) && (
+            <p class="muted" style="font-size:16px">
+              In:{' '}
+              {usedIn.get(k.term)!.map((u, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <a href={u.href}>
+                    Y{u.year} {u.title}
+                  </a>
+                </>
+              ))}
+            </p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-f]'));
+  const entries = Array.from(document.querySelectorAll<HTMLElement>('.entry'));
+  const apply = (f: string) => {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+    entries.forEach((e) => (e.hidden = f !== 'all' && e.dataset.year !== f));
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.f!)));
+  const y = new URLSearchParams(location.search).get('year');
+  if (y === '7' || y === '8') apply(y);
+</script>

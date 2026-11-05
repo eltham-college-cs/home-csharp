@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getLessons, lessonUrl } from '../../../lib/lessons';
+import { url } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const years = await getCollection('years');
+  const lessons = await getLessons();
+  return years.flatMap((y) =>
+    y.data.units
+      .map((u) => ({ u, list: lessons.filter((l) => l.data.year === y.data.year && l.data.unitSlug === u.slug) }))
+      .filter(({ list }) => list.length)
+      .map(({ u, list }) => ({
+        params: { year: `year-${y.data.year}`, unit: u.slug },
+        props: { year: y.data.year, unit: u, list },
+      })),
+  );
+}
+
+const { year, unit, list } = Astro.props;
+---
+
+<BaseLayout title={`Year ${year}: ${unit.title}`} description={unit.summary} year={year}>
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Year {year} · Unit</span>
+      <h1>{unit.title}</h1>
+      <p class="summary">{unit.summary}</p>
+      <p><a href={url(`/year-${year}/`)}>All Year {year} lessons</a></p>
+    </div>
+  </section>
+  <ul class="lesson-list">
+    {
+      list.map((l) => (
+        <li>
+          <a class="lesson-link" href={lessonUrl(l)}>
+            <span class="num" aria-hidden="true">{l.data.lesson}</span>
+            <span class="title-wrap">
+              <span class="title">{l.data.title}</span>
+              <span class="sum">{l.data.summary}</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

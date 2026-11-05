@@ -1,0 +1,98 @@
+---
+// Practise-on-CodeBash prompt. On a lesson it names the matching tasks; on a
+// year page it points at the whole topic. Students log in and find the task
+// by name (CodeBash has no public per-task link).
+import { CODEBASH_LOGIN, CODEBASH_TOPIC, codebashCourse } from '../lib/codebash';
+
+interface Props {
+  year: number;
+  tasks?: string[];
+}
+const { year, tasks = [] } = Astro.props;
+const course = codebashCourse(year);
+const hasTasks = tasks.length > 0;
+---
+
+<section class="cb" aria-labelledby="cb-head">
+  <div class="cb-body">
+    <h2 id="cb-head">Practise on CodeBash</h2>
+    {
+      hasTasks ? (
+        <>
+          <p>
+            Log in to CodeBash, open <strong>{course} → {CODEBASH_TOPIC}</strong>, and try
+            {tasks.length === 1 ? ' this task' : ' these tasks'}:
+          </p>
+          <ul>
+            {tasks.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>
+          Log in to CodeBash and open <strong>{course} → {CODEBASH_TOPIC}</strong> for auto-marked
+          practice questions that match these lessons. They start at the same level as the lessons
+          and get a little harder.
+        </p>
+      )
+    }
+    <a class="cb-btn" href={CODEBASH_LOGIN} target="_blank" rel="noopener noreferrer">Open CodeBash<span class="visually-hidden"> (opens in a new tab)</span></a>
+  </div>
+</section>
+
+<style>
+  .cb {
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+  .cb-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 70ch;
+  }
+  .cb h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--gold-light);
+  }
+  .cb p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .cb strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+  .cb ul {
+    margin: 0;
+    padding-left: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 18px;
+  }
+  .cb-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 4px;
+    padding: 10px 22px;
+    border-radius: 12px;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cb-btn:hover,
+  .cb-btn:focus-visible {
+    background: var(--gold-light);
+  }
+</style>

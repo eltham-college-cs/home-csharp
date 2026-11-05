@@ -1,0 +1,83 @@
+/* Year themes (SPEC § 5). Shared pages use the defaults on :root. */
+:root {
+  --navy: #0a1b2e;
+  --navy-2: #163351;
+  --gold: #f2b533;
+  --gold-light: #e3c783;
+  --blue: #1e5fa8;
+  --page: #fbfaf5;
+  --panel: #e8f3fd;
+  --border: #d7e3ef;
+  --text: #1a1d21;
+  --muted: #3a4654;
+
+  --pass-bg: #e6f4ec;
+  --pass: #1f7a4d;
+  --nearly-bg: #fdf1d9;
+  --nearly: #d9a21e;
+  --nearly-text: #4a3300;
+  --nearly-strong: #7a5300;
+  --err-bg: #fce9e7;
+  --err: #b3261e;
+  --space-dot: #8a96a3;
+
+  --font-display: 'Fredoka', 'Lexend', 'Segoe UI', sans-serif;
+  --display-weight: 600;
+  --font-body: 'Lexend', 'Segoe UI', sans-serif;
+  --font-code: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --body-size: 19px;
+  --h1: 52px;
+  --h2: 34px;
+  --code-size: 20px;
+  --radius: 22px;
+  --radius-sm: 14px;
+  --nav-radius: 999px;
+
+  --tok-kw: #f2b533;
+  --tok-bi: #f2b533;
+  --tok-name: #ffffff;
+  --tok-str: #9fddb8;
+  --tok-num: #f7b9c6;
+  --tok-com: #9fb3c8;
+}
+
+[data-year='7'] {
+  --gold: #f2b533;
+  --blue: #1e5fa8;
+  --page: #fbfaf5;
+  --panel: #e8f3fd;
+  --muted: #3a4654;
+  --font-display: 'Fredoka', 'Lexend', 'Segoe UI', sans-serif;
+  --display-weight: 600;
+  --body-size: 20px;
+  --h1: 60px;
+  --h2: 38px;
+  --code-size: 22px;
+  --radius: 28px;
+  --radius-sm: 20px;
+  --nav-radius: 999px;
+  --tok-kw: #f2b533;
+  --tok-bi: #f2b533;
+  --tok-name: #7fb4e8;
+}
+
+[data-year='8'] {
+  --gold: #dda93e;
+  --blue: #2a5a8c;
+  --page: #f7f8fa;
+  --panel: #ffffff;
+  --muted: #555d68;
+  --font-display: 'Lexend', 'Segoe UI', sans-serif;
+  --display-weight: 600;
+  --body-size: 18px;
+  --h1: 48px;
+  --h2: 32px;
+  --code-size: 19px;
+  --radius: 16px;
+  --radius-sm: 14px;
+  --nav-radius: 10px;
+  --tok-kw: #dda93e;
+  --tok-bi: #7fb4e8;
+  --tok-name: #ffffff;
+}

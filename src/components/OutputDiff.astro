@@ -1,0 +1,16 @@
+---
+// Expected output next to what the program printed, with spaces as · and
+// the differences highlighted. The checker uses the same drawing code.
+import { renderGot, renderLines } from '../lib/render-diff';
+
+interface Props {
+  expected: string;
+  got: string;
+}
+const { expected, got } = Astro.props;
+---
+
+<div class="compare">
+  <span>Expected</span><div class="out-box" set:html={renderLines(expected)} />
+  <span>You got</span><div class="out-box" set:html={renderGot(expected, got)} />
+</div>
